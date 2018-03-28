@@ -39,7 +39,7 @@ namespace ImageService.Controller
             else
             {
                 resultSuccesful = false;
-                return "No such command";
+                return "Not a command";
             }
             // if command returned an exception
             /*catch (Exception e)

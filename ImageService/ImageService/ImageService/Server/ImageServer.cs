@@ -38,7 +38,7 @@ namespace ImageService.Server
         private void CreateHandler(string directory)
         {
             // create handler for given directory
-            IDirectoryHandler directoryHandler = new DirectoyHandler(this.m_controller);
+            IDirectoryHandler directoryHandler = new DirectoyHandler(this.m_controller, this.m_logging);
             directoryHandler.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(CloseHandler);
             this.CommandRecieved += directoryHandler.OnCommandRecieved;
             directoryHandler.StartHandleDirectory(directory);
@@ -46,7 +46,9 @@ namespace ImageService.Server
 
         private void CloseHandler(object sender, DirectoryCloseEventArgs e)
         {
-
+            IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
+            this.CommandRecieved -= handlerToClose.OnCommandRecieved;
+            // delete handler
         }
 
         public void Command()
@@ -57,6 +59,13 @@ namespace ImageService.Server
         public void sendCommand()
         {
             //this.CommandRecieved(this, CloseHandler);
+        }
+
+        public void CloseServer()
+        {
+            string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
+            this.CommandRecieved(this, e);
         }
     }
 }

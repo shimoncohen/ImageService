@@ -12,11 +12,11 @@ namespace ImageService
      */
     class ServiceInfo
     {
-        private readonly string[] handlers;
-        private readonly string outputDir;
-        private readonly string sourceName;
-        private readonly string logName;
-        private readonly int thumbnailSize;
+        private  string[] handlers;
+        private  string outputDir;
+        private  string sourceName;
+        private  string logName;
+        private  int thumbnailSize;
 
         public string[] Handlers { get; }
         public string OutputDir { get; }
@@ -35,7 +35,7 @@ namespace ImageService
             this.handlers = handlerName.Split(';');
             this.outputDir = ConfigurationManager.AppSettings["OutputDir"];
             this.logName = ConfigurationManager.AppSettings["LogName"];
-            this.sourceName = ConfigurationManager.AppSettings["logfilelocation"];
+            this.sourceName = ConfigurationManager.AppSettings["SourceName"];
             int.TryParse(ConfigurationManager.AppSettings["ThumbnailSize"], out result);
             // if parse was succesfull
             if (result != 0)

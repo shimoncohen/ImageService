@@ -47,6 +47,7 @@ namespace ImageService.Modal
             thumb.Save(Path.ChangeExtension(path, "thumb"));
 
             result = true;
+            return "";
         }
 
         //retrieves the datetime WITHOUT loading the whole image

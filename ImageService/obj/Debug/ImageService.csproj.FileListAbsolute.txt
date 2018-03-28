@@ -1,0 +1,9 @@
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.ImageService.resources
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.ProjectInstaller.resources
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.csproj.GenerateResource.Cache
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\bin\Debug\ImageService.exe.config
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\bin\Debug\ImageService.exe
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\bin\Debug\ImageService.pdb
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.exe
+c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.pdb
