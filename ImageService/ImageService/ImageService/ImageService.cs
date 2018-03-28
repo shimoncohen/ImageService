@@ -72,6 +72,7 @@ namespace ImageService
 
             // create the services server
             ImageServer server = new ImageServer(model, info.Handlers, this.logger);
+            this.server = server;
         }
 
         protected override void OnStart(string[] args)

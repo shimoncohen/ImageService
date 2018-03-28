@@ -29,8 +29,10 @@ namespace ImageService.Modal
         public string AddFile(string path, out bool result)
         {
             if(File.Exists(path)) {
-                // create output dir if dosent exist
-                Directory.CreateDirectory(this.m_OutputFolder);
+                // create output dir if doesn't exist
+                DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
+                // create as a hidden directory
+                dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 // extract images creation date and time
                 DateTime timeCreated = File.GetCreationTime(path);
                 int year = timeCreated.Year;
@@ -38,15 +40,20 @@ namespace ImageService.Modal
 
                 // make new path to wanted folder
                 string newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
+                string thumbNewPath = this.m_OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
+                // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
+                Directory.CreateDirectory(thumbNewPath);
 
                 // extracting the name of the image and appending it the new path
                 newPath = newPath+path.Substring(path.LastIndexOf("\\"));
+                thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
 
                 // save image as a thumbnail
                 Image image = Image.FromFile(path);
                 Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-                thumb.Save(Path.ChangeExtension(newPath, "thumb"));
+                image.Save(newPath);
+                thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
                 image.Dispose();
                 thumb.Dispose();
                 result = true;

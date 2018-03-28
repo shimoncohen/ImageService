@@ -7,3 +7,13 @@ c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\
 c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\bin\Debug\ImageService.pdb
 c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.exe
 c:\users\shimon\documents\visual studio 2017\Projects\ImageService\ImageService\obj\Debug\ImageService.pdb
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\bin\Debug\ImageService.exe.config
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\bin\Debug\ImageService.exe
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\bin\Debug\ImageService.pdb
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.ImageService.resources
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.ProjectInstaller.resources
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csproj.GenerateResource.cache
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csproj.CoreCompileInputs.cache
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.exe
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.pdb
