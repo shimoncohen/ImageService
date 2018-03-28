@@ -28,6 +28,7 @@ namespace ImageService.Server
 
         public ImageServer(IImageServiceModal model, string[] handlers, ILoggingService logger)
         {
+            // create controller
             this.m_controller = new ImageController(model);
             this.m_logging = logger;
             // create handler for each given directory

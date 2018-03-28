@@ -14,8 +14,10 @@ namespace ImageService.Modal
     public class ImageServiceModal : IImageServiceModal
     {
         #region Members
-        private string m_OutputFolder;            // The Output Folder
-        private int m_thumbnailSize;              // The Size Of The Thumbnail Size
+        // The Output Folder
+        private string m_OutputFolder;
+        // The Size Of The Thumbnail Size
+        private int m_thumbnailSize;
 
         public ImageServiceModal(string path, int size)
         {
@@ -38,22 +40,26 @@ namespace ImageService.Modal
                 int year = timeCreated.Year;
                 int month = timeCreated.Month;
 
-                // make new path to wanted folder
+                // make new path to output folder
                 string newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
+                // make new path to thumbnail folder
                 string thumbNewPath = this.m_OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
                 // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
                 Directory.CreateDirectory(thumbNewPath);
 
-                // extracting the name of the image and appending it the new path
+                // extracting the name of the image and appending it the new paths
                 newPath = newPath+path.Substring(path.LastIndexOf("\\"));
                 thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
 
                 // save image as a thumbnail
                 Image image = Image.FromFile(path);
                 Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+                // save the image in the correct dir in output dir
                 image.Save(newPath);
+                // save the thumbnail in the correct dir in the output dir
                 thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
+                // release the images from usage
                 image.Dispose();
                 thumb.Dispose();
                 result = true;
@@ -64,11 +70,10 @@ namespace ImageService.Modal
 
                 return newPath;
             }
+            // if file doesn't exist then return the correct message
             result = false;
             return "Source file doesn't exist";
         }
-
-        //retrieves the datetime WITHOUT loading the whole image
     }
     #endregion
 }

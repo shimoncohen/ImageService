@@ -17,3 +17,12 @@ C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageServ
 C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csproj.CoreCompileInputs.cache
 C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.exe
 C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.pdb
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\bin\Debug\ImageService.exe.config
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\bin\Debug\ImageService.exe
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\bin\Debug\ImageService.pdb
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.csprojResolveAssemblyReference.cache
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.ImageService.resources
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.ProjectInstaller.resources
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.csproj.GenerateResource.Cache
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.exe
+C:\Users\shimon\Source\Repos\ImageService2\ImageService\obj\Debug\ImageService.pdb

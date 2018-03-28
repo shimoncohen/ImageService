@@ -34,8 +34,18 @@ namespace ImageService.Controller
             // extract command from dictionary if exists
             if (commands.TryGetValue(commandID, out command))
             {
-                // if exists then execute the command
-                return command.Execute(args, out resultSuccesful);
+                // create a thread to execute the command
+                Task<Tuple<string, bool>> t = new Task<Tuple<string, bool>> (() => {
+                    // execute the command
+                    bool result;
+                    return Tuple.Create(command.Execute(args, out result), result);
+                });
+                // activate the thread
+                t.Start();
+                // save result from thread
+                Tuple<string, bool> output = t.Result;
+                resultSuccesful = output.Item2;
+                return output.Item1;
             }
             else
             {
