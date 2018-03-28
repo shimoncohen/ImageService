@@ -24,7 +24,7 @@ namespace ImageService.Modal
         }
 
         /*
-         * adds an image to output dir as a thumbnail
+         * adds an image to output dir as a thumbnail 
          */
         public string AddFile(string path, out bool result)
         {
