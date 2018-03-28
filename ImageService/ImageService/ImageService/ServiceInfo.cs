@@ -12,11 +12,11 @@ namespace ImageService
      */
     class ServiceInfo
     {
-        private  string[] handlers;
-        private  string outputDir;
-        private  string sourceName;
-        private  string logName;
-        private  int thumbnailSize;
+        //private readonly string[] handlers;
+        //private readonly string outputDir;
+        //private readonly string sourceName;
+        //private readonly string logName;
+        //private readonly int thumbnailSize;
 
         public string[] Handlers { get; }
         public string OutputDir { get; }
@@ -32,15 +32,15 @@ namespace ImageService
             int result;
             // extract info from app config file
             string handlerName = ConfigurationManager.AppSettings["Handler"];
-            this.handlers = handlerName.Split(';');
-            this.outputDir = ConfigurationManager.AppSettings["OutputDir"];
-            this.logName = ConfigurationManager.AppSettings["LogName"];
-            this.sourceName = ConfigurationManager.AppSettings["SourceName"];
+            this.Handlers = handlerName.Split(';');
+            this.OutputDir = ConfigurationManager.AppSettings["OutputDir"];
+            this.LogName = ConfigurationManager.AppSettings["LogName"];
+            this.SourceName = ConfigurationManager.AppSettings["SourceName"];
             int.TryParse(ConfigurationManager.AppSettings["ThumbnailSize"], out result);
             // if parse was succesfull
             if (result != 0)
             {
-                this.thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+                this.ThumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             }
         }
 

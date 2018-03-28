@@ -23,11 +23,9 @@ namespace ImageService.Controller.Handlers
         private readonly String[] fileTypes = { "*.jpg", "*.png", "*.gif", "*.bmp" };
         private List<FileSystemWatcher> watchers;
 
-        public DirectoyHandler(IImageController controller/*, FileSystemWatcher watcher*/,
-            ILoggingService service)
+        public DirectoyHandler(IImageController controller, ILoggingService service)
         {
             this.imageController = controller;
-            //this.fileSystemWatcher = watcher;
             this.loggingModal = service;
             this.watchers = new List<FileSystemWatcher>();
         }
@@ -71,6 +69,19 @@ namespace ImageService.Controller.Handlers
                 args, this.directoryPath);
             //this.imgC.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
             this.OnCommandRecieved(this, temp);
+        }
+
+        public void StopHandleDirectory(object sender, DirectoryCloseEventArgs e)
+        {
+            // dispose of all file watchers in handler
+            /*foreach (FileSystemWatcher watcher in this.watchers) {
+                watcher.Dispose();
+            }*/
+            if(this.directoryPath.Equals(e.DirectoryPath) || e.DirectoryPath.Equals("*")) 
+            {
+                this.watchers.Clear();
+                this.loggingModal.Log(e.Message, MessageTypeEnum.INFO);
+            }
         }
     }
 }

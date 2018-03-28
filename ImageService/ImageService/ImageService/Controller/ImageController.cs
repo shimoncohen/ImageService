@@ -12,7 +12,8 @@ namespace ImageService.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageServiceModal m_modal;                      // The Modal Object
+        // The Modal Object
+        private IImageServiceModal m_modal;
         // a dictionary of commands to execute
         private Dictionary<int, ICommand> commands;
 
@@ -41,12 +42,6 @@ namespace ImageService.Controller
                 resultSuccesful = false;
                 return "Not a command";
             }
-            // if command returned an exception
-            /*catch (Exception e)
-            {
-                resultSuccesful = false;
-                return e.ToString();
-            }*/
         }
     }
 }

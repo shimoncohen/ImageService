@@ -54,9 +54,7 @@ namespace ImageService
             // service info class (singelton)
             ServiceInfo info = ServiceInfo.CreateServiceInfo();
             // create the service model
-            IImageServiceModal model = new ImageServiceModal(info.OutputDir/* not sure if right argument... */, info.ThumbnailSize);
-            // create the services server
-            ImageServer server = new ImageServer(model, info.Handlers);
+            IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             
             string eventSourceName = info.SourceName;
             string logName = info.LogName;
@@ -71,13 +69,16 @@ namespace ImageService
             eventLog1.Log = logName;
             // create logger
             this.logger = new LoggingService();
+
+            // create the services server
+            ImageServer server = new ImageServer(model, info.Handlers, this.logger);
         }
 
         protected override void OnStart(string[] args)
         {
             this.logger.MessageRecieved += this.ImageService_Message;
 
-            // Update the service state to Start Pending.  
+            // Update the service state to Start Pending.
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
@@ -102,6 +103,7 @@ namespace ImageService
 
         protected override void OnStop()
         {
+            this.server.CloseServer();
             this.logger.MessageRecieved -= this.ImageService_Message;
             eventLog1.WriteEntry("In onStop.");
         }

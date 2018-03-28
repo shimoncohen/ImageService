@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-//using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,25 +28,37 @@ namespace ImageService.Modal
          */
         public string AddFile(string path, out bool result)
         {
-            // create output dir if dosent exist
-            Directory.CreateDirectory(this.m_OutputFolder);
-            // extract images creation date and time
-            DateTime timeCreated = File.GetCreationTime(path);
-            int year = timeCreated.Year;
-            int month = timeCreated.Month;
+            if(File.Exists(path)) {
+                // create output dir if dosent exist
+                Directory.CreateDirectory(this.m_OutputFolder);
+                // extract images creation date and time
+                DateTime timeCreated = File.GetCreationTime(path);
+                int year = timeCreated.Year;
+                int month = timeCreated.Month;
 
-            // make new path to wanted folder ?????
-            //?????? - not sure if correct
-            string newPath = Path.GetFullPath(Path.Combine(path, @"\"+this.m_OutputFolder));
+                // make new path to wanted folder
+                string newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
+                Directory.CreateDirectory(newPath);
+
+                // extracting the name of the image and appending it the new path
+                newPath = newPath+path.Substring(path.LastIndexOf("\\"));
+
+                // save image as a thumbnail
+                Image image = Image.FromFile(path);
+                Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+                thumb.Save(Path.ChangeExtension(newPath, "thumb"));
+                image.Dispose();
+                thumb.Dispose();
+                result = true;
 
 
-            // save image as a thumbnail
-            Image image = Image.FromFile(path);
-            Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-            thumb.Save(Path.ChangeExtension(path, "thumb"));
+                // TODO: think if we can send this class the logger to write that a new file was added
 
-            result = true;
-            return "";
+
+                return newPath;
+            }
+            result = false;
+            return "Source file doesn't exist";
         }
 
         //retrieves the datetime WITHOUT loading the whole image
