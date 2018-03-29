@@ -31,6 +31,31 @@ namespace ImageService.Modal
         public string AddFile(string path, out bool result)
         {
             if(File.Exists(path)) {
+                // create all directories needed if they don't already exist
+                this.CreateDirectoryHierarchy(path);
+
+                // extracting the name of the image and appending it the new paths
+                newPath = newPath+path.Substring(path.LastIndexOf("\\"));
+                thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
+
+                // create and save images in their destenation folders
+                this.SaveImages(path, newPath, thumbNewPath);
+
+                result = true;
+
+
+                // TODO: think if we can send this class the logger to write that a new file was added
+
+
+                return newPath;
+            }
+            // if file doesn't exist then return the correct message
+            result = false;
+            return "Source file doesn't exist";
+        }
+
+        private void CreateDirectoryHierarchy(string path)
+        {
                 // create output dir if doesn't exist
                 DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
                 // create as a hidden directory
@@ -47,11 +72,10 @@ namespace ImageService.Modal
                 // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
                 Directory.CreateDirectory(thumbNewPath);
+        }
 
-                // extracting the name of the image and appending it the new paths
-                newPath = newPath+path.Substring(path.LastIndexOf("\\"));
-                thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
-
+        private void SaveImages(string path, string newPath, string thumbNewPath)
+        {
                 // save image as a thumbnail
                 Image image = Image.FromFile(path);
                 Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
@@ -62,17 +86,6 @@ namespace ImageService.Modal
                 // release the images from usage
                 image.Dispose();
                 thumb.Dispose();
-                result = true;
-
-
-                // TODO: think if we can send this class the logger to write that a new file was added
-
-
-                return newPath;
-            }
-            // if file doesn't exist then return the correct message
-            result = false;
-            return "Source file doesn't exist";
         }
     }
     #endregion

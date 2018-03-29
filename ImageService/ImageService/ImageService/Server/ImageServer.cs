@@ -53,6 +53,7 @@ namespace ImageService.Server
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
             this.CommandRecieved -= handlerToClose.OnCommandRecieved;
+            //handlerToClose.StopHandleDirectory();
             // delete handler
         }
 
