@@ -8,10 +8,17 @@ using System.Threading.Tasks;
 
 namespace ImageService.Commands
 {
+    /// <summary>
+    /// the class of the NewFile command. creates a new file.
+    /// </summary>
     public class NewFileCommand : ICommand
     {
         private IImageServiceModal m_modal;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name= modal> the modal we created </param>
         public NewFileCommand(IImageServiceModal modal)
         {
             m_modal = modal;            // Storing the Modal

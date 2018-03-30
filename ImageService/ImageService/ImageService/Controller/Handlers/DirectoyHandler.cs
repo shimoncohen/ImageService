@@ -13,6 +13,9 @@ using System.Text.RegularExpressions;
 
 namespace ImageService.Controller.Handlers
 {
+    /// <summary>
+    /// the class that handles directories
+    /// </summary>
     public class DirectoyHandler : IDirectoryHandler
     {
         private String directoryPath;
@@ -62,6 +65,11 @@ namespace ImageService.Controller.Handlers
             }
         }
 
+        /// <summary>
+        /// the function parse the information of the new file we want to create and calls OnCommandRecieved
+        /// </summary>
+        /// <param name= sender> the sender object </param>
+        /// <param name= e> the event that called the function (holds information of the file) </param>
         private void NewFile(object sender, FileSystemEventArgs e)
         {
             String[] args = { e.FullPath, e.Name };

@@ -13,6 +13,9 @@ using ImageService.Logging.Modal;
 
 namespace ImageService.Server
 {
+    /// <summary>
+    /// the class of the server. holds a controller to execute commands and a logger to write operations that occured.
+    /// </summary>
     public class ImageServer
     {
         #region Members
@@ -26,6 +29,12 @@ namespace ImageService.Server
         public event EventHandler<DirectoryCloseEventArgs> Closing;
         #endregion
 
+        /// <summary>
+        /// constuctor
+        /// </summary>
+        /// <param name= model> the image modal we have, to create the proper controller. </param>
+        /// <param name= handler> the paths to all the directories we want to monitor </param>
+        /// <param name= logger> a logger to follow action and operations that occured </param>
         public ImageServer(IImageServiceModal model, string[] handlers, ILoggingService logger)
         {
             // create controller
@@ -37,8 +46,11 @@ namespace ImageService.Server
                 CreateHandler(directory);
             }
         }
-
-        // creates a new handler for a given directory
+ 
+        /// <summary>
+        /// creates a new handler for a given directory
+        /// </summary>
+        /// <param name= directory> the path to the directory we want to monitor </param>
         private void CreateHandler(string directory)
         {
             // create handler for given directory
@@ -49,6 +61,11 @@ namespace ImageService.Server
             directoryHandler.StartHandleDirectory(directory);
         }
 
+        /// <summary>
+        /// the function stops the handling of a specific directiory
+        /// </summary>
+        /// <param name= sender> the object that sent the request </param>
+        /// <param name= e> the event that occured </param>
         private void CloseHandler(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
@@ -67,6 +84,9 @@ namespace ImageService.Server
             //this.CommandRecieved(this, CloseHandler);
         }
 
+        /// <summary>
+        /// the function closes the server. invoke closing operation and writes to log.
+        /// </summary>
         public void CloseServer()
         {
             //string[] args = { };

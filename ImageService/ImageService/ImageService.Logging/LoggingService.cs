@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ImageService.Logging
 {
+    /// <summary>
+    /// the class that is in charge of the logging operation
+    /// </summary>
     public class LoggingService : ILoggingService
     {
         public event EventHandler<MessageRecievedEventArgs> MessageRecieved;

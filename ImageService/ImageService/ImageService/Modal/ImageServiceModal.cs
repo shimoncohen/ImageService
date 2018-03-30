@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace ImageService.Modal
 {
+    /// <summary>
+    /// the class that is charge of operations on the images (creating folders, coping files, create thumbnails etc...)
+    /// </summary>
     public class ImageServiceModal : IImageServiceModal
     {
         #region Members
@@ -19,15 +22,23 @@ namespace ImageService.Modal
         // The Size Of The Thumbnail Size
         private int m_thumbnailSize;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name= path> the path of the file (image) we want to copy </param>
+        /// <param name= size> the size of the thumbnail we create </param>
         public ImageServiceModal(string path, int size)
         {
             this.m_OutputFolder = path;
             this.m_thumbnailSize = size;
         }
 
-        /*
-         * adds an image to output dir as a thumbnail 
-         */
+         /// <summary>
+        /// adds an image to output dir as a thumbnail 
+        /// </summary>
+        /// <param name= path> path to the file we want to copy </param>
+        /// <param name= result> an indication if operation was successful or not </param>
+        /// <return> returns the path of the new file if succeeded or and error message if failed </return>
         public string AddFile(string path, out bool result)
         {
             if(File.Exists(path)) {
@@ -54,6 +65,10 @@ namespace ImageService.Modal
             return "Source file doesn't exist";
         }
 
+        /// <summary>
+        /// creating the directories hierarchy sorted by year and month
+        /// </summary>
+        /// <param name= path> the path to the file we want to copy </param>
         private void CreateDirectoryHierarchy(string path)
         {
                 // create output dir if doesn't exist
@@ -74,6 +89,12 @@ namespace ImageService.Modal
                 Directory.CreateDirectory(thumbNewPath);
         }
 
+        /// <summary>
+        /// creates the images and thumbnails in the directories we created
+        /// </summary>  
+        /// <param name= path> the path to the file we want tot copy </param>
+        /// <param name= newPath> the path to the destinated folder </param>
+        /// <param name= thumbNewPath> the path to the destination folder of the thumbnail we create </param>
         private void SaveImages(string path, string newPath, string thumbNewPath)
         {
                 // save image as a thumbnail

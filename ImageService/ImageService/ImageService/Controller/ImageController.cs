@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace ImageService.Controller
 {
+    /// <summary>
+    /// the class of the controller.
+    /// </summary>
     public class ImageController : IImageController
     {
         // The Modal Object
@@ -17,6 +20,10 @@ namespace ImageService.Controller
         // a dictionary of commands to execute
         private Dictionary<int, ICommand> commands;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name= modal> the controller receives the modal we created </param>
         public ImageController(IImageServiceModal modal)
         {
             m_modal = modal;                    // Storing the Modal Of The System
@@ -28,7 +35,7 @@ namespace ImageService.Controller
             };
         }
 
-        public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
+        public string ExecuteCommand(int commandID, string[] args, out bool resultSuccessful)
         {
             ICommand command;
             // extract command from dictionary if exists
@@ -44,12 +51,12 @@ namespace ImageService.Controller
                 t.Start();
                 // save result from thread
                 Tuple<string, bool> output = t.Result;
-                resultSuccesful = output.Item2;
+                resultSuccessful = output.Item2;
                 return output.Item1;
             }
             else
             {
-                resultSuccesful = false;
+                resultSuccessful = false;
                 return "Not a command";
             }
         }

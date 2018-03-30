@@ -7,9 +7,10 @@ using System.Configuration;
 
 namespace ImageService
 {
-    /*
-     * A singelton holding the services creation information
-     */
+     /// <summary>
+     /// A singelton holding the services creation information.
+     /// gets information from AppConfig and parse it.
+     /// </summary>
     class ServiceInfo
     {
         //private readonly string[] handlers;
@@ -26,7 +27,9 @@ namespace ImageService
 
         private static ServiceInfo serviceInfo;
 
-        // constructor
+        /// <summary>
+        /// construtor
+        /// </summary>
         private ServiceInfo()
         {
             int result;
@@ -43,8 +46,11 @@ namespace ImageService
                 this.ThumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             }
         }
-
-        // request a new instance of the calss
+        
+         /// <summary>
+         /// request a new instance of the class.
+         /// </summary>
+         /// <return> returns the instance of the object (singleton) </return>
         public static ServiceInfo CreateServiceInfo()
         {
             // if not already created

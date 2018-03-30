@@ -1,5 +1,8 @@
 ﻿namespace ImageService
 {
+     /// <summary>
+     /// the class is part of the installer of the project.
+     /// </summary>
     partial class ProjectInstaller
     {
         /// <summary>

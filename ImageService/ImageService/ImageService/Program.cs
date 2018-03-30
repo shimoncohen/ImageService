@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ImageService
 {
+     /// <summary>
+     /// the class is the main of the program.
+     /// </summary>
     static class Program
     {
         /// <summary>

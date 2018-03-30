@@ -1,5 +1,8 @@
 ﻿namespace ImageService
 {
+    /// <summary>
+    /// the designer class of the service
+    /// </summary>
     partial class ImageService
     {
         /// <summary> 

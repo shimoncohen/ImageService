@@ -15,6 +15,9 @@ using ImageService.Modal;
 
 namespace ImageService
 {
+    /// <summary>
+    /// the main class of the service
+    /// </summary>
     public partial class ImageService : ServiceBase
     {
         private System.Diagnostics.EventLog eventLog1;
@@ -48,6 +51,9 @@ namespace ImageService
             public int dwWaitHint;
         };
 
+        /// <summary>
+        /// the constructor of the service
+        /// </summary>
         public ImageService(string[] args)
         {
             InitializeComponent();
@@ -75,6 +81,9 @@ namespace ImageService
             this.server = server;
         }
 
+        /// <summary>
+        /// the function that runs when the service starts
+        /// </summary>
         protected override void OnStart(string[] args)
         {
             this.logger.MessageRecieved += this.ImageService_Message;
@@ -102,6 +111,9 @@ namespace ImageService
             eventLog1.WriteEntry("In OnContinue.");
         }*/
 
+        /// <summary>
+        /// the function that runs when the service stops
+        /// </summary>
         protected override void OnStop()
         {
             this.server.CloseServer();
@@ -109,12 +121,21 @@ namespace ImageService
             eventLog1.WriteEntry("In onStop.");
         }
 
+        /// <summary>
+        /// the function that runs when monitoring the directories
+        /// </summary>
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
             // TODO: Insert monitoring activities here.  
             eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
         }
 
+        /// <summary>
+        /// the function writes messages to the logger
+        /// </summary>
+        /// <param>
+        /// the sender object, and the event that occured
+        /// </param>
         private void ImageService_Message(object sender, MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message);

@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace ImageService
 {
+    
+     /// <summary>
+     /// the class is the installer of the project.
+     /// </summary>
     [RunInstaller(true)]
     public partial class ProjectInstaller : System.Configuration.Install.Installer
     {
+        /// <summary>
+        /// constructor
+        /// </summary>
         public ProjectInstaller()
         {
             InitializeComponent();
