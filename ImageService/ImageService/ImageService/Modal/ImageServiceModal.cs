@@ -42,8 +42,12 @@ namespace ImageService.Modal
         public string AddFile(string path, out bool result)
         {
             if(File.Exists(path)) {
+                
+                string newPath;
+                string thumbNewPath;
+
                 // create all directories needed if they don't already exist
-                this.CreateDirectoryHierarchy(path);
+                this.CreateDirectoryHierarchy(path, out newPath, out thumbNewPath);
 
                 // extracting the name of the image and appending it the new paths
                 newPath = newPath+path.Substring(path.LastIndexOf("\\"));
@@ -69,7 +73,7 @@ namespace ImageService.Modal
         /// creating the directories hierarchy sorted by year and month
         /// </summary>
         /// <param name= path> the path to the file we want to copy </param>
-        private void CreateDirectoryHierarchy(string path)
+        private void CreateDirectoryHierarchy(string path, out string newPath, out string thumbNewPath)
         {
                 // create output dir if doesn't exist
                 DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
@@ -81,9 +85,9 @@ namespace ImageService.Modal
                 int month = timeCreated.Month;
 
                 // make new path to output folder
-                string newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
+                newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
                 // make new path to thumbnail folder
-                string thumbNewPath = this.m_OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
+                thumbNewPath = this.m_OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
                 // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
                 Directory.CreateDirectory(thumbNewPath);
@@ -100,13 +104,14 @@ namespace ImageService.Modal
                 // save image as a thumbnail
                 Image image = Image.FromFile(path);
                 Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-                // save the image in the correct dir in output dir
-                image.Save(newPath);
                 // save the thumbnail in the correct dir in the output dir
                 thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
                 // release the images from usage
                 image.Dispose();
                 thumb.Dispose();
+                // save the image in the correct dir in output dir
+                System.IO.Directory.Move(path, newPath);
+                
         }
     }
     #endregion

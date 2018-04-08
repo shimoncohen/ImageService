@@ -26,7 +26,7 @@ namespace ImageService.Server
         #region Properties
         // The event that notifies about a new Command being recieved
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
-        public event EventHandler<DirectoryCloseEventArgs> Closing;
+        //public event EventHandler<DirectoryCloseEventArgs> Closing;
         #endregion
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ImageService.Server
             IDirectoryHandler directoryHandler = new DirectoyHandler(this.m_controller, this.m_logging);
             directoryHandler.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(CloseHandler);
             this.CommandRecieved += directoryHandler.OnCommandRecieved;
-            this.Closing += directoryHandler.StopHandleDirectory;
+            //this.Closing += directoryHandler.StopHandleDirectory;
             directoryHandler.StartHandleDirectory(directory);
         }
 
@@ -77,11 +77,7 @@ namespace ImageService.Server
         public void Command()
         {
             //this.m_controller.ExecuteCommand();
-        }
-
-        public void sendCommand()
-        {
-            //this.CommandRecieved(this, CloseHandler);
+            //this.CommandRecieved?.Invoke();
         }
 
         /// <summary>
@@ -89,12 +85,13 @@ namespace ImageService.Server
         /// </summary>
         public void CloseServer()
         {
-            //string[] args = { };
-            //CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
-            DirectoryCloseEventArgs e = new DirectoryCloseEventArgs("*", "Closing handler"); // ToDo: maybe need to change message
+            string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
+            //DirectoryCloseEventArgs e = new DirectoryCloseEventArgs("*", "Closing handler"); // ToDo: maybe need to change message
             // Invoke event and let all handlers know they need to close
-            this.Closing?.Invoke(this, e);
-            this.m_logging.Log("Server closed", MessageTypeEnum.INFO);
+            //this.Closing?.Invoke(this, e);
+            this.CommandRecieved?.Invoke(this, e);
+            this.m_logging.Log("Server closing", MessageTypeEnum.INFO);
         }
     }
 }

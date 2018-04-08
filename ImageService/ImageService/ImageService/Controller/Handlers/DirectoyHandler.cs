@@ -50,6 +50,11 @@ namespace ImageService.Controller.Handlers
         {
             if (this.directoryPath.Equals(e.RequestDirPath) || e.RequestDirPath.Equals("*"))
             {
+                if(e.CommandID == (int)CommandEnum.CloseCommand) {
+                    DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
+                    this.StopHandleDirectory(this, eTemp);
+                    return;
+                }
                 bool result;
                 // execute recieved command
                 string message = this.imageController.ExecuteCommand(e.CommandID, e.Args, out result);
@@ -85,11 +90,12 @@ namespace ImageService.Controller.Handlers
             /*foreach (FileSystemWatcher watcher in this.watchers) {
                 watcher.Dispose();
             }*/
-            if(this.directoryPath.Equals(e.DirectoryPath) || e.DirectoryPath.Equals("*")) 
-            {
+            //if(this.directoryPath.Equals(e.DirectoryPath) || e.DirectoryPath.Equals("*")) 
+            //{
                 this.watchers.Clear();
+                this.DirectoryClose?.Invoke(this, e);
                 this.loggingModal.Log(e.Message, MessageTypeEnum.INFO);
-            }
+            //}
         }
     }
 }
