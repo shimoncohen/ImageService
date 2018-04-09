@@ -56,6 +56,7 @@ namespace ImageService.Controller.Handlers
                     return;
                 }
                 bool result;
+
                 // execute recieved command
                 string message = this.imageController.ExecuteCommand(e.CommandID, e.Args, out result);
                 // check if command has executed succesfully and write result to the log
@@ -80,7 +81,6 @@ namespace ImageService.Controller.Handlers
             String[] args = { e.FullPath, e.Name };
             CommandRecievedEventArgs temp = new CommandRecievedEventArgs((int)CommandEnum.NewFileCommand,
                 args, this.directoryPath);
-            //this.imgC.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
             this.OnCommandRecieved(this, temp);
         }
         /// <summary>

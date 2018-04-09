@@ -52,10 +52,9 @@ namespace ImageService.Modal
                 // extracting the name of the image and appending it the new paths
                 newPath = newPath+path.Substring(path.LastIndexOf("\\"));
                 thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
-
+                
                 // create and save images in their destenation folders
                 this.SaveImages(path, newPath, thumbNewPath);
-
                 result = true;
 
 
@@ -75,8 +74,8 @@ namespace ImageService.Modal
         /// <param name= path> the path to the file we want to copy </param>
         private void CreateDirectoryHierarchy(string path, out string newPath, out string thumbNewPath)
         {
-                // create output dir if doesn't exist
-                DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
+            // create output dir if doesn't exist
+            DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
                 // create as a hidden directory
                 dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 // extract images creation date and time
