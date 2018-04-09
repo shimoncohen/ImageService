@@ -101,16 +101,21 @@ namespace ImageService.Modal
         /// <param name= thumbNewPath> the path to the destination folder of the thumbnail we create </param>
         private void SaveImages(string path, string newPath, string thumbNewPath)
         {
-                // save image as a thumbnail
-                Image image = Image.FromFile(path);
-                Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-                // save the thumbnail in the correct dir in the output dir
-                thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
-                // release the images from usage
-                image.Dispose();
-                thumb.Dispose();
-                // save the image in the correct dir in output dir
-                System.IO.Directory.Move(path, newPath);
+            // save image as a thumbnail
+            Image image = Image.FromFile(path);
+            Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+            // save the thumbnail in the correct dir in the output dir
+            thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
+            // save the image in the correct dir in the output dir
+            image.Save(newPath);
+                
+            // release the images from usage
+            image.Dispose();
+            thumb.Dispose();
+            
+            //System.IO.File.Delete(path);
+            // save the image in the correct dir in output dir
+            //System.IO.Directory.Move(path, newPath);
                 
         }
     }

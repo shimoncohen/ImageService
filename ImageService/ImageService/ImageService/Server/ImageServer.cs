@@ -57,7 +57,6 @@ namespace ImageService.Server
             IDirectoryHandler directoryHandler = new DirectoyHandler(this.m_controller, this.m_logging);
             directoryHandler.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(CloseHandler);
             this.CommandRecieved += directoryHandler.OnCommandRecieved;
-            //this.Closing += directoryHandler.StopHandleDirectory;
             directoryHandler.StartHandleDirectory(directory);
         }
 
@@ -70,14 +69,9 @@ namespace ImageService.Server
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
             this.CommandRecieved -= handlerToClose.OnCommandRecieved;
+            this.m_logging.Log("closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
             //handlerToClose.StopHandleDirectory();
             // delete handler
-        }
-
-        public void Command()
-        {
-            //this.m_controller.ExecuteCommand();
-            //this.CommandRecieved?.Invoke();
         }
 
         /// <summary>
@@ -87,9 +81,6 @@ namespace ImageService.Server
         {
             string[] args = { };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
-            //DirectoryCloseEventArgs e = new DirectoryCloseEventArgs("*", "Closing handler"); // ToDo: maybe need to change message
-            // Invoke event and let all handlers know they need to close
-            //this.Closing?.Invoke(this, e);
             this.CommandRecieved?.Invoke(this, e);
             this.m_logging.Log("Server closing", MessageTypeEnum.INFO);
         }

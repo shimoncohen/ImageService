@@ -50,9 +50,9 @@ namespace ImageService.Controller.Handlers
         {
             if (this.directoryPath.Equals(e.RequestDirPath) || e.RequestDirPath.Equals("*"))
             {
+                // if command recieved is close command
                 if(e.CommandID == (int)CommandEnum.CloseCommand) {
-                    DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
-                    this.StopHandleDirectory(this, eTemp);
+                    this.StopHandleDirectory();
                     return;
                 }
                 bool result;
@@ -83,19 +83,14 @@ namespace ImageService.Controller.Handlers
             //this.imgC.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
             this.OnCommandRecieved(this, temp);
         }
-
-        public void StopHandleDirectory(object sender, DirectoryCloseEventArgs e)
+        /// <summary>
+        /// the function stops the handling of a directory
+        /// </summary>
+        public void StopHandleDirectory()
         {
-            // dispose of all file watchers in handler
-            /*foreach (FileSystemWatcher watcher in this.watchers) {
-                watcher.Dispose();
-            }*/
-            //if(this.directoryPath.Equals(e.DirectoryPath) || e.DirectoryPath.Equals("*")) 
-            //{
-                this.watchers.Clear();
-                this.DirectoryClose?.Invoke(this, e);
-                this.loggingModal.Log(e.Message, MessageTypeEnum.INFO);
-            //}
+            DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
+            this.watchers.Clear();
+            this.DirectoryClose?.Invoke(this, eTemp);
         }
     }
 }

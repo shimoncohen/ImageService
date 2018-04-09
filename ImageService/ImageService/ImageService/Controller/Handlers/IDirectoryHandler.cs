@@ -24,11 +24,5 @@ namespace ImageService.Controller.Handlers
         /// <param name= sender> the sender object </param>
         /// <param name= e> the event that received the command </param>
         void OnCommandRecieved(object sender, CommandRecievedEventArgs e);     // The Event that will be activated upon new Command
-        /// <summary>
-        /// the function stops the handling of a directory
-        /// </summary>
-        /// <param name= sender> the sender object </param>
-        /// <param name= e> the event that closes the directory </param>
-        void StopHandleDirectory(object sender, DirectoryCloseEventArgs e);       // The event that will be activated when handler is no longer needed
     }
 }
