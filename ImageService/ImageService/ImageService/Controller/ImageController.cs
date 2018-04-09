@@ -50,6 +50,7 @@ namespace ImageService.Controller
                 });
                 // activate the thread
                 t.Start();
+                System.Threading.Thread.Sleep(1);
                 // save result from thread
                 Tuple<string, bool> output = t.Result;
                 resultSuccessful = output.Item2;
