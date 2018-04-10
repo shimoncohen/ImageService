@@ -78,6 +78,17 @@ namespace ImageService.Controller.Handlers
         /// <param name= e> the event that called the function (holds information of the file) </param>
         private void NewFile(object sender, FileSystemEventArgs e)
         {
+            /*FileStream fs = null;
+            try {
+                fs = File.Open(e.FullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            } catch(Exception exception) {
+                return;
+            } finally {
+                if(fs != null) {
+                    fs.Close();
+                }
+            }*/
+
             String[] args = { e.FullPath, e.Name };
             CommandRecievedEventArgs temp = new CommandRecievedEventArgs((int)CommandEnum.NewFileCommand,
                 args, this.directoryPath);

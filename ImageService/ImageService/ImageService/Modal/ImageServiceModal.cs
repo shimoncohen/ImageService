@@ -50,18 +50,32 @@ namespace ImageService.Modal
                 this.CreateDirectoryHierarchy(path, out newPath, out thumbNewPath);
 
                 // extracting the name of the image and appending it the new paths
-                newPath = newPath+path.Substring(path.LastIndexOf("\\"));
+                newPath = newPath + path.Substring(path.LastIndexOf("\\"));
                 thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
                 
+                string message;
                 // create and save images in their destenation folders
-                this.SaveImages(path, newPath, thumbNewPath);
+                this.SaveImages(path, newPath, thumbNewPath, out message);
+
+                bool image = File.Exists(newPath);
+                bool thumbImage = File.Exists(Path.ChangeExtension(thumbNewPath, "thumb"));
                 result = true;
+                if(image && thumbImage) {
+                    return newPath;
+                } else {
+                    result = false;
+                    /*if(!image && !thumbImage) {
+                        return "Both images werent created";
+                    } else if(!image) {
+                        return "Image wasnt created";
+                    } else {
+                        return "Thumb wasnt created";
+                    }*/
+                    return message;
+                }
 
 
                 // TODO: think if we can send this class the logger to write that a new file was added
-
-
-                return newPath;
             }
             // if file doesn't exist then return the correct message
             result = false;
@@ -98,19 +112,47 @@ namespace ImageService.Modal
         /// <param name= path> the path to the file we want tot copy </param>
         /// <param name= newPath> the path to the destinated folder </param>
         /// <param name= thumbNewPath> the path to the destination folder of the thumbnail we create </param>
-        private void SaveImages(string path, string newPath, string thumbNewPath)
+        private void SaveImages(string path, string newPath, string thumbNewPath, out string message)
         {
-            // save image as a thumbnail
-            Image image = Image.FromFile(path);
-            Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-            // save the thumbnail in the correct dir in the output dir
-            thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
-            // save the image in the correct dir in the output dir
-            image.Save(newPath);
-                
-            // release the images from usage
-            image.Dispose();
+            Image image, thumb;
+            message = "Nothing done yet";
+            try {
+                using(image = Image.FromFile(path)) {
+
+                }
+            } catch(Exception e) {
+                message = e.Message;
+                return;
+            }
+            try {
+                // save image as a thumbnail
+                thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+            } catch(Exception e) {
+                message = e.Message;
+                return;
+            }
+            try {
+                // save the thumbnail in the correct dir in the output dir
+                thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
+            } catch(Exception e) {
+                message = e.Message;
+                return;
+            }
+            message = "Thumb Saved";
+            // release the image from usage
             thumb.Dispose();
+            message = "Thumb finished";
+            try {
+                // save the image in the correct dir in the output dir
+                image.Save(newPath);
+            } catch(Exception e) {
+                message = e.Message;
+                return;
+            }
+            message = "Both Saved";
+            // release the image from usage
+            image.Dispose();
+            message = "All good";
             
             //System.IO.File.Delete(path);
             // save the image in the correct dir in output dir
