@@ -23,27 +23,31 @@ namespace ImageService.Controller.Handlers
         private ILoggingService loggingModal;
         // The Event That Notifies that the Directory is being closed
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
-        private readonly String[] fileTypes = { "*.jpg", "*.png", "*.gif", "*.bmp" };
-        private List<FileSystemWatcher> watchers;
+        private readonly String[] fileTypes = { ".jpg", ".png", ".gif", ".bmp" };
+        //private List<FileSystemWatcher> watchers;
+        private FileSystemWatcher watcher;
 
         public DirectoyHandler(IImageController controller, ILoggingService service)
         {
             this.imageController = controller;
             this.loggingModal = service;
-            this.watchers = new List<FileSystemWatcher>();
+            //this.watchers = new List<FileSystemWatcher>();
         }
 
         public void StartHandleDirectory(string dirPath)
         {
             this.directoryPath = dirPath;
             // create filesystem watchers for every file
-            for (int i = 0; i < this.fileTypes.Length; i++)
+            /*for (int i = 0; i < this.fileTypes.Length; i++)
             {
                 FileSystemWatcher fw = new FileSystemWatcher(dirPath, this.fileTypes[i]);
                 fw.EnableRaisingEvents = true;
                 fw.Created += new FileSystemEventHandler(this.NewFile);
                 this.watchers.Add(fw);
-            }
+            }*/
+            this.watcher = new FileSystemWatcher(dirPath, "*");
+            this.watcher.EnableRaisingEvents = true;
+            this.watcher.Created += new FileSystemEventHandler(this.NewFile);
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
@@ -88,11 +92,15 @@ namespace ImageService.Controller.Handlers
                     fs.Close();
                 }
             }*/
-
-            String[] args = { e.FullPath, e.Name };
-            CommandRecievedEventArgs temp = new CommandRecievedEventArgs((int)CommandEnum.NewFileCommand,
-                args, this.directoryPath);
-            this.OnCommandRecieved(this, temp);
+            foreach (string extention in this.fileTypes) {
+                if(Path.GetExtension(e.FullPath) == extention) {
+                    String[] args = { e.FullPath, e.Name };
+                    CommandRecievedEventArgs temp = new CommandRecievedEventArgs((int)CommandEnum.NewFileCommand,
+                        args, this.directoryPath);
+                    this.OnCommandRecieved(this, temp);
+                    return;
+                }
+            }
         }
         /// <summary>
         /// the function stops the handling of a directory
@@ -100,7 +108,7 @@ namespace ImageService.Controller.Handlers
         public void StopHandleDirectory()
         {
             DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
-            this.watchers.Clear();
+            //this.watchers.Clear();
             this.DirectoryClose?.Invoke(this, eTemp);
         }
     }

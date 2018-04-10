@@ -42,7 +42,6 @@ namespace ImageService.Modal
         public string AddFile(string path, out bool result)
         {
             if(File.Exists(path)) {
-                
                 string newPath;
                 string thumbNewPath;
 
@@ -51,31 +50,20 @@ namespace ImageService.Modal
 
                 // extracting the name of the image and appending it the new paths
                 newPath = newPath + path.Substring(path.LastIndexOf("\\"));
-                thumbNewPath = thumbNewPath+path.Substring(path.LastIndexOf("\\"));
+                thumbNewPath = thumbNewPath + path.Substring(path.LastIndexOf("\\"));
                 
                 string message;
                 // create and save images in their destenation folders
                 this.SaveImages(path, newPath, thumbNewPath, out message);
 
+                // check if both the image and the thumbnail were created
                 bool image = File.Exists(newPath);
                 bool thumbImage = File.Exists(Path.ChangeExtension(thumbNewPath, "thumb"));
                 result = true;
-                if(image && thumbImage) {
-                    return newPath;
-                } else {
+                if(!image || !thumbImage) {
                     result = false;
-                    /*if(!image && !thumbImage) {
-                        return "Both images werent created";
-                    } else if(!image) {
-                        return "Image wasnt created";
-                    } else {
-                        return "Thumb wasnt created";
-                    }*/
-                    return message;
                 }
-
-
-                // TODO: think if we can send this class the logger to write that a new file was added
+                return message;
             }
             // if file doesn't exist then return the correct message
             result = false;
@@ -114,51 +102,74 @@ namespace ImageService.Modal
         /// <param name= thumbNewPath> the path to the destination folder of the thumbnail we create </param>
         private void SaveImages(string path, string newPath, string thumbNewPath, out string message)
         {
-            Image image, thumb;
             message = "Nothing done yet";
             try {
-                using(image = Image.FromFile(path)) {
-
+                System.Threading.Thread.Sleep(10);
+                int fileCount = 0;
+                // get the files extention
+                string extension = Path.GetExtension(newPath);
+                // get the files path without its extention
+                string temp = newPath.Substring(0, newPath.Length - extension.Length);
+                string final = temp;
+                // check how many instances of the same file exist by the fileCount counter (if the files exists)
+                while (File.Exists(temp + (fileCount > 0 ? "(" + fileCount.ToString() + ")" + extension : extension)))
+                {
+                    fileCount++;
+                    final = temp + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") : "");
                 }
-            } catch(Exception e) {
-                message = e.Message;
-                return;
-            }
-            try {
-                // save image as a thumbnail
+                // the new files path
+                newPath = final + extension;
+
+                message = "Couldnt move image to new location";
+                // move wanted file to its new location
+                File.Move(path, newPath);
+                message = "Couldnt extract thumbnail from image";
+                // extract a thumbnail from the image
+                Image image = Image.FromFile(newPath), 
                 thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
-            } catch(Exception e) {
-                message = e.Message;
-                return;
-            }
-            try {
-                // save the thumbnail in the correct dir in the output dir
+                // change thumb path acoording to the original image
+                thumbNewPath = thumbNewPath.Substring(0, thumbNewPath.Length - extension.Length);
+                thumbNewPath = thumbNewPath + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") + extension : extension);
+                message = "Couldnt save thumbnail";
+                // save the thumbnail image
                 thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
-            } catch(Exception e) {
-                message = e.Message;
-                return;
+                // close connection to thumb image
+                thumb.Dispose();
+                // close connection to image
+                image.Dispose();
+            } catch (Exception e) {
+                // save the error message
+                message = message;
             }
-            message = "Thumb Saved";
-            // release the image from usage
-            thumb.Dispose();
-            message = "Thumb finished";
-            try {
-                // save the image in the correct dir in the output dir
-                image.Save(newPath);
-            } catch(Exception e) {
-                message = e.Message;
-                return;
-            }
-            message = "Both Saved";
-            // release the image from usage
-            image.Dispose();
-            message = "All good";
-            
-            //System.IO.File.Delete(path);
-            // save the image in the correct dir in output dir
-            //System.IO.Directory.Move(path, newPath);
-                
+            // save the new file created as a message
+            message = newPath;       
         }
+
+        // OPTIONAL: for checking if a file is in use
+        /*private bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+            //file is not locked
+            return false;
+        }*/
     }
     #endregion
 }
