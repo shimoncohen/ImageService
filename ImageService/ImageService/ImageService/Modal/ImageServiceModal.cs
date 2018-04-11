@@ -41,12 +41,20 @@ namespace ImageService.Modal
         /// <return> returns the path of the new file if succeeded or and error message if failed </return>
         public string AddFile(string path, out bool result)
         {
+            // check if given file still exists
             if(File.Exists(path)) {
                 string newPath;
                 string thumbNewPath;
 
-                // create all directories needed if they don't already exist
-                this.CreateDirectoryHierarchy(path, out newPath, out thumbNewPath);
+                try
+                {
+                    // create all directories needed if they don't already exist
+                    this.CreateDirectoryHierarchy(path, out newPath, out thumbNewPath);
+                } catch(Exception e)
+                {
+                    result = false;
+                    return "Failed creating directories requierd for new file. Error thrown: " + e.Message;
+                }
 
                 // extracting the name of the image and appending it the new paths
                 newPath = newPath + path.Substring(path.LastIndexOf("\\"));
@@ -76,14 +84,33 @@ namespace ImageService.Modal
         /// <param name= path> the path to the file we want to copy </param>
         private void CreateDirectoryHierarchy(string path, out string newPath, out string thumbNewPath)
         {
-            // create output dir if doesn't exist
-            DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
+            DateTime timeCreated = new DateTime();
+            try
+            {
+                // extract images creation date and time
+                timeCreated = File.GetCreationTime(path);
+            } catch(Exception e)
+            {
+                try {
+                    Directory.CreateDirectory(path + "\\No Date");
+                    Directory.CreateDirectory(path + "\\Thumbnails - No Date");
+                    newPath = this.m_OutputFolder + "\\No Date";
+                    thumbNewPath = this.m_OutputFolder + "\\Thumbnails - No Date";
+                } catch (Exception innerE)
+                {
+                    Exception newException = new Exception("Couldnt create No Date directories. Exception thrown: " 
+                        + innerE.Message);
+                    throw newException;
+                }
+            }
+            int year = timeCreated.Year;
+            int month = timeCreated.Month;
+
+            try {
+                // create output dir if doesn't exist
+                DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
                 // create as a hidden directory
                 dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-                // extract images creation date and time
-                DateTime timeCreated = File.GetCreationTime(path);
-                int year = timeCreated.Year;
-                int month = timeCreated.Month;
 
                 // make new path to output folder
                 newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
@@ -92,6 +119,12 @@ namespace ImageService.Modal
                 // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
                 Directory.CreateDirectory(thumbNewPath);
+            } catch (Exception e) 
+            {
+                Exception newException = new Exception("Couldnt create directories. Exception thrown: "
+                    + e.Message);
+                throw newException;
+            }
         }
 
         /// <summary>
@@ -104,7 +137,7 @@ namespace ImageService.Modal
         {
             message = "Nothing done yet";
             try {
-                System.Threading.Thread.Sleep(10);
+                Thread.Sleep(10);
                 int fileCount = 0;
                 // get the files extention
                 string extension = Path.GetExtension(newPath);
@@ -112,7 +145,8 @@ namespace ImageService.Modal
                 string temp = newPath.Substring(0, newPath.Length - extension.Length);
                 string final = temp;
                 // check how many instances of the same file exist by the fileCount counter (if the files exists)
-                while (File.Exists(temp + (fileCount > 0 ? "(" + fileCount.ToString() + ")" + extension : extension)))
+                while (File.Exists(temp + (fileCount > 0 ? "(" + fileCount.ToString() + ")" 
+                    + extension : extension)))
                 {
                     fileCount++;
                     final = temp + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") : "");
@@ -129,7 +163,8 @@ namespace ImageService.Modal
                 thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
                 // change thumb path acoording to the original image
                 thumbNewPath = thumbNewPath.Substring(0, thumbNewPath.Length - extension.Length);
-                thumbNewPath = thumbNewPath + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") + extension : extension);
+                thumbNewPath = thumbNewPath + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") 
+                    + extension : extension);
                 message = "Couldnt save thumbnail";
                 // save the thumbnail image
                 thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
@@ -138,8 +173,8 @@ namespace ImageService.Modal
                 // close connection to image
                 image.Dispose();
             } catch (Exception e) {
-                // save the error message
-                message = message;
+                // return when the message is the error message
+                return;
             }
             // save the new file created as a message
             message = newPath;       
