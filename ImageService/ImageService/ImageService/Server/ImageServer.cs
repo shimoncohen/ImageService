@@ -19,8 +19,8 @@ namespace ImageService.Server
     public class ImageServer
     {
         #region Members
-        private IImageController m_controller;
-        private ILoggingService m_logging;
+        private IImageController controller;
+        private ILoggingService logging;
         #endregion
 
         #region Properties
@@ -38,8 +38,8 @@ namespace ImageService.Server
         public ImageServer(IImageServiceModal model, string[] handlers, ILoggingService logger)
         {
             // create controller
-            this.m_controller = new ImageController(model);
-            this.m_logging = logger;
+            this.controller = new ImageController(model);
+            this.logging = logger;
             // create handler for each given directory
             foreach (string directory in handlers)
             {
@@ -54,7 +54,7 @@ namespace ImageService.Server
         private void CreateHandler(string directory)
         {
             // create handler for given directory
-            IDirectoryHandler directoryHandler = new DirectoyHandler(this.m_controller, this.m_logging);
+            IDirectoryHandler directoryHandler = new DirectoyHandler(this.controller, this.logging);
             directoryHandler.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(CloseHandler);
             this.CommandRecieved += directoryHandler.OnCommandRecieved;
             directoryHandler.StartHandleDirectory(directory);
@@ -69,7 +69,7 @@ namespace ImageService.Server
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
             this.CommandRecieved -= handlerToClose.OnCommandRecieved;
-            this.m_logging.Log("closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
+            this.logging.Log("closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
             //handlerToClose.StopHandleDirectory();
             // delete handler
         }
@@ -82,7 +82,7 @@ namespace ImageService.Server
             string[] args = { };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
             this.CommandRecieved?.Invoke(this, e);
-            this.m_logging.Log("Server closing", MessageTypeEnum.INFO);
+            this.logging.Log("Server closing", MessageTypeEnum.INFO);
         }
     }
 }

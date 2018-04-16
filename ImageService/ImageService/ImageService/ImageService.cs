@@ -59,8 +59,6 @@ namespace ImageService
             InitializeComponent();
             // service info class (singelton)
             ServiceInfo info = ServiceInfo.CreateServiceInfo();
-            // create the service model
-            IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             
             string eventSourceName = info.SourceName;
             string logName = info.LogName;
@@ -75,10 +73,6 @@ namespace ImageService
             eventLog1.Log = logName;
             // create logger
             this.logger = new LoggingService();
-
-            // create the services server
-            ImageServer server = new ImageServer(model, info.Handlers, this.logger);
-            this.server = server;
         }
 
         /// <summary>
@@ -86,7 +80,15 @@ namespace ImageService
         /// </summary>
         protected override void OnStart(string[] args)
         {
-            this.logger.MessageRecieved += this.ImageService_Message;
+            // service info class (singelton)
+            ServiceInfo info = ServiceInfo.CreateServiceInfo();
+            // create the service model
+            IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
+            // create the services server
+            ImageServer server = new ImageServer(model, info.Handlers, this.logger);
+            this.server = server;
+
+            this.logger.MessageRecieved += this.ImageServiceMessage;
 
             // Update the service state to Start Pending.
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -117,7 +119,7 @@ namespace ImageService
         protected override void OnStop()
         {
             this.server.CloseServer();
-            this.logger.MessageRecieved -= this.ImageService_Message;
+            this.logger.MessageRecieved -= this.ImageServiceMessage;
             eventLog1.WriteEntry("In onStop.");
         }
 
@@ -136,7 +138,7 @@ namespace ImageService
         /// <param>
         /// the sender object, and the event that occured
         /// </param>
-        private void ImageService_Message(object sender, MessageRecievedEventArgs e)
+        private void ImageServiceMessage(object sender, MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message);
         }

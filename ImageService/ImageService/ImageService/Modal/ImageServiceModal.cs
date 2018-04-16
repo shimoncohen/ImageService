@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,10 +19,14 @@ namespace ImageService.Modal
     {
         #region Members
         // The Output Folder
-        private string m_OutputFolder;
+        private string OutputFolder;
         // The Size Of The Thumbnail Size
-        private int m_thumbnailSize;
+        private int thumbnailSize;
+        //we init this once so that if the function is repeatedly called
+        //it isn't stressing the garbage man
+        private static Regex r = new Regex(":");
 
+        
         /// <summary>
         /// constructor
         /// </summary>
@@ -29,8 +34,8 @@ namespace ImageService.Modal
         /// <param name= size> the size of the thumbnail we create </param>
         public ImageServiceModal(string path, int size)
         {
-            this.m_OutputFolder = path;
-            this.m_thumbnailSize = size;
+            this.OutputFolder = path;
+            this.thumbnailSize = size;
         }
 
          /// <summary>
@@ -88,19 +93,25 @@ namespace ImageService.Modal
             try
             {
                 // extract images creation date and time
-                timeCreated = File.GetCreationTime(path);
+                //timeCreated = File.GetCreationTime(path);
+                timeCreated = this.GetDateTakenFromImage(path);
             } catch(Exception e)
             {
                 try {
-                    Directory.CreateDirectory(path + "\\No Date");
-                    Directory.CreateDirectory(path + "\\Thumbnails - No Date");
-                    newPath = this.m_OutputFolder + "\\No Date";
-                    thumbNewPath = this.m_OutputFolder + "\\Thumbnails - No Date";
-                } catch (Exception innerE)
-                {
-                    Exception newException = new Exception("Couldnt create No Date directories. Exception thrown: " 
-                        + innerE.Message);
-                    throw newException;
+                    timeCreated = this.GetDateCreatedFromImage(path);
+                } catch(Exception e1) {
+                    try {
+                        // create directory for images without creation date.
+                        Directory.CreateDirectory(path + "\\No Date");
+                        Directory.CreateDirectory(path + "\\Thumbnails - No Date");
+                        newPath = this.OutputFolder + "\\No Date";
+                        thumbNewPath = this.OutputFolder + "\\Thumbnails - No Date";
+                    } catch (Exception innerE)
+                    {
+                        Exception newException = new Exception("Couldnt create No Date directories. Exception thrown: " 
+                            + innerE.Message);
+                        throw newException;
+                    }
                 }
             }
             int year = timeCreated.Year;
@@ -108,14 +119,14 @@ namespace ImageService.Modal
 
             try {
                 // create output dir if doesn't exist
-                DirectoryInfo dirInfo = Directory.CreateDirectory(this.m_OutputFolder);
+                DirectoryInfo dirInfo = Directory.CreateDirectory(this.OutputFolder);
                 // create as a hidden directory
                 dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
 
                 // make new path to output folder
-                newPath = this.m_OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
+                newPath = this.OutputFolder+"\\"+year.ToString()+"\\"+month.ToString();
                 // make new path to thumbnail folder
-                thumbNewPath = this.m_OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
+                thumbNewPath = this.OutputFolder+"\\Thumbnails"+"\\"+year.ToString()+"\\"+month.ToString();
                 // create directories for images and thumbnails
                 Directory.CreateDirectory(newPath);
                 Directory.CreateDirectory(thumbNewPath);
@@ -160,14 +171,14 @@ namespace ImageService.Modal
                 message = "Couldnt extract thumbnail from image";
                 // extract a thumbnail from the image
                 Image image = Image.FromFile(newPath), 
-                thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+                thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
                 // change thumb path acoording to the original image
                 thumbNewPath = thumbNewPath.Substring(0, thumbNewPath.Length - extension.Length);
                 thumbNewPath = thumbNewPath + (fileCount > 0 ? ("(" + fileCount.ToString() + ")") 
                     + extension : extension);
                 message = "Couldnt save thumbnail";
                 // save the thumbnail image
-                thumb.Save(Path.ChangeExtension(thumbNewPath, "thumb"));
+                thumb.Save(Path.ChangeExtension(thumbNewPath, "jpg"));
                 // close connection to thumb image
                 thumb.Dispose();
                 // close connection to image
@@ -178,6 +189,30 @@ namespace ImageService.Modal
             }
             // save the new file created as a message
             message = newPath;       
+        }
+
+        //retrieves the datetime WITHOUT loading the whole image
+        private DateTime GetDateTakenFromImage(string path)
+        {
+            using (Image myImage = Image.FromFile(path))
+            {
+                PropertyItem propItem = myImage.GetPropertyItem(36867);
+                string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                myImage.Dispose();
+                return DateTime.Parse(dateTaken);
+            }
+        }
+
+        // <summary>
+        // the function gets the creation date of an image.
+        // </summary>
+        // <param name= path> the path of the file </param>
+        // <return> the creation date of the image as an object of DateTime </return>
+        private DateTime GetDateCreatedFromImage(string path)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan localOffset = now - now.ToUniversalTime();
+            return File.GetLastWriteTimeUtc(path) + localOffset;
         }
 
         // OPTIONAL: for checking if a file is in use

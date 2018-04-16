@@ -17,7 +17,7 @@ namespace ImageService.Controller
     public class ImageController : IImageController
     {
         // The Modal Object
-        private IImageServiceModal m_modal;
+        private IImageServiceModal modal;
         // a dictionary of commands to execute
         private Dictionary<int, ICommand> commands;
 
@@ -25,14 +25,14 @@ namespace ImageService.Controller
         /// constructor
         /// </summary>
         /// <param name= modal> the controller receives the modal we created </param>
-        public ImageController(IImageServiceModal modal)
+        public ImageController(IImageServiceModal mod)
         {
-            m_modal = modal;                    // Storing the Modal Of The System
+            modal = mod;                    // Storing the Modal Of The System
             // create the commands dictionary
             commands = new Dictionary<int, ICommand>()
             {
                 // add commands to the dictionary by thier enum value
-                {(int)CommandEnum.NewFileCommand, new NewFileCommand(modal)}
+                {(int)CommandEnum.NewFileCommand, new NewFileCommand(mod)}
             };
         }
 

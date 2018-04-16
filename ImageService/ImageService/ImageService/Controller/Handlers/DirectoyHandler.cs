@@ -31,20 +31,11 @@ namespace ImageService.Controller.Handlers
         {
             this.imageController = controller;
             this.loggingModal = service;
-            //this.watchers = new List<FileSystemWatcher>();
         }
 
         public void StartHandleDirectory(string dirPath)
         {
             this.directoryPath = dirPath;
-            // create filesystem watchers for every file
-            /*for (int i = 0; i < this.fileTypes.Length; i++)
-            {
-                FileSystemWatcher fw = new FileSystemWatcher(dirPath, this.fileTypes[i]);
-                fw.EnableRaisingEvents = true;
-                fw.Created += new FileSystemEventHandler(this.NewFile);
-                this.watchers.Add(fw);
-            }*/
             this.watcher = new FileSystemWatcher(dirPath, "*");
             this.watcher.EnableRaisingEvents = true;
             this.watcher.Created += new FileSystemEventHandler(this.NewFile);
@@ -82,16 +73,6 @@ namespace ImageService.Controller.Handlers
         /// <param name= e> the event that called the function (holds information of the file) </param>
         private void NewFile(object sender, FileSystemEventArgs e)
         {
-            /*FileStream fs = null;
-            try {
-                fs = File.Open(e.FullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            } catch(Exception exception) {
-                return;
-            } finally {
-                if(fs != null) {
-                    fs.Close();
-                }
-            }*/
             foreach (string extention in this.fileTypes) {
                 if(Path.GetExtension(e.FullPath) == extention) {
                     String[] args = { e.FullPath, e.Name };
@@ -108,7 +89,6 @@ namespace ImageService.Controller.Handlers
         public void StopHandleDirectory()
         {
             DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
-            //this.watchers.Clear();
             this.DirectoryClose?.Invoke(this, eTemp);
         }
     }
