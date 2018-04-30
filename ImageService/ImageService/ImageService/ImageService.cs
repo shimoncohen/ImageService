@@ -87,7 +87,6 @@ namespace ImageService
             // create the services server
             ImageServer server = new ImageServer(model, info.Handlers, this.logger);
             this.server = server;
-
             this.logger.MessageRecieved += this.ImageServiceMessage;
 
             // Update the service state to Start Pending.

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 using ImageService.Logging.Modal;
 
 namespace ImageService.Server
@@ -21,6 +23,7 @@ namespace ImageService.Server
         #region Members
         private IImageController controller;
         private ILoggingService logging;
+        private const int servetPort = 80;
         #endregion
 
         #region Properties
@@ -45,6 +48,34 @@ namespace ImageService.Server
             {
                 CreateHandler(directory);
             }
+
+            Task<> t = new Task<> (() => {
+                return Tuple.Create(connection());
+            });
+            t.Start();
+        }
+
+        private void connection() {
+            Byte[] buffer = new Byte[10];
+            int command;
+            while(true) {
+                TcpListener tcp = null;
+                try {
+                    TcpClient client = tcp.AcceptTcpClient();
+                    Task<> t = new Task<> (() => {
+                        return Tuple.Create(communicate());
+                    });
+                    t.Start();
+                } catch(Exception e) {
+
+                }
+            }
+        }
+
+        private void communicate() {
+            NetworkStream stream = client.GetStream();
+            stream.Read(buffer, 0, buffer.Length);
+            command = BitConverter.ToInt32(buffer, 0);
         }
  
         /// <summary>
