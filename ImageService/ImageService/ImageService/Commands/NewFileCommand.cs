@@ -1,12 +1,4 @@
-﻿using ImageService.Infrastructure;
-using ImageService.Modal;
-using ImageService.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImageService.Logging.Modal;
+﻿using ImageService.Modal;
 
 namespace ImageService.Commands
 {

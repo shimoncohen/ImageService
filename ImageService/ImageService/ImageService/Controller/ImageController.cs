@@ -32,7 +32,10 @@ namespace ImageService.Controller
             commands = new Dictionary<int, ICommand>()
             {
                 // add commands to the dictionary by thier enum value
-                {(int)CommandEnum.NewFileCommand, new NewFileCommand(mod)}
+                {(int)CommandEnum.NewFileCommand, new NewFileCommand(mod)},
+                {(int)CommandEnum.GetConfigCommand, new GetConfigCommand()},
+                {(int)CommandEnum.LogCommand, new LogCommand()},
+                {(int)CommandEnum.CloseCommand, new CloseCommand()}
             };
         }
 

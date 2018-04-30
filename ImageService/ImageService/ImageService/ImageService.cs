@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
@@ -20,7 +14,7 @@ namespace ImageService
     /// </summary>
     public partial class ImageService : ServiceBase
     {
-        private System.Diagnostics.EventLog eventLog1;
+        private EventLog eventLog1;
         private int eventId = 1;
         private ILoggingService logger;
         private ImageServer server;
@@ -63,11 +57,11 @@ namespace ImageService
             string eventSourceName = info.SourceName;
             string logName = info.LogName;
 
-            eventLog1 = new System.Diagnostics.EventLog();
+            eventLog1 = new EventLog();
             // create event logs source if dosent exist yet
-            if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
+            if (!EventLog.SourceExists(eventSourceName))
             {
-                System.Diagnostics.EventLog.CreateEventSource(eventSourceName, logName);
+                EventLog.CreateEventSource(eventSourceName, logName);
             }
             eventLog1.Source = eventSourceName;
             eventLog1.Log = logName;
@@ -140,6 +134,10 @@ namespace ImageService
         private void ImageServiceMessage(object sender, MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message);
+            EventLogEntryCollection logs = eventLog1.Entries;
+            foreach (EventLogEntry entry in logs) {
+                //
+            }
         }
     }
 }

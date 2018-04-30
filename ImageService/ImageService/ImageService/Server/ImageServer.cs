@@ -1,17 +1,15 @@
-﻿using ImageService.Commands;
-using ImageService.Controller;
+﻿using ImageService.Controller;
 using ImageService.Controller.Handlers;
 using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Modal;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using ImageService.Logging.Modal;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace ImageService.Server
 {
@@ -23,7 +21,8 @@ namespace ImageService.Server
         #region Members
         private IImageController controller;
         private ILoggingService logging;
-        private const int servetPort = 80;
+        private const int servetPort = 8000;
+        private TcpListener listener;
         #endregion
 
         #region Properties
@@ -48,34 +47,69 @@ namespace ImageService.Server
             {
                 CreateHandler(directory);
             }
-
-            Task<> t = new Task<> (() => {
-                return Tuple.Create(connection());
-            });
-            t.Start();
         }
 
-        private void connection() {
-            Byte[] buffer = new Byte[10];
-            int command;
-            while(true) {
-                TcpListener tcp = null;
-                try {
-                    TcpClient client = tcp.AcceptTcpClient();
-                    Task<> t = new Task<> (() => {
-                        return Tuple.Create(communicate());
-                    });
-                    t.Start();
-                } catch(Exception e) {
-
+        private void Start()
+        {
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), servetPort);
+            listener = new TcpListener(ep);
+            listener.Start();
+            Task task = new Task(() => {
+                while(true) {
+                    try {
+                        TcpClient client = listener.AcceptTcpClient();
+                        communicate(client);
+                    } catch(Exception e) {
+                        break;
+                    }
                 }
-            }
+            });
+            task.Start();
         }
 
-        private void communicate() {
-            NetworkStream stream = client.GetStream();
-            stream.Read(buffer, 0, buffer.Length);
-            command = BitConverter.ToInt32(buffer, 0);
+        private void communicate(TcpClient client)
+        {
+            new Task(() =>
+            {
+                while (true)
+                {
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        string commandLine = reader.ReadLine();
+                        bool result;
+                        CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
+                        if (args.RequestDirPath == "Empty")
+                        {
+                            string answer = controller.ExecuteCommand(args.CommandID, args.Args, out result);
+                            if (result)
+                            {
+                                writer.Write(answer);
+                                logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                    args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
+                            }
+                            else
+                            {
+                                logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
+                            }
+                        }
+                        else
+                        {
+                            this.CommandRecieved?.Invoke(this, args);
+                        }
+                    }
+                }
+            }).Start();
+            // TODO:
+            // how do i know where to send the command?
+            // how do i know what the command is? i need to send it straight to the commands...
+            //CommandRecievedEventArgs e = new CommandRecievedEventArgs(command, args, "*");
+            //this.CommandRecieved?.Invoke(this, e);
+        }
+
+        public void Stop() {
+            listener.Stop();
         }
  
         /// <summary>
@@ -112,6 +146,7 @@ namespace ImageService.Server
         {
             string[] args = { };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
+            Stop();
             this.CommandRecieved?.Invoke(this, e);
             this.logging.Log("Server closing", MessageTypeEnum.INFO);
         }
