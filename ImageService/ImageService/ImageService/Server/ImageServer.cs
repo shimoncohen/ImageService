@@ -1,6 +1,6 @@
 ﻿using ImageService.Controller;
 using ImageService.Controller.Handlers;
-using ImageService.Infrastructure.Enums;
+using Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Modal;
 using System;
@@ -10,6 +10,8 @@ using System.Net.Sockets;
 using ImageService.Logging.Modal;
 using System.IO;
 using Newtonsoft.Json;
+using Infrastructure.Modal.Event;
+using System.Collections.Generic;
 
 namespace ImageService.Server
 {
@@ -21,8 +23,9 @@ namespace ImageService.Server
         #region Members
         private IImageController controller;
         private ILoggingService logging;
-        private const int servetPort = 8000;
+        private const int serverPort = 8000;
         private TcpListener listener;
+        private List<TcpClient> clients;
         #endregion
 
         #region Properties
@@ -51,20 +54,20 @@ namespace ImageService.Server
 
         private void Start()
         {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), servetPort);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
             listener = new TcpListener(ep);
             listener.Start();
-            Task task = new Task(() => {
+            new Task(() => {
                 while(true) {
                     try {
                         TcpClient client = listener.AcceptTcpClient();
+                        clients.Add(client);
                         communicate(client);
                     } catch(Exception e) {
                         break;
                     }
                 }
-            });
-            task.Start();
+            }).Start();
         }
 
         private void communicate(TcpClient client)
@@ -101,11 +104,26 @@ namespace ImageService.Server
                     }
                 }
             }).Start();
-            // TODO:
-            // how do i know where to send the command?
-            // how do i know what the command is? i need to send it straight to the commands...
-            //CommandRecievedEventArgs e = new CommandRecievedEventArgs(command, args, "*");
-            //this.CommandRecieved?.Invoke(this, e);
+        }
+
+        public void SendLog(object sender, MessageRecievedEventArgs e)
+        {
+            new Task(() =>
+            {
+                foreach(TcpClient client in clients)
+                {
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        string[] args = new string[2];
+                        args[0] = e.Status.ToString();
+                        args[1] = e.Message;
+                        InfoEventArgs info = new InfoEventArgs((int)InfoEnums.LogInfo, args);
+                        string log = JsonConvert.SerializeObject(info);
+                        writer.Write(log);
+                    }
+                }
+            }).Start();
         }
 
         public void Stop() {

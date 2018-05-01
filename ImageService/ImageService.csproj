@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageService\ImageService.Logging\Modal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageService\ImageService\Commands\CloseCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\GetConfigCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\LogCommand.cs" />
@@ -62,7 +63,6 @@
     <Compile Include="ImageService\ImageService\ImageService.Designer.cs">
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageService\ImageService.Infrastructure\Enums\CommandEnum.cs" />
     <Compile Include="ImageService\ImageService.Logging\ILoggingService.cs" />
     <Compile Include="ImageService\ImageService.Logging\Modal\MessageRecievedEventArgs.cs" />
     <Compile Include="ImageService\ImageService.Logging\Modal\MessageTypeEnum.cs" />
@@ -72,8 +72,6 @@
     <Compile Include="ImageService\ImageService\Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageService\ImageService\Controller\IImageController.cs" />
     <Compile Include="ImageService\ImageService\Controller\ImageController.cs" />
-    <Compile Include="ImageService\ImageService\Modal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="ImageService\ImageService\Modal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Server\ImageServer.cs" />
@@ -99,6 +97,12 @@
     <EmbeddedResource Include="ImageService\ImageService\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{c02c5d0b-7f1c-4817-817e-1438fcceaafd}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
