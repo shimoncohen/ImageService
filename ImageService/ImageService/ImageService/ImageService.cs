@@ -81,6 +81,7 @@ namespace ImageService
             // create the services server
             ImageServer server = new ImageServer(model, info.Handlers, this.logger);
             this.server = server;
+            this.logger.MessageRecieved += server.SendLog;
             this.logger.MessageRecieved += this.ImageServiceMessage;
 
             // Update the service state to Start Pending.
@@ -100,11 +101,6 @@ namespace ImageService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
-
-        /*protected override void OnContinue()
-        {
-            eventLog1.WriteEntry("In OnContinue.");
-        }*/
 
         /// <summary>
         /// the function that runs when the service stops
@@ -134,10 +130,6 @@ namespace ImageService
         private void ImageServiceMessage(object sender, MessageRecievedEventArgs e)
         {
             this.eventLog1.WriteEntry(e.Message);
-            EventLogEntryCollection logs = eventLog1.Entries;
-            foreach (EventLogEntry entry in logs) {
-                //
-            }
         }
     }
 }
