@@ -39,3 +39,6 @@ C:\Users\Larry\Source\Repos\ImageService\ImageService\bin\Debug\ImageService.pdb
 C:\Users\Larry\Source\Repos\ImageService\ImageService\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Larry\Source\Repos\ImageService\ImageService\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Larry\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csproj.CopyComplete
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\bin\Debug\Newtonsoft.Json.dll
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\bin\Debug\Newtonsoft.Json.xml
+C:\Users\NadavSpitzer\Source\Repos\ImageService\ImageService\obj\Debug\ImageService.csproj.CopyComplete
