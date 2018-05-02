@@ -72,6 +72,7 @@
     <Compile Include="ImageService\ImageService\Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageService\ImageService\Controller\IImageController.cs" />
     <Compile Include="ImageService\ImageService\Controller\ImageController.cs" />
+    <Compile Include="ImageService\ImageService\LogHistory.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Server\ImageServer.cs" />

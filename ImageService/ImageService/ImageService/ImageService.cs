@@ -77,14 +77,17 @@ namespace ImageService
         {
             // service info class (singelton)
             ServiceInfo info = ServiceInfo.CreateServiceInfo();
+            // log history class (singelton)
+            LogHistory history = LogHistory.CreateLogHistory();
             // create the service model
             IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             // create the services server
             ImageController controller = new ImageController(model);
-            ImageServer server = new ImageServer(controller, info.Handlers, this.logger);
+            ImageServer server = new ImageServer(controller, info.Handlers.ToArray(), this.logger);
             this.server = server;
             this.logger.MessageRecieved += server.SendLog;
             this.logger.MessageRecieved += this.ImageServiceMessage;
+            this.logger.MessageRecieved += history.UpdateLog;
 
             // Update the service state to Start Pending.
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -109,8 +112,12 @@ namespace ImageService
         /// </summary>
         protected override void OnStop()
         {
+            LogHistory logHistory = LogHistory.CreateLogHistory();
             this.server.CloseServer();
             this.logger.MessageRecieved -= this.ImageServiceMessage;
+            this.logger.MessageRecieved -= server.SendLog;
+            this.logger.MessageRecieved -= logHistory.UpdateLog;
+            logHistory.ResetLog();
             eventLog1.WriteEntry("In onStop.");
         }
 

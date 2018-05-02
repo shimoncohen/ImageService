@@ -26,10 +26,8 @@ namespace Infrastructure.Enums
             {
                 case (int)InfoEnums.AppConfigInfo:
                     return CommandEnum.GetConfigCommand;
-                    break;
                 case (int)InfoEnums.LogHistoryInfo:
                     return CommandEnum.LogCommand;
-                    break;
             }
             return CommandEnum.NotCommand;
         }

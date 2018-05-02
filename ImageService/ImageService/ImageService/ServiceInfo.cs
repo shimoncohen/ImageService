@@ -1,8 +1,5 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 
 namespace ImageService
@@ -13,16 +10,15 @@ namespace ImageService
      /// </summary>
     class ServiceInfo
     {
-        //private readonly string[] handlers;
+        //private readonly List<string> handlers;
+        public List<string> Handlers { get; }
         //private readonly string outputDir;
-        //private readonly string sourceName;
-        //private readonly string logName;
-        //private readonly int thumbnailSize;
-
-        public string[] Handlers { get; }
         public string OutputDir { get; }
+        //private readonly string sourceName;
         public string SourceName { get; }
+        //private readonly string logName;
         public string LogName { get; }
+        //private readonly int thumbnailSize;
         public int ThumbnailSize { get; }
 
         private static ServiceInfo serviceInfo;
@@ -35,7 +31,11 @@ namespace ImageService
             int result;
             // extract info from app config file
             string handlerName = ConfigurationManager.AppSettings["Handler"];
-            this.Handlers = handlerName.Split(';');
+            // add all of the handler paths to the handler list
+            foreach (string handler in handlerName.Split(';'))
+            {
+                Handlers.Add(handler);
+            }
             this.OutputDir = ConfigurationManager.AppSettings["OutputDir"];
             this.LogName = ConfigurationManager.AppSettings["LogName"];
             this.SourceName = ConfigurationManager.AppSettings["SourceName"];
@@ -60,6 +60,16 @@ namespace ImageService
             }
             // otherwise create new instance
             return serviceInfo;
+        }
+
+        /// <summary>
+        /// request a new instance of the class.
+        /// </summary>
+        /// <param name= path> the path of the handler to remove. </param>
+        /// <return> removes a handler from the handler list </return>
+        public void RemoveHandler(string path)
+        {
+            Handlers.Remove(path);
         }
     }
 }

@@ -85,12 +85,9 @@ namespace ImageService.Server
                         CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
                         if (args.RequestDirPath == "Empty")
                         {
-                            string temp = controller.ExecuteCommand(args.CommandID, args.Args, out result);
+                            string send = controller.ExecuteCommand(args.CommandID, args.Args, out result);
                             if (result)
                             {
-                                string[] answer = temp.Split(',');
-                                InfoEventArgs info = new InfoEventArgs((int)EnumTranslator.CommandToInfo(args.CommandID), answer);
-                                string send = JsonConvert.SerializeObject(info);
                                 writer.Write(send);
                                 logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                     args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
@@ -167,7 +164,12 @@ namespace ImageService.Server
             // delete handler
 
             string[] args = { e.DirectoryPath };
+            // create info args
             InfoEventArgs info = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
+            // remove the handler from the app config handler list
+            ServiceInfo serviceInfo = ServiceInfo.CreateServiceInfo();
+            serviceInfo.RemoveHandler(e.DirectoryPath);
+            // notify all of the clients that the handler was closed
             NotifyClients(info);
         }
 

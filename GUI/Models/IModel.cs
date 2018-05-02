@@ -17,7 +17,6 @@ namespace GUI.Models
 
         void start();
         void StartSenderChannel(object sender, CommandRecievedEventArgs e);
-        void StartRecieverChannel();
         void stop();
     }
 }

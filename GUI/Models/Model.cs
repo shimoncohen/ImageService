@@ -9,13 +9,15 @@ using Newtonsoft.Json;
 
 namespace GUI.Models
 {
-    class Model : IModel
+    public class Model : IModel
     {
-        public event EventHandler<InfoEventArgs> InfoRecieved;
+        private static Model model;
         private const int serverPort = 8000;
         private string appConfig;
         private string logs;
         private TcpClient client;
+
+        public event EventHandler<InfoEventArgs> InfoRecieved;
 
         public string AppConfig {
             get { return appConfig; }
@@ -28,9 +30,20 @@ namespace GUI.Models
             set { }
         }
 
-        public Model()
+        private Model()
         {
+            
+        }
 
+        public static Model CreateConnectionChannel()
+        {
+            // if not already created
+            if (model == null)
+            {
+                model = new Model();
+            }
+            // otherwise create new instance
+            return model;
         }
 
         public void start()
@@ -57,7 +70,7 @@ namespace GUI.Models
             }).Start();
         }
 
-        public void StartRecieverChannel()
+        private void StartRecieverChannel()
         {
             new Task(() =>
             {
