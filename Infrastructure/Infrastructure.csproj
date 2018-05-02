@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\CommandEnum.cs" />
+    <Compile Include="Enums\EnumTranslator.cs" />
     <Compile Include="Enums\InfoEnums.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\InfoEventArgs.cs" />

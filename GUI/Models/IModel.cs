@@ -16,7 +16,7 @@ namespace GUI.Models
         string Logs { get; }
 
         void start();
-        void StartSenderChannel();
+        void StartSenderChannel(object sender, CommandRecievedEventArgs e);
         void StartRecieverChannel();
         void stop();
     }
