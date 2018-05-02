@@ -11,7 +11,10 @@ namespace Infrastructure.Enums
     /// </summary>
     public enum InfoEnums : int
     {
-        LogInfo,
-        CloseHandlerInfo
+        NotInfo = 0,
+        LogInfo = 1,
+        LogHistoryInfo = 2,
+        AppConfigInfo = 3,
+        CloseHandlerInfo = 4
     }
 }

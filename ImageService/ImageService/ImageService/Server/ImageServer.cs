@@ -40,10 +40,10 @@ namespace ImageService.Server
         /// <param name= model> the image modal we have, to create the proper controller. </param>
         /// <param name= handler> the paths to all the directories we want to monitor </param>
         /// <param name= logger> a logger to follow action and operations that occured </param>
-        public ImageServer(IImageServiceModal model, string[] handlers, ILoggingService logger)
+        public ImageServer(ImageController imageController, string[] handlers, ILoggingService logger)
         {
             // create controller
-            this.controller = new ImageController(model);
+            this.controller = imageController;
             this.logging = logger;
             // create handler for each given directory
             foreach (string directory in handlers)
@@ -85,10 +85,13 @@ namespace ImageService.Server
                         CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
                         if (args.RequestDirPath == "Empty")
                         {
-                            string answer = controller.ExecuteCommand(args.CommandID, args.Args, out result);
+                            string temp = controller.ExecuteCommand(args.CommandID, args.Args, out result);
                             if (result)
                             {
-                                writer.Write(answer);
+                                string[] answer = temp.Split(',');
+                                InfoEventArgs info = new InfoEventArgs((int)EnumTranslator.CommandToInfo(args.CommandID), answer);
+                                string send = JsonConvert.SerializeObject(info);
+                                writer.Write(send);
                                 logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                     args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
                             }
@@ -108,19 +111,24 @@ namespace ImageService.Server
 
         public void SendLog(object sender, MessageRecievedEventArgs e)
         {
+            string[] args = new string[2];
+            args[0] = e.Status.ToString();
+            args[1] = e.Message;
+            InfoEventArgs info = new InfoEventArgs((int)InfoEnums.LogInfo, args);
+            NotifyClients(info);
+        }
+
+        private void NotifyClients(InfoEventArgs e)
+        {
             new Task(() =>
             {
-                foreach(TcpClient client in clients)
+                string info = JsonConvert.SerializeObject(e);
+                foreach (TcpClient client in clients)
                 {
                     using (NetworkStream stream = client.GetStream())
                     using (StreamWriter writer = new StreamWriter(stream))
                     {
-                        string[] args = new string[2];
-                        args[0] = e.Status.ToString();
-                        args[1] = e.Message;
-                        InfoEventArgs info = new InfoEventArgs((int)InfoEnums.LogInfo, args);
-                        string log = JsonConvert.SerializeObject(info);
-                        writer.Write(log);
+                        writer.Write(info);
                     }
                 }
             }).Start();
@@ -152,9 +160,15 @@ namespace ImageService.Server
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
             this.CommandRecieved -= handlerToClose.OnCommandRecieved;
-            this.logging.Log("closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
-            //handlerToClose.StopHandleDirectory();
+            this.logging.Log("Closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
+            
+            //TODO: check if handler is deleted
+            //handlerToClose.DirectoryClose -= CloseHandler;
             // delete handler
+
+            string[] args = { e.DirectoryPath };
+            InfoEventArgs info = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
+            NotifyClients(info);
         }
 
         /// <summary>

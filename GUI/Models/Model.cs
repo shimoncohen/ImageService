@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Sockets;
 using Infrastructure.Modal.Event;
 using Infrastructure.Enums;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace GUI.Models
 {
@@ -13,7 +15,7 @@ namespace GUI.Models
         private const int serverPort = 8000;
         private string appConfig;
         private string logs;
-        private Socket socket;
+        private TcpClient client;
 
         public string AppConfig {
             get { return appConfig; }
@@ -33,41 +35,48 @@ namespace GUI.Models
 
         public void start()
         {
-            IPHostEntry iphostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAdress = iphostInfo.AddressList[0];
-            IPEndPoint ipEndpoint = new IPEndPoint(ipAdress, 8080);
-
-            socket = new Socket(ipAdress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            new Task(() =>
-            {
-                StartRecieverChannel();
-            }).Start();
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
+            client = new TcpClient();
+            client.Connect(ep);
+            StartRecieverChannel();
         }
 
         public void StartSenderChannel(object sender, CommandRecievedEventArgs e)
         {
-
+            new Task(() =>
+            {
+                while (client.Connected)
+                {
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        string args = JsonConvert.SerializeObject(e);
+                        writer.Write(args);
+                    }
+                }
+            }).Start();
         }
 
         public void StartRecieverChannel()
         {
             new Task(() =>
             {
-                //TODO: need to read stream of info from server and send arguments to the event
-                string[] args = { };
-                InfoEventArgs e = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
-                InfoRecieved?.Invoke(this, e);
+                while (client.Connected)
+                {
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        string args = reader.ReadLine();
+                        InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
+                        InfoRecieved?.Invoke(this, e);
+                    }
+                }
             }).Start();
-        }
-
-        public void StartSenderChannel()
-        {
-            throw new NotImplementedException();
         }
 
         public void stop()
         {
-            socket.Close();
+            client.Close();
         }
     }
 }

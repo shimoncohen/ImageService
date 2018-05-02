@@ -6,6 +6,7 @@ using ImageService.Logging;
 using ImageService.Logging.Modal;
 using ImageService.Server;
 using ImageService.Modal;
+using ImageService.Controller;
 
 namespace ImageService
 {
@@ -79,7 +80,8 @@ namespace ImageService
             // create the service model
             IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             // create the services server
-            ImageServer server = new ImageServer(model, info.Handlers, this.logger);
+            ImageController controller = new ImageController(model);
+            ImageServer server = new ImageServer(controller, info.Handlers, this.logger);
             this.server = server;
             this.logger.MessageRecieved += server.SendLog;
             this.logger.MessageRecieved += this.ImageServiceMessage;
@@ -129,7 +131,18 @@ namespace ImageService
         /// </param>
         private void ImageServiceMessage(object sender, MessageRecievedEventArgs e)
         {
-            this.eventLog1.WriteEntry(e.Message);
+            switch(e.Status)
+            {
+                case MessageTypeEnum.FAIL:
+                    this.eventLog1.WriteEntry(e.Message, EventLogEntryType.Error);
+                    break;
+                case MessageTypeEnum.INFO:
+                    this.eventLog1.WriteEntry(e.Message, EventLogEntryType.Information);
+                    break;
+                case MessageTypeEnum.WARNING:
+                    this.eventLog1.WriteEntry(e.Message, EventLogEntryType.Warning);
+                    break;
+            }
         }
     }
 }

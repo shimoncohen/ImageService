@@ -11,9 +11,10 @@ namespace Infrastructure.Enums
     /// </summary>
     public enum CommandEnum : int
     {
-        NewFileCommand,
-        GetConfigCommand,
-        LogCommand,
-        CloseCommand
+        NotCommand = 0,
+        NewFileCommand = 1,
+        GetConfigCommand = 2,
+        LogCommand = 3,
+        CloseCommand = 4
     }
 }
