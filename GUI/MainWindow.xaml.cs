@@ -22,16 +22,9 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SettingsViewModel SettingsViewModel;
-        private LogsViewModel LogsViewModel;
-
         public MainWindow()
         {
             InitializeComponent();
-            this.SettingsViewModel = new SettingsViewModel();
-            this.LogsViewModel = new LogsViewModel();
-            this.DataContext = SettingsViewModel;
-            this.DataContext = LogsViewModel;
         }
     }
 }
