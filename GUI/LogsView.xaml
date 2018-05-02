@@ -18,13 +18,6 @@
             <Border BorderBrush="AliceBlue" HorizontalAlignment="Stretch">
                 
             </Border>
-            <DataGrid Height="Auto" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
-                      CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="False" ColumnWidth="Auto">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" Width="Auto" />
-                    <DataGridTextColumn Header="Message" Width="Auto" />
-                </DataGrid.Columns>
-            </DataGrid>
         </StackPanel>
     </Grid>
 </UserControl>
