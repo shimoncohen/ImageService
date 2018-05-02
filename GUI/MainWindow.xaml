@@ -9,22 +9,19 @@
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
             <TabItem Header="Settings">
-                <StackPanel>
-                    <Grid Background="#FFE5E5E5"/>
-                    <TextBlock HorizontalAlignment="Center" Width="Auto" Text="Settings" FontWeight="Bold" FontSize="50" Foreground="Blue" />
-                    <TextBlock HorizontalAlignment="Left" Width="Auto" Text="" />
-                    <TextBlock />
-                    <TextBlock />
-                    <TextBlock />
-                </StackPanel>
+                <local:SettingsView DataContext="{Binding SettingsViewModel}"
+                                    VerticalAlignment="Top"
+                                    Height="391">
+                </local:SettingsView>
             </TabItem>
             <TabItem Header="Logs">
-                <StackPanel>
-                    <Grid Background="#FFE5E5E5"/>
-                    
-                </StackPanel>
+                <local:LogsView DataContext="{Binding LogsViewModel}"
+                                VerticalAlignment="Bottom"
+                                Height="391" Loaded="SettingsView_Loaded">
+                </local:LogsView>
             </TabItem>
+            <TextBlock Height="112" TextWrapping="Wrap" Text="TextBlock" Width="212"/>
+            <StackPanel Height="100" Width="100"/>
         </TabControl>
-
     </Grid>
 </Window>

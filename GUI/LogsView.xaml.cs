@@ -12,26 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GUI;
-using GUI.VMs;
 
 namespace GUI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LogsView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LogsView : UserControl
     {
-        private SettingsViewModel SettingsViewModel;
-        private LogsViewModel LogsViewModel;
-
-        public MainWindow()
+        public LogsView()
         {
             InitializeComponent();
-            this.SettingsViewModel = new SettingsViewModel();
-            this.LogsViewModel = new LogsViewModel();
-            this.DataContext = SettingsViewModel;
-            this.DataContext = LogsViewModel;
         }
     }
 }
