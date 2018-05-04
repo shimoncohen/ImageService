@@ -1,4 +1,5 @@
 ﻿using ImageService.Logging.Modal;
+using Infrastructure.Modal.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace ImageService.Logging
     public interface ILoggingService
     {
         /// <summary>
-        /// an event that handles messages that aare being recieved to the loggger.
+        /// an event that handles messages that are being recieved to the loggger.
         /// </summary>
         event EventHandler<MessageRecievedEventArgs> MessageRecieved;
+        /// <summary>
+        /// an event that handles messages to be sent to all clients.
+        /// </summary>
+        event EventHandler<InfoEventArgs> NotifyClients;
         /// <summary>
         /// the function recieves a message and invoke the logger recieving mechanism (to write down the message).
         /// </summary>

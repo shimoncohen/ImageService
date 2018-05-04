@@ -7,6 +7,7 @@ using ImageService.Logging.Modal;
 using ImageService.Server;
 using ImageService.Modal;
 using ImageService.Controller;
+using Infrastructure.Modal.Event;
 
 namespace ImageService
 {
@@ -81,13 +82,15 @@ namespace ImageService
             LogHistory history = LogHistory.CreateLogHistory();
             // create the service model
             IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
-            // create the services server
+            // create the services servers
             ImageController controller = new ImageController(model);
-            ImageServer server = new ImageServer(controller, info.Handlers.ToArray(), this.logger);
+            ImageServer server = new ImageServer(controller, info.Handlers.ToArray(), logger);
+            TcpServer tcpServer = new TcpServer(controller, logger);
             this.server = server;
-            this.logger.MessageRecieved += server.SendLog;
-            this.logger.MessageRecieved += this.ImageServiceMessage;
-            this.logger.MessageRecieved += history.UpdateLog;
+            logger.NotifyClients += tcpServer.NotifyClients;
+            logger.MessageRecieved += ImageServiceMessage;
+            logger.MessageRecieved += history.UpdateLog;
+            server.NotifyClients += tcpServer.NotifyClients;
 
             // Update the service state to Start Pending.
             ServiceStatus serviceStatus = new ServiceStatus();
