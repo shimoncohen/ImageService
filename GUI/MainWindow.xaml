@@ -4,24 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
+        xmlns:views="clr-namespace:GUI.Views"
         mc:Ignorable="d"
-        Title="ImageService" Height="450" Width="800">
-    <Grid>
-        <TabControl HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
-            <TabItem Header="Settings">
-                <local:SettingsView DataContext="{Binding SettingsViewModel}"
-                                    VerticalAlignment="Top"
-                                    Height="391">
-                </local:SettingsView>
+        Title="ImageService" Height="550" Width="800" MinHeight="350" MinWidth="350" Background="#FFE5E5E5">
+    <Grid Background="#FFE5E5E5">
+        <TabControl HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto">
+            <TabItem Header="Settings" 
+                     HorizontalAlignment="Stretch" 
+                     HorizontalContentAlignment="Stretch" 
+                     VerticalAlignment="Stretch" 
+                     VerticalContentAlignment="Stretch">
+                <views:SettingsView />
             </TabItem>
-            <TabItem Header="Logs">
-                <local:LogsView DataContext="{Binding LogsViewModel}"
-                                VerticalAlignment="Bottom"
-                                Height="391" Loaded="SettingsView_Loaded">
-                </local:LogsView>
+            <TabItem Header="Logs"
+                     HorizontalAlignment="Stretch" 
+                     HorizontalContentAlignment="Stretch" 
+                     VerticalAlignment="Stretch" 
+                     VerticalContentAlignment="Stretch">
+                <views:LogsView />
             </TabItem>
-            <TextBlock Height="112" TextWrapping="Wrap" Text="TextBlock" Width="212"/>
-            <StackPanel Height="100" Width="100"/>
         </TabControl>
     </Grid>
 </Window>

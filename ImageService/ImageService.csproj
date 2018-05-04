@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageService\ImageService.Logging\Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="ImageService\ImageService.Logging\Modal\Event\DirectoryCloseEventArgs.cs" />
+    <Compile Include="ImageService\ImageService.Logging\Modal\Event\InfoEventArgs.cs" />
     <Compile Include="ImageService\ImageService\Commands\CloseCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\GetConfigCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\LogCommand.cs" />
@@ -72,6 +74,9 @@
     <Compile Include="ImageService\ImageService\Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageService\ImageService\Controller\IImageController.cs" />
     <Compile Include="ImageService\ImageService\Controller\ImageController.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\CommandEnum.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\EnumTranslator.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\InfoEnums.cs" />
     <Compile Include="ImageService\ImageService\LogHistory.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />

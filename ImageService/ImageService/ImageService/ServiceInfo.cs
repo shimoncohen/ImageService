@@ -31,6 +31,7 @@ namespace ImageService
             int result;
             // extract info from app config file
             string handlerName = ConfigurationManager.AppSettings["Handler"];
+            Handlers = new List<string>();
             // add all of the handler paths to the handler list
             foreach (string handler in handlerName.Split(';'))
             {
