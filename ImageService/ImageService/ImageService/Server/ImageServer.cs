@@ -1,11 +1,11 @@
 ﻿using ImageService.Controller;
 using ImageService.Controller.Handlers;
-using Infrastructure.Enums;
 using ImageService.Logging;
-using ImageService.Modal;
 using System;
 using ImageService.Logging.Modal;
-using Infrastructure.Modal.Event;
+using ImageService.Logging.Modal.Event;
+using ImageService.Infrastructure.Enums;
+using System.Collections.Generic;
 
 namespace ImageService.Server
 {
@@ -17,6 +17,7 @@ namespace ImageService.Server
         #region Members
         private IImageController controller;
         private ILoggingService logging;
+        private List<IDirectoryHandler> handlerList;
         #endregion
 
         #region Properties
@@ -35,8 +36,9 @@ namespace ImageService.Server
         public ImageServer(ImageController imageController, string[] handlers, ILoggingService logger)
         {
             // create controller
-            this.controller = imageController;
-            this.logging = logger;
+            controller = imageController;
+            logging = logger;
+            handlerList = new List<IDirectoryHandler>();
             // create handler for each given directory
             foreach (string directory in handlers)
             {
@@ -52,12 +54,18 @@ namespace ImageService.Server
         {
             // create handler for given directory
             IDirectoryHandler directoryHandler = new DirectoyHandler(this.controller, this.logging);
+            handlerList.Add(directoryHandler);
             directoryHandler.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(CloseHandler);
             this.CommandRecieved += directoryHandler.OnCommandRecieved;
             directoryHandler.StartHandleDirectory(directory);
         }
 
-        public void NewCommand(object sender, EventHandler<CommandRecievedEventArgs> e)
+        public List<IDirectoryHandler> getHandlers()
+        {
+            return handlerList;
+        }
+
+        public void NewCommand(object sender, CommandRecievedEventArgs e)
         {
             CommandRecieved?.Invoke(this, e);
         }

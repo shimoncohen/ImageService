@@ -1,12 +1,8 @@
 ﻿using ImageService.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastructure.Enums;
-using Infrastructure.Modal.Event;
 using Newtonsoft.Json;
+using ImageService.Infrastructure.Enums;
+using ImageService.Logging.Modal.Event;
 
 namespace ImageService.Commands
 {

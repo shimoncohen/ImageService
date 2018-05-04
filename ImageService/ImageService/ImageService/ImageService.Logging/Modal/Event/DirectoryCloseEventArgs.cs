@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageService.Modal
+namespace ImageService.Logging.Modal.Event
 {
     /// <summary>
     /// the class that is in charge of the directory close event

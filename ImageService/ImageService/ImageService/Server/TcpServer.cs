@@ -1,11 +1,11 @@
 ﻿using ImageService.Controller;
+using ImageService.Server.Handlers;
 using ImageService.Logging;
-using ImageService.Logging.Modal;
+using ImageService.Logging.Modal.Event;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -34,6 +34,7 @@ namespace ImageService.Server
 
         private void Start()
         {
+            clients = new List<TcpClient>();
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
             listener = new TcpListener(ep);
             listener.Start();
@@ -58,36 +59,15 @@ namespace ImageService.Server
         {
             new Task(() =>
             {
-                while (true)
-                {
-                    using (NetworkStream stream = client.GetStream())
-                    using (StreamReader reader = new StreamReader(stream))
-                    using (StreamWriter writer = new StreamWriter(stream))
-                    {
-                        string commandLine = reader.ReadLine();
-                        bool result;
-                        CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
-                        if (args.RequestDirPath == "Empty")
-                        {
-                            string send = controller.ExecuteCommand(args.CommandID, args.Args, out result);
-                            if (result)
-                            {
-                                writer.Write(send);
-                                logging.Log("Got command: " + args.CommandID + ", with arguments: " +
-                                    args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
-                            }
-                            else
-                            {
-                                logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
-                            }
-                        }
-                        else
-                        {
-                            this.CommandRecieved?.Invoke(this, args);
-                        }
-                    }
-                }
+                IClientHandler handler = new ClientHandler(controller, logging);
+                handler.CommandRecieved += NewCommand;
+                handler.HandleClient(client);
             }).Start();
+        }
+
+        public void NewCommand(object sender, CommandRecievedEventArgs e)
+        {
+            CommandRecieved?.Invoke(this, e);
         }
 
         public void NotifyClients(object sender, InfoEventArgs e)
@@ -108,6 +88,7 @@ namespace ImageService.Server
 
         public void Stop()
         {
+            clients.Clear();
             listener.Stop();
         }
     }

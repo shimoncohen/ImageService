@@ -53,9 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageService\ImageService.Logging\Modal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="ImageService\ImageService.Logging\Modal\Event\DirectoryCloseEventArgs.cs" />
-    <Compile Include="ImageService\ImageService.Logging\Modal\Event\InfoEventArgs.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\CommandRecievedEventArgs.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\DirectoryCloseEventArgs.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\InfoEventArgs.cs" />
     <Compile Include="ImageService\ImageService\Commands\CloseCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\GetConfigCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\LogCommand.cs" />
@@ -65,9 +65,9 @@
     <Compile Include="ImageService\ImageService\ImageService.Designer.cs">
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageService\ImageService.Logging\ILoggingService.cs" />
-    <Compile Include="ImageService\ImageService.Logging\Modal\MessageRecievedEventArgs.cs" />
-    <Compile Include="ImageService\ImageService.Logging\Modal\MessageTypeEnum.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\ILoggingService.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\MessageRecievedEventArgs.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\MessageTypeEnum.cs" />
     <Compile Include="ImageService\ImageService\Commands\ICommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\NewFileCommand.cs" />
     <Compile Include="ImageService\ImageService\Controller\Handlers\DirectoyHandler.cs" />
@@ -80,8 +80,10 @@
     <Compile Include="ImageService\ImageService\LogHistory.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
+    <Compile Include="ImageService\ImageService\Server\Handlers\ClientHandler.cs" />
+    <Compile Include="ImageService\ImageService\Server\Handlers\IClientHandler.cs" />
     <Compile Include="ImageService\ImageService\Server\ImageServer.cs" />
-    <Compile Include="ImageService\ImageService.Logging\LoggingService.cs" />
+    <Compile Include="ImageService\ImageService\ImageService.Logging\LoggingService.cs" />
     <Compile Include="ImageService\ImageService\Program.cs" />
     <Compile Include="ImageService\ImageService\ProjectInstaller.cs">
       <SubType>Component</SubType>

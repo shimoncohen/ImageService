@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Enums
+namespace ImageService.Infrastructure.Enums
 {
     /// <summary>
     /// set of enums for possible info that can be sent to the GUI from the service.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Modal.Event
+namespace ImageService.Logging.Modal.Event
 {
     public class InfoEventArgs : EventArgs
     {

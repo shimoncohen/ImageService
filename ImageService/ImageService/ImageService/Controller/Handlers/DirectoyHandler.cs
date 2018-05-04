@@ -1,10 +1,9 @@
-﻿using ImageService.Modal;
-using System;
+﻿using System;
 using System.IO;
-using Infrastructure.Enums;
+using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
-using Infrastructure.Modal.Event;
+using ImageService.Logging.Modal.Event;
 
 namespace ImageService.Controller.Handlers
 {
@@ -40,11 +39,6 @@ namespace ImageService.Controller.Handlers
         {
             if (this.directoryPath.Equals(e.RequestDirPath) || e.RequestDirPath.Equals("*"))
             {
-                // if command recieved is close command
-                if(e.CommandID == (int)CommandEnum.CloseCommand) {
-                    this.StopHandleDirectory();
-                    return;
-                }
                 bool result;
 
                 // execute recieved command
@@ -81,10 +75,13 @@ namespace ImageService.Controller.Handlers
         /// <summary>
         /// the function stops the handling of a directory
         /// </summary>
-        public void StopHandleDirectory()
+        public void StopHandleDirectory(string path)
         {
-            DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
-            this.DirectoryClose?.Invoke(this, eTemp);
+            if (path == this.directoryPath)
+            {
+                DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
+                this.DirectoryClose?.Invoke(this, eTemp);
+            }
         }
     }
 }
