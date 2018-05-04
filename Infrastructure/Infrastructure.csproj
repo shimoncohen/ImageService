@@ -40,11 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\CommandEnum.cs" />
-    <Compile Include="Enums\EnumTranslator.cs" />
-    <Compile Include="Enums\InfoEnums.cs" />
-    <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="Modal\Event\InfoEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

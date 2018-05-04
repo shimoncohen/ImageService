@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="GUI.Views.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel>
+            <TextBlock HorizontalAlignment="Center"
+                        Width="Auto"
+                        Text="Logs"
+                        FontWeight="Bold"
+                        FontSize="50"
+                        Foreground="Blue"
+                        FontFamily="Book Antiqua"/>
+            <Border BorderBrush="AliceBlue" HorizontalAlignment="Stretch">
+                <StackPanel x:Name="mainVertical" Orientation="Vertical" >
+                    <StackPanel Orientation="Horizontal">
+                        <Label BorderThickness="2" BorderBrush="Gray" Width="80" Height="60" Content="Type" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        <Label BorderBrush="Gray" BorderThickness="2" Width="422" Height="60" Content="Message" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding LogInfoList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Background="Grey" BorderThickness="1" BorderBrush="Black" Width="80" Height="40" Content="{Binding Type}" />
+                                    <Label BorderBrush="Black" BorderThickness="1" Width="422" Height="40" Content="{Binding Message}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <!--
+                <DataGrid ItemsSource="{Binding Source=LogInfoList}" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Type}" Width="Auto"/>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Path=Message}" Width="Auto"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                -->
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

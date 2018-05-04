@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GUI.VMs;
 
-namespace GUI
+namespace GUI.Views
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
     public partial class SettingsView : UserControl
     {
+        private SettingsViewModel SettingsViewModel;
+
         public SettingsView()
         {
             InitializeComponent();
+            SettingsViewModel = new SettingsViewModel();
+            this.DataContext = SettingsViewModel;
         }
     }
 }
