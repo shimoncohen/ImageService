@@ -86,6 +86,8 @@ namespace GUI.Models
             }
         }
 
+        private Model m_ConnectionModel;
+
         public SettingsModel() 
         {
             m_OutputDirectory = "Output Directory:";
@@ -93,7 +95,15 @@ namespace GUI.Models
             m_LogName = "Log Name:";
             m_ThumbSize = "Thumbnail Size:";
             m_Directories = new ObservableCollection<string>();
+            m_ConnectionModel = Model.CreateConnectionChannel();
+            m_ConnectionModel.start();
             m_Directories.Add("Test!!!!!");
+        }
+
+        public void sendToServer()
+        {
+            //CommandRecievedEventArgs
+            //m_ConnectionModel.StartSenderChannel(;
         }
     }
 }

@@ -77,6 +77,9 @@ namespace GUI.VMs
                };
         }
 
+        
+        
+
         protected void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
