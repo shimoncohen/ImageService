@@ -61,18 +61,21 @@
                 <Button x:Name="RemoveButton"
                         Content="Remove"
                         HorizontalAlignment="Stretch"
-                        Block.TextAlignment="Center"/>
+                        Block.TextAlignment="Center"
+                        Command="{Binding RemoveCommand}"
+                         AutomationProperties.AutomationId="RemoveButton"/>
 
                 <Border>
                     <ListBox x:Name="Handlers"
                             ItemsSource="{Binding Directories}"
                             Margin="5"
-                            SelectedItem="{Binding SelectedHandler}">
+                            SelectedItem="{Binding SelectedHandler}" >
                     </ListBox>
                 </Border>
             </StackPanel>
         </Grid>
-        <Button Content="Test Connection Button" HorizontalAlignment="Left" Height="26" Margin="210,0,0,0" Width="138"/>
+        <Button x:Name="TestButton" Content="Test Connection Button" HorizontalAlignment="Left" Height="26" Margin="210,0,0,0" Width="138"
+                Command=""/>
     </StackPanel>
    
 </UserControl>

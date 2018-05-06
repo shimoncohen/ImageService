@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Modal.Event
+namespace GUI.Modal.Event
 {
     /// <summary>
     /// the class is in charge of the command received event

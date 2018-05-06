@@ -7,12 +7,12 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GUI.Models;
+using Prism.Commands;
 
 namespace GUI.VMs
 {
     class SettingsViewModel : INotifyPropertyChanged
     {
-        //public ICommand RemoveCommand;
         private SettingsModel SettingsModel;
 
         public string OutputDirectory
@@ -54,6 +54,8 @@ namespace GUI.VMs
             set
             {
                 this.SettingsModel.SelectedHandler = value;
+                var command = this.RemoveCommand as DelegateCommand<object>;
+                command.RaiseCanExecuteChanged();
             }
         }
 
@@ -75,10 +77,25 @@ namespace GUI.VMs
                delegate (Object sender, PropertyChangedEventArgs e) {
                    NotifyPropertyChanged("VM_" + e.PropertyName);
                };
+            this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove); 
         }
 
-        
-        
+        public ICommand RemoveCommand { get; private set; }
+
+        private void OnRemove(object obj)
+        {
+            this.SettingsModel.sendToServer();
+        }
+
+        private bool CanRemove(object obj)
+        {
+            if (string.IsNullOrEmpty(this.SettingsModel.SelectedHandler))
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         protected void NotifyPropertyChanged(string name)
         {

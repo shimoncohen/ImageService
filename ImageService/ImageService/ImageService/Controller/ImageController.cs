@@ -17,17 +17,6 @@ namespace ImageService.Controller
         private IImageServiceModal modal;
         // a dictionary of commands to execute
         private Dictionary<int, ICommand> commands;
-        public Func<List<IDirectoryHandler>> Function
-        {
-            get
-            {
-                return Function;
-            }
-            set
-            {
-                Function = value;
-            }
-        }
 
         /// <summary>
         /// constructor
@@ -43,7 +32,7 @@ namespace ImageService.Controller
                 {(int)CommandEnum.NewFileCommand, new NewFileCommand(mod)},
                 {(int)CommandEnum.GetConfigCommand, new GetConfigCommand()},
                 {(int)CommandEnum.LogCommand, new LogCommand()},
-                {(int)CommandEnum.CloseCommand, new CloseCommand(Function)}
+                {(int)CommandEnum.CloseCommand, new CloseCommand()}
             };
         }
 

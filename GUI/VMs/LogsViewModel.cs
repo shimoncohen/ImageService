@@ -13,23 +13,28 @@ namespace GUI.VMs
     {
         private LogsModel LogsModel;
 
-        public ObservableCollection<LogInfo> VM_LogsInfoList
+        public ObservableCollection<MessageRecievedEventArgs> LogsInfoList
         {
-            get { return this.LogsModel.LogInfoList; }
-            set
-            {
-                this.LogsModel.LogInfoList = value;
-            }
+            get { return LogsModel.LogsInfoList; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public LogsModel LogModel
+        {
+            get { return this.LogsModel; }
+            set
+            {
+                this.LogsModel = value;
+            }
+        }
 
         public LogsViewModel()
         {
             LogsModel = new LogsModel();
             LogsModel.PropertyChanged +=
                delegate (Object sender, PropertyChangedEventArgs e) {
-                   NotifyPropertyChanged("VM_" + e.PropertyName);
+                   NotifyPropertyChanged(e.PropertyName);
                };
         }
 

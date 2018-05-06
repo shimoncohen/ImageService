@@ -18,30 +18,30 @@ namespace GUI.Models
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private ObservableCollection<LogInfo> m_LogInfoList;
-        public ObservableCollection<LogInfo> LogInfoList
-        { get; set;
-           /* get { return this.m_LogInfoList; }
-            set
-            {
-                this.m_LogInfoList = value;
-                OnPropertyChanged("LogInfoList");
-            }*/
+        private ObservableCollection<MessageRecievedEventArgs> m_LogsInfoList;
+        public ObservableCollection<MessageRecievedEventArgs> LogsInfoList
+        { //get; set;
+           get { return this.m_LogsInfoList; }
+           set
+           {
+               this.m_LogsInfoList = value;
+               OnPropertyChanged("LogsInfoList");
+           }
         }
-
-        /*private string m_Color;
-        public string ColorList
+        
+        public void AddToList(MessageRecievedEventArgs e)
         {
-            get
-            {
-                return;
-            }
-        }*/
+            this.m_LogsInfoList.Add(e);
+            OnPropertyChanged("AddToList");
+        }
         
         public LogsModel()
         {
-            this.m_LogInfoList = new ObservableCollection<LogInfo>();
-            this.m_LogInfoList.Add(new LogInfo() { Type = "INFO", Message = "Test Message" });
+            this.m_LogsInfoList = new ObservableCollection<MessageRecievedEventArgs>();
+
+            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.INFO, Message = "Test Message" });
+            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.WARNING, Message = "Test Message2" });
+            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.FAIL, Message = "Test Message3" });
         }
     }
 }

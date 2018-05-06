@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GUI.Views"
+             xmlns:local="clr-namespace:GUI.VMs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:ColorConverter x:Key="ColorConverter"/>
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <TextBlock HorizontalAlignment="Center"
@@ -34,12 +37,19 @@
                     </ItemsControl>
                 </StackPanel>
                 -->
-                <DataGrid ItemsSource="{Binding Source=VM_LogsInfoList}" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                <DataGrid Name="DataGrid" ItemsSource="{Binding LogsInfoList}" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
                           CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
-                          AutoGenerateColumns="False" IsHitTestVisible="False" Focusable="False">
+                          AutoGenerateColumns="False" IsHitTestVisible="False" Focusable="False" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"
+                          RowHeight="50" ColumnWidth="100">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto"/>
-                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="Auto"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Status}" Width="Auto" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Background" Value="{Binding Path=Status, Converter={StaticResource ColorConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 

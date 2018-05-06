@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using GUI.Modal.Event;
+using GUI.Enums;
 
 namespace GUI.Models
 {
@@ -95,15 +97,16 @@ namespace GUI.Models
             m_LogName = "Log Name:";
             m_ThumbSize = "Thumbnail Size:";
             m_Directories = new ObservableCollection<string>();
-            m_ConnectionModel = Model.CreateConnectionChannel();
-            m_ConnectionModel.start();
+            //m_ConnectionModel = Model.CreateConnectionChannel();
+           // m_ConnectionModel.start();
             m_Directories.Add("Test!!!!!");
         }
 
         public void sendToServer()
         {
-            //CommandRecievedEventArgs
-            //m_ConnectionModel.StartSenderChannel(;
+            string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, args, "None");
+            m_ConnectionModel.StartSenderChannel(this, e);
         }
     }
 }

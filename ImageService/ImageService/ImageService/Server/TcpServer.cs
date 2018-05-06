@@ -32,7 +32,7 @@ namespace ImageService.Server
             logging = logger;
         }
 
-        private void Start()
+        public void Start()
         {
             clients = new List<TcpClient>();
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);

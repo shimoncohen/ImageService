@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using Infrastructure.Modal.Event;
-using Infrastructure.Enums;
 using System.IO;
 using Newtonsoft.Json;
+using GUI.Modal.Event;
 
 namespace GUI.Models
 {
