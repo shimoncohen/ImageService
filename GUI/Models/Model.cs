@@ -57,14 +57,11 @@ namespace GUI.Models
         {
             new Task(() =>
             {
-                while (client.Connected)
+                using (NetworkStream stream = client.GetStream())
+                using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    using (NetworkStream stream = client.GetStream())
-                    using (StreamWriter writer = new StreamWriter(stream))
-                    {
-                        string args = JsonConvert.SerializeObject(e);
-                        writer.Write(args);
-                    }
+                    string args = JsonConvert.SerializeObject(e);
+                    writer.Write(args);
                 }
             }).Start();
         }

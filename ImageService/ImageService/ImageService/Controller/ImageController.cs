@@ -1,6 +1,7 @@
 ﻿using ImageService.Commands;
 using ImageService.Controller.Handlers;
 using ImageService.Infrastructure.Enums;
+using ImageService.Logging.Modal.Event;
 using ImageService.Modal;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ImageService.Controller
     /// </summary>
     public class ImageController : IImageController
     {
+        public event EventHandler<DirectoryCloseEventArgs> HandlerClosedEvent;
         // The Modal Object
         private IImageServiceModal modal;
         // a dictionary of commands to execute
@@ -34,6 +36,12 @@ namespace ImageService.Controller
                 {(int)CommandEnum.LogCommand, new LogCommand()},
                 {(int)CommandEnum.CloseCommand, new CloseCommand()}
             };
+            ((CloseCommand)commands[(int)CommandEnum.CloseCommand]).Closed += HandlerClosed;
+        }
+
+        public void HandlerClosed(object sender, DirectoryCloseEventArgs e)
+        {
+            HandlerClosedEvent?.Invoke(this, e);
         }
 
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccessful)

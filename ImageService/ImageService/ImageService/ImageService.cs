@@ -19,7 +19,8 @@ namespace ImageService
         private int eventId = 1;
         private ILoggingService logger;
         private ImageServer server;
-       // private TcpServer tcpServer;
+        private TcpServer tcpServer;
+        private LogHistory history;
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
@@ -79,19 +80,19 @@ namespace ImageService
             // service info class (singelton)
             ServiceInfo info = ServiceInfo.CreateServiceInfo();
             // log history class (singelton)
-            //LogHistory history = LogHistory.CreateLogHistory();
+            history = LogHistory.CreateLogHistory();
             // create the service model
             IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             // create the services servers
             ImageController controller = new ImageController(model);
-            //server = new ImageServer(controller, info.Handlers.ToArray(), logger);
-            //tcpServer = new TcpServer(controller, logger);
-            //tcpServer.Start();
-           // logger.NotifyClients += tcpServer.NotifyClients;
-            //server.NotifyClients += tcpServer.NotifyClients;
-            //tcpServer.CommandRecieved += server.NewCommand;
+            server = new ImageServer(controller, info.Handlers.ToArray(), logger);
+            tcpServer = new TcpServer(controller, logger);
+            controller.HandlerClosedEvent += server.CloseHandler;
+            logger.NotifyClients += tcpServer.NotifyClients;
+            server.NotifyClients += tcpServer.NotifyClients;
+            tcpServer.CommandRecieved += server.NewCommand;
             logger.MessageRecieved += ImageServiceMessage;
-            //logger.MessageRecieved += history.UpdateLog;
+            logger.MessageRecieved += history.UpdateLog;
             
 
             // Update the service state to Start Pending.
@@ -117,14 +118,14 @@ namespace ImageService
         /// </summary>
         protected override void OnStop()
         {
-            //LogHistory history = LogHistory.CreateLogHistory();
-            //server.CloseServer();
-            //tcpServer.Stop();
+            LogHistory logHistory = LogHistory.CreateLogHistory();
+            server.CloseServer();
             logger.MessageRecieved -= ImageServiceMessage;
-            //logger.NotifyClients -= tcpServer.NotifyClients;
-            //logger.MessageRecieved -= history.UpdateLog;
-            //server.NotifyClients -= tcpServer.NotifyClients;
-            //history.ResetLog();
+            logger.NotifyClients -= tcpServer.NotifyClients;
+            logger.MessageRecieved -= logHistory.UpdateLog;
+            logger.MessageRecieved -= history.UpdateLog;
+            server.NotifyClients -= tcpServer.NotifyClients;
+            logHistory.ResetLog();
             eventLog1.WriteEntry("In onStop.");
         }
 
@@ -145,7 +146,7 @@ namespace ImageService
         /// </param>
         private void ImageServiceMessage(object sender, MessageRecievedEventArgs e)
         {
-            /*switch(e.Status)
+            switch(e.Status)
             {
                 case MessageTypeEnum.FAIL:
                     this.eventLog1.WriteEntry(e.Message, EventLogEntryType.Error);
@@ -156,7 +157,7 @@ namespace ImageService
                 case MessageTypeEnum.WARNING:
                     this.eventLog1.WriteEntry(e.Message, EventLogEntryType.Warning);
                     break;
-            }*/
+            }
         }
     }
 }
