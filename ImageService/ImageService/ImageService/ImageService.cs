@@ -87,7 +87,7 @@ namespace ImageService
             ImageController controller = new ImageController(model);
             server = new ImageServer(controller, info.Handlers.ToArray(), logger);
             tcpServer = new TcpServer(controller, logger);
-            controller.Function = server.getHandlers;
+            controller.HandlerClosedEvent += server.CloseHandler;
             logger.NotifyClients += tcpServer.NotifyClients;
             server.NotifyClients += tcpServer.NotifyClients;
             tcpServer.CommandRecieved += server.NewCommand;

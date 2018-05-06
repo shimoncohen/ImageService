@@ -75,7 +75,7 @@ namespace ImageService.Server
         /// </summary>
         /// <param name= sender> the object that sent the request </param>
         /// <param name= e> the event that occured </param>
-        private void CloseHandler(object sender, DirectoryCloseEventArgs e)
+        public void CloseHandler(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
             this.CommandRecieved -= handlerToClose.OnCommandRecieved;
