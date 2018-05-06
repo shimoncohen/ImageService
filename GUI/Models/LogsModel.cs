@@ -21,7 +21,7 @@ namespace GUI.Models
         private ObservableCollection<LogInfo> m_LogInfoList;
         public ObservableCollection<LogInfo> LogInfoList
         { get; set;
-            /*get { return this.m_LogInfoList; }
+           /* get { return this.m_LogInfoList; }
             set
             {
                 this.m_LogInfoList = value;
@@ -41,7 +41,7 @@ namespace GUI.Models
         public LogsModel()
         {
             this.m_LogInfoList = new ObservableCollection<LogInfo>();
-            this.m_LogInfoList.Add(new LogInfo(MessageTypeEnum.INFO, "Test Message"));
+            this.m_LogInfoList.Add(new LogInfo() { Type = "INFO", Message = "Test Message" });
         }
     }
 }

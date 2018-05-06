@@ -13,7 +13,7 @@ namespace GUI.VMs
     {
         private LogsModel LogsModel;
 
-        public ObservableCollection<LogInfo> LogsInfoList
+        public ObservableCollection<LogInfo> VM_LogsInfoList
         {
             get { return this.LogsModel.LogInfoList; }
             set
