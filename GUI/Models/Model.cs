@@ -75,7 +75,11 @@ namespace GUI.Models
                     using (NetworkStream stream = client.GetStream())
                     using (StreamReader reader = new StreamReader(stream))
                     {
-                        string args = reader.ReadLine();
+                        string args = "";// = reader.ReadLine();
+                        while(reader.Peek() > 0)
+                        {
+                            args = args + reader.Read();
+                        }
                         InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
                         InfoRecieved?.Invoke(this, e);
                     }

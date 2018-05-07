@@ -40,7 +40,6 @@ namespace ImageService.Controller.Handlers
             if (this.directoryPath.Equals(e.RequestDirPath) || e.RequestDirPath.Equals("*"))
             {
                 bool result;
-
                 // execute recieved command
                 string message = this.imageController.ExecuteCommand(e.CommandID, e.Args, out result);
                 // check if command has executed succesfully and write result to the log
@@ -82,6 +81,11 @@ namespace ImageService.Controller.Handlers
                 DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
                 this.DirectoryClose?.Invoke(this, eTemp);
             }
+        }
+
+        public string GetPath()
+        {
+            return this.directoryPath;
         }
     }
 }

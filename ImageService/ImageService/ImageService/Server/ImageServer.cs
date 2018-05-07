@@ -77,22 +77,28 @@ namespace ImageService.Server
         /// <param name= e> the event that occured </param>
         public void CloseHandler(object sender, DirectoryCloseEventArgs e)
         {
-            IDirectoryHandler handlerToClose = (IDirectoryHandler)sender;
-            this.CommandRecieved -= handlerToClose.OnCommandRecieved;
-            this.logging.Log("Closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
-            
-            //TODO: check if handler is deleted
-            //handlerToClose.DirectoryClose -= CloseHandler;
-            // delete handler
+            List<IDirectoryHandler> list = getHandlers();
+            foreach(IDirectoryHandler handler in list)
+            {
+                if(e.DirectoryPath.Equals("*") || handler.GetPath().Equals(e.DirectoryPath))
+                {
+                    this.CommandRecieved -= handler.OnCommandRecieved;
+                    this.logging.Log("Closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
 
-            string[] args = { e.DirectoryPath };
-            // create info args
-            InfoEventArgs info = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
-            // remove the handler from the app config handler list
-            ServiceInfo serviceInfo = ServiceInfo.CreateServiceInfo();
-            serviceInfo.RemoveHandler(e.DirectoryPath);
-            // notify all of the clients that the handler was closed
-            NotifyClients?.Invoke(this, info);
+                    //TODO: check if handler is deleted
+                    //handlerToClose.DirectoryClose -= CloseHandler;
+                    // delete handler
+
+                    string[] args = { e.DirectoryPath };
+                    // create info args
+                    InfoEventArgs info = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
+                    // remove the handler from the app config handler list
+                    ServiceInfo serviceInfo = ServiceInfo.CreateServiceInfo();
+                    serviceInfo.RemoveHandler(e.DirectoryPath);
+                    // notify all of the clients that the handler was closed
+                    NotifyClients?.Invoke(this, info);
+                }
+            }
         }
 
         /// <summary>
@@ -100,7 +106,7 @@ namespace ImageService.Server
         /// </summary>
         public void CloseServer()
         {
-            string[] args = { };
+            string[] args = { "*" };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
             this.CommandRecieved?.Invoke(this, e);
             this.logging.Log("Server closing", MessageTypeEnum.INFO);

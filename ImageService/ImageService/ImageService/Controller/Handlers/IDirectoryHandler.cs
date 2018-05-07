@@ -24,5 +24,9 @@ namespace ImageService.Controller.Handlers
         /// the function stops the handling of a directory
         /// </summary>
         void StopHandleDirectory(string path);
+        /// <summary>
+        /// returns the handler directory path
+        /// </summary>
+        string GetPath();
     }
 }

@@ -41,7 +41,7 @@ namespace ImageService.Controller
 
         public void HandlerClosed(object sender, DirectoryCloseEventArgs e)
         {
-            HandlerClosedEvent?.Invoke(this, e);
+            HandlerClosedEvent?.Invoke(sender, e);
         }
 
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccessful)

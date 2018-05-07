@@ -49,7 +49,8 @@ namespace ImageService.Server
                     }
                     catch (Exception e)
                     {
-                        break;
+                        logging.Log(e.Message, Logging.Modal.MessageTypeEnum.FAIL);
+                        continue;
                     }
                 }
             }).Start();
