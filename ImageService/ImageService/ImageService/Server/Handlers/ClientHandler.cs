@@ -1,4 +1,5 @@
 ﻿using ImageService.Controller;
+using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
 using ImageService.Logging.Modal.Event;
@@ -45,7 +46,11 @@ namespace ImageService.Server.Handlers
                             string send = controller.ExecuteCommand(args.CommandID, args.Args, out result);
                             if (result)
                             {
+                                logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                    args.Args, MessageTypeEnum.INFO);
                                 writer.Write(send);
+                                // TODO: write to log that command was sent
+                                //logging.Log("Sent " + CommandEnum.(args.CommandID), MessageTypeEnum.INFO);
                             }
                             else
                             {

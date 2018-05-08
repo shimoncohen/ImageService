@@ -10,11 +10,6 @@ namespace ImageService.Commands
     {
         ILoggingService log;
 
-        public LogCommand()
-        {
-
-        }
-
         public string Execute(string[] args, out bool result)
         {
             LogHistory logHistory = LogHistory.CreateLogHistory();
