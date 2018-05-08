@@ -99,6 +99,7 @@ namespace GUI.Models
             m_Directories = new ObservableCollection<string>();
             m_ConnectionModel = Model.CreateConnectionChannel();
             m_ConnectionModel.start();
+           // m_ConnectionModel.InfoRecieved += 
             m_Directories.Add("Test!!!!!");
         }
 
