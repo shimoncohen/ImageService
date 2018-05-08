@@ -34,10 +34,10 @@ namespace ImageService.Server.Handlers
                 while (true)
                 {
                     using (NetworkStream stream = client.GetStream())
-                    using (StreamReader reader = new StreamReader(stream))
-                    using (StreamWriter writer = new StreamWriter(stream))
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    using (BinaryWriter writer = new BinaryWriter(stream))
                     {
-                        string commandLine = reader.ReadLine();
+                        string commandLine = reader.ReadString();
                         bool result;
                         CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
                         if (args.RequestDirPath == "Empty")

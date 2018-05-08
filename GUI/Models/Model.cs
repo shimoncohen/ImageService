@@ -73,13 +73,9 @@ namespace GUI.Models
                 while (client.Connected)
                 {
                     using (NetworkStream stream = client.GetStream())
-                    using (StreamReader reader = new StreamReader(stream))
+                    using (BinaryReader reader = new BinaryReader(stream))
                     {
-                        string args = "";// = reader.ReadLine();
-                        while(reader.Peek() > 0)
-                        {
-                            args = args + reader.Read();
-                        }
+                        string args = reader.ReadString();
                         InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
                         InfoRecieved?.Invoke(this, e);
                     }
