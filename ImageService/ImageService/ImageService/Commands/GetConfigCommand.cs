@@ -7,10 +7,6 @@ namespace ImageService.Commands
 {
     class GetConfigCommand : ICommand
     {
-        public GetConfigCommand()
-        {
-
-        }
 
         /// <summary>
         /// the function executes the get config command

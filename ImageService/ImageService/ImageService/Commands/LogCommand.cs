@@ -15,10 +15,13 @@ namespace ImageService.Commands
             LogHistory logHistory = LogHistory.CreateLogHistory();
             result = true;
             List<string[]> logList = logHistory.Logs;
+            // the log array to return, each cell has the message type comma message
             string[] answer = new string[logList.Count];
             int i = 0;
+            // create an array of strings representing the log
             foreach (string[] log in logList.ToArray())
             {
+                // log[0] is the message type, log[1] is the message itself
                 answer[i] = log[0] + "," + log[1];
                 i++;
             }
