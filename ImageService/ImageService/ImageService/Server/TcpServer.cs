@@ -79,7 +79,7 @@ namespace ImageService.Server
                 foreach (TcpClient client in clients)
                 {
                     using (NetworkStream stream = client.GetStream())
-                    using (StreamWriter writer = new StreamWriter(stream))
+                    using (BinaryWriter writer = new BinaryWriter(stream))
                     {
                         writer.Write(info);
                     }
