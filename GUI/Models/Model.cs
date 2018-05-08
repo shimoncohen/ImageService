@@ -70,7 +70,14 @@ namespace GUI.Models
                 reader = new BinaryReader(stream);
                 while (client.Connected)
                 {
-                    string args = reader.ReadString();
+                    string args;
+                    try
+                    {
+                        args = reader.ReadString();
+                    } catch(Exception error)
+                    {
+                        return;
+                    }
                     InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
                     InfoRecieved?.Invoke(this, e);
                 }

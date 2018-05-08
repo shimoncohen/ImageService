@@ -42,7 +42,14 @@ namespace ImageService.Server.Handlers
                 while (true)
                 {
                     send.WaitOne();
-                    string commandLine = reader.ReadString();
+                    string commandLine;
+                    try
+                    {
+                        commandLine = reader.ReadString();
+                    } catch(Exception e)
+                    {
+                        return;
+                    }
                     bool result;
                     CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
                     if (args.RequestDirPath == "Empty")
