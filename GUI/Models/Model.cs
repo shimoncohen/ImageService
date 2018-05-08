@@ -21,8 +21,7 @@ namespace GUI.Models
 
         public event EventHandler<InfoEventArgs> InfoRecieved;
 
-        public string AppConfig
-        {
+        public string AppConfig {
             get { return appConfig; }
             set { }
         }
@@ -75,8 +74,7 @@ namespace GUI.Models
                     try
                     {
                         args = reader.ReadString();
-                    }
-                    catch (Exception error)
+                    } catch(Exception error)
                     {
                         return;
                     }

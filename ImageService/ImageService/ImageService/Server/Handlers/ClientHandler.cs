@@ -39,7 +39,7 @@ namespace ImageService.Server.Handlers
                 stream = client.GetStream();
                 reader = new BinaryReader(stream);
                 writer = new BinaryWriter(stream);
-                while (true)
+                while (client.Connected)
                 {
                     send.WaitOne();
                     string commandLine;
