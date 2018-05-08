@@ -9,10 +9,11 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ImageService.Server
 {
-    class TcpServer
+    public class TcpServer
     {
         #region Members
         private IImageController controller;
@@ -20,6 +21,7 @@ namespace ImageService.Server
         private const int serverPort = 8000;
         private TcpListener listener;
         private List<TcpClient> clients;
+        private Mutex send;
         #endregion
 
         #region Properties
@@ -30,6 +32,7 @@ namespace ImageService.Server
         {
             controller = c;
             logging = logger;
+            send = new Mutex();
         }
 
         public void Start()
@@ -62,7 +65,7 @@ namespace ImageService.Server
             {
                 IClientHandler handler = new ClientHandler(controller, logging);
                 handler.CommandRecieved += NewCommand;
-                handler.HandleClient(client);
+                handler.HandleClient(client, send);
             }).Start();
         }
 
@@ -76,6 +79,7 @@ namespace ImageService.Server
             new Task(() =>
             {
                 string info = JsonConvert.SerializeObject(e);
+                send.WaitOne();
                 foreach (TcpClient client in clients)
                 {
                     using (NetworkStream stream = client.GetStream())
@@ -84,6 +88,7 @@ namespace ImageService.Server
                         writer.Write(info);
                     }
                 }
+                send.ReleaseMutex();
             }).Start();
         }
 

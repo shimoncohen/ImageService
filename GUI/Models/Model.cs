@@ -15,6 +15,9 @@ namespace GUI.Models
         private string appConfig;
         private string logs;
         private TcpClient client;
+        private NetworkStream stream;
+        private BinaryWriter writer;
+        private BinaryReader reader;
 
         public event EventHandler<InfoEventArgs> InfoRecieved;
 
@@ -27,11 +30,6 @@ namespace GUI.Models
         {
             get { return logs; }
             set { }
-        }
-
-        private Model()
-        {
-            
         }
 
         public static Model CreateConnectionChannel()
@@ -57,12 +55,10 @@ namespace GUI.Models
         {
             new Task(() =>
             {
-                using (NetworkStream stream = client.GetStream())
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string args = JsonConvert.SerializeObject(e);
-                    writer.Write(args);
-                }
+                stream = client.GetStream();
+                writer = new BinaryWriter(stream);
+                string args = JsonConvert.SerializeObject(e);
+                writer.Write(args);
             }).Start();
         }
 
@@ -70,15 +66,13 @@ namespace GUI.Models
         {
             new Task(() =>
             {
+                stream = client.GetStream();
+                reader = new BinaryReader(stream);
                 while (client.Connected)
                 {
-                    using (NetworkStream stream = client.GetStream())
-                    using (BinaryReader reader = new BinaryReader(stream))
-                    {
-                        string args = reader.ReadString();
-                        InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
-                        InfoRecieved?.Invoke(this, e);
-                    }
+                    string args = reader.ReadString();
+                    InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
+                    InfoRecieved?.Invoke(this, e);
                 }
             }).Start();
         }

@@ -8,7 +8,7 @@ namespace ImageService
      /// A singelton holding the services creation information.
      /// gets information from AppConfig and parse it.
      /// </summary>
-    class ServiceInfo
+    public class ServiceInfo
     {
         //private readonly List<string> handlers;
         public List<string> Handlers { get; }

@@ -2941,3 +2941,11 @@ Affected parameters are:
    logtoconsole = 
    logfile = C:\Users\Larry\source\repos\ImageService\ImageService\bin\Debug\ImageService.InstallLog
    assemblypath = C:\Users\Larry\source\repos\ImageService\ImageService\bin\Debug\ImageService.exe
+Uninstalling assembly 'C:\Users\Larry\source\repos\ImageService\ImageService\bin\Debug\ImageService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Larry\source\repos\ImageService\ImageService\bin\Debug\ImageService.InstallLog
+   assemblypath = C:\Users\Larry\source\repos\ImageService\ImageService\bin\Debug\ImageService.exe
+Removing EventLog source ImageService.
+Service ImageService is being removed from the system...
+Service ImageService was successfully removed from the system.

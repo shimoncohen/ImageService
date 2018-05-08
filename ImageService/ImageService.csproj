@@ -78,6 +78,7 @@
     <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\EnumTranslator.cs" />
     <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\InfoEnums.cs" />
     <Compile Include="ImageService\ImageService\LogHistory.cs" />
+    <Compile Include="ImageService\ImageService\mainClass.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Server\Handlers\ClientHandler.cs" />
@@ -106,12 +107,6 @@
     <EmbeddedResource Include="ImageService\ImageService\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{c02c5d0b-7f1c-4817-817e-1438fcceaafd}</Project>
-      <Name>Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImageService.Server.Handlers
@@ -16,6 +17,9 @@ namespace ImageService.Server.Handlers
         #region Members
         private IImageController controller;
         private ILoggingService logging;
+        NetworkStream stream;
+        BinaryReader reader;
+        BinaryWriter writer;
         #endregion
 
         #region Properties
@@ -28,42 +32,42 @@ namespace ImageService.Server.Handlers
             logging = logger;
         }
 
-        public void HandleClient(TcpClient client)
+        public void HandleClient(TcpClient client, Mutex send)
         {
             new Task(() =>
             {
+                stream = client.GetStream();
+                reader = new BinaryReader(stream);
+                writer = new BinaryWriter(stream);
                 while (true)
                 {
-                    using (NetworkStream stream = client.GetStream())
-                    using (BinaryReader reader = new BinaryReader(stream))
-                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    send.WaitOne();
+                    string commandLine = reader.ReadString();
+                    bool result;
+                    CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
+                    if (args.RequestDirPath == "Empty")
                     {
-                        string commandLine = reader.ReadString();
-                        bool result;
-                        CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
-                        if (args.RequestDirPath == "Empty")
+                        string sendString = controller.ExecuteCommand(args.CommandID, args.Args, out result);
+                        if (result)
                         {
-                            string send = controller.ExecuteCommand(args.CommandID, args.Args, out result);
-                            if (result)
-                            {
-                                logging.Log("Got command: " + args.CommandID + ", with arguments: " +
-                                    args.Args, MessageTypeEnum.INFO);
-                                writer.Write(send);
-                                // TODO: write to log that command was sent
-                                //logging.Log("Sent " + CommandEnum.(args.CommandID), MessageTypeEnum.INFO);
-                            }
-                            else
-                            {
-                                logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
-                            }
+                            logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                args.Args, MessageTypeEnum.INFO);
+                            writer.Write(sendString);
+                            // TODO: write to log that command was sent
+                            //logging.Log("Sent " + CommandEnum.(args.CommandID), MessageTypeEnum.INFO);
                         }
                         else
                         {
-                            logging.Log("Got command: " + args.CommandID + ", with arguments: " +
-                                    args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
-                            this.CommandRecieved?.Invoke(this, args);
+                            logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
                         }
                     }
+                    else
+                    {
+                        logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
+                        this.CommandRecieved?.Invoke(this, args);
+                    }
+                    send.ReleaseMutex();
                 }
             }).Start();
         }
