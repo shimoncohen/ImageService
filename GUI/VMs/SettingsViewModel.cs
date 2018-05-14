@@ -8,12 +8,15 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GUI.Models;
 using Prism.Commands;
+using GUI.Modal.Event;
+using GUI.Enums;
 
 namespace GUI.VMs
 {
-    class SettingsViewModel : INotifyPropertyChanged
+    class SettingsViewModel : INotifyPropertyChanged//, ConnectionInterface
     {
         private SettingsModel SettingsModel;
+        private Model m_ConnectionModel;
 
         public string OutputDirectory
         {
@@ -70,21 +73,31 @@ namespace GUI.VMs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public event EventHandler<CommandRecievedEventArgs> sendInfo;
+
         public SettingsViewModel()
         {
             SettingsModel = new SettingsModel();
             SettingsModel.PropertyChanged +=
-               delegate (Object sender, PropertyChangedEventArgs e) {
-                   NotifyPropertyChanged("VM_" + e.PropertyName);
+                 delegate (Object sender, PropertyChangedEventArgs e) {
+                 NotifyPropertyChanged("VM_" + e.PropertyName);
                };
-            this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove); 
+            this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove);
+
+            m_ConnectionModel = Model.CreateConnectionChannel();
+            // getting the initialize info from the server
+            m_ConnectionModel.InfoRecieved += getInfoFromServer;
+            sendInfo += m_ConnectionModel.StartSenderChannel;
+            m_ConnectionModel.start();
+            // initialize the fields
+            this.ReuqestAppConfigFromServer();
         }
 
         public ICommand RemoveCommand { get; private set; }
 
         private void OnRemove(object obj)
         {
-            this.SettingsModel.sendToServer();
+            //this.sendToServer();
         }
 
         private bool CanRemove(object obj)
@@ -101,6 +114,38 @@ namespace GUI.VMs
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        public void ReuqestAppConfigFromServer()
+        {
+            string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, args, "Empty");
+            sendInfo?.Invoke(this, e);
+        }
+
+        public void getInfoFromServer(object sender, InfoEventArgs e)
+        {
+            int infoType = InfoReceivedParser.parseInfoType(e.InfoId);
+            if (infoType == 1)
+            {
+                if(e.InfoId == (int)InfoEnums.AppConfigInfo)
+                {
+                    infoUpdate(e);
+                }
+            }
+        }
+
+        private void infoUpdate(InfoEventArgs e)
+        {
+            string[] answer = e.Args;
+            SettingsModel.OutputDir = answer[0];
+            SettingsModel.SourceName = answer[1];
+            SettingsModel.LogName = answer[2];
+            SettingsModel.ThumbSize = answer[3];
+            for (int i = 4; i < answer.Length; i++)
+            {
+                SettingsModel.addToHandlersList(answer[i]);
+            }
         }
     }
 }

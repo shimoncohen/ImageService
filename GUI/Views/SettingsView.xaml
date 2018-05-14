@@ -8,7 +8,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     
     <StackPanel Background="#FFE5E5E5" Width="Auto" Height="Auto">
-        <Grid Background="#FFE5E5E5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto">
+        <Grid Background="#FFE5E5E5" HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch" Width="Auto" Height="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -64,9 +65,8 @@
                         Block.TextAlignment="Center"
                         Command="{Binding RemoveCommand}"
                          AutomationProperties.AutomationId="RemoveButton"/>
-
                 <Border>
-                    <ListBox x:Name="Handlers"
+                    <ListBox x:Name="Handlers" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             ItemsSource="{Binding Directories}"
                             Margin="5"
                             SelectedItem="{Binding SelectedHandler}" >
@@ -74,8 +74,6 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <Button x:Name="TestButton" Content="Test Connection Button" HorizontalAlignment="Left" Height="26" Margin="210,0,0,0" Width="138"
-                Command=""/>
     </StackPanel>
    
 </UserControl>

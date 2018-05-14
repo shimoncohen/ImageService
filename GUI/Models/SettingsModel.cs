@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using GUI.Modal.Event;
 using GUI.Enums;
+using System.Windows;
 
 namespace GUI.Models
 {
@@ -14,6 +15,7 @@ namespace GUI.Models
     {
         // an event that raises when a property is being changed
         public event PropertyChangedEventHandler PropertyChanged;
+        
         protected void OnPropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -25,7 +27,7 @@ namespace GUI.Models
             get { return m_OutputDirectory; }
             set
             {
-                m_OutputDirectory = "Output Directory:" + value;
+                m_OutputDirectory = "Output Directory: " + value;
                 OnPropertyChanged("OutputDirectory");
             }
         }
@@ -37,7 +39,7 @@ namespace GUI.Models
             get { return m_SourceName; }
             set
             {
-                m_OutputDirectory = "Source Name:" + value;
+                m_OutputDirectory = "Source Name: " + value;
                 OnPropertyChanged("SourceName");
             }
         }
@@ -49,7 +51,7 @@ namespace GUI.Models
             get { return m_LogName; }
             set
             {
-                m_LogName = "Log Name:" + value;
+                m_LogName = "Log Name: " + value;
                 OnPropertyChanged("LogName");
             }
         }
@@ -61,7 +63,7 @@ namespace GUI.Models
             get { return m_ThumbSize; }
             set
             {
-                m_OutputDirectory = "Thumbnail Size:" + value;
+                m_OutputDirectory = "Thumbnail Size: " + value;
                 OnPropertyChanged("ThumbSize");
             }
         }
@@ -87,27 +89,19 @@ namespace GUI.Models
                 OnPropertyChanged("Directories");
             }
         }
-
-        private Model m_ConnectionModel;
+        
+        public void addToHandlersList(string s)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() => { m_Directories.Add(s); }));
+        }
 
         public SettingsModel() 
         {
-            m_OutputDirectory = "Output Directory:";
-            m_SourceName = "Source Name:";
-            m_LogName = "Log Name:";
-            m_ThumbSize = "Thumbnail Size:";
+            m_OutputDirectory = "Output Directory: ";
+            m_SourceName = "Source Name: ";
+            m_LogName = "Log Name: ";
+            m_ThumbSize = "Thumbnail Size: ";
             m_Directories = new ObservableCollection<string>();
-            m_ConnectionModel = Model.CreateConnectionChannel();
-            m_ConnectionModel.start();
-           // m_ConnectionModel.InfoRecieved += 
-            m_Directories.Add("Test!!!!!");
-        }
-
-        public void sendToServer()
-        {
-            string[] args = { };
-            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, args, "Empty");
-            m_ConnectionModel.StartSenderChannel(this, e);
         }
     }
 }

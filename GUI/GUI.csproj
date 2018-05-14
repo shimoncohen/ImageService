@@ -76,6 +76,7 @@
     <Compile Include="Enums\CommandEnum.cs" />
     <Compile Include="Enums\EnumTranslator.cs" />
     <Compile Include="Enums\InfoEnums.cs" />
+    <Compile Include="InfoReceivedParser.cs" />
     <Compile Include="MessageTypeEnum.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\InfoEventArgs.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VMs\ConnectionInterface.cs" />
     <Compile Include="VMs\LogsViewModel.cs" />
     <Compile Include="VMs\SettingsViewModel.cs" />
     <Page Include="MainWindow.xaml">

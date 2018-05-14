@@ -64,13 +64,14 @@ namespace GUI.Models
 
         private void StartRecieverChannel()
         {
+            string args;
             new Task(() =>
             {
                 stream = client.GetStream();
                 reader = new BinaryReader(stream);
                 while (client.Connected)
                 {
-                    string args;
+                    
                     try
                     {
                         args = reader.ReadString();
