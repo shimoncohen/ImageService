@@ -12,8 +12,6 @@ namespace GUI.Models
         // need to hold appConfig info
         // needs to hols logs
         event EventHandler<InfoEventArgs> InfoRecieved;
-        string AppConfig { get; }
-        string Logs { get; }
 
         void start();
         void StartSenderChannel(object sender, CommandRecievedEventArgs e);

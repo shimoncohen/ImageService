@@ -48,6 +48,7 @@ namespace ImageService.Server.Handlers
                         commandLine = reader.ReadString();
                     } catch(Exception e)
                     {
+                        send.ReleaseMutex();
                         return;
                     }
                     bool result;
@@ -59,9 +60,17 @@ namespace ImageService.Server.Handlers
                         {
                             logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                 args.Args, MessageTypeEnum.INFO);
-                            writer.Write(sendString);
+                            if(client.Connected)
+                            {
+                                writer.Write(sendString);
+                            } else
+                            {
+                                logging.Log("Client dissconnected", MessageTypeEnum.INFO);
+                                send.ReleaseMutex();
+                                return;
+                            }
                             // TODO: write to log that command was sent
-                            //logging.Log("Sent " + CommandEnum.(args.CommandID), MessageTypeEnum.INFO);
+                            logging.Log("Sent " + args.CommandID.ToString(), MessageTypeEnum.INFO);
                         }
                         else
                         {

@@ -67,7 +67,7 @@ namespace ImageService.Modal
 
                 // check if both the image and the thumbnail were created
                 bool image = File.Exists(newPath);
-                bool thumbImage = File.Exists(Path.ChangeExtension(thumbNewPath, "thumb"));
+                bool thumbImage = File.Exists(thumbNewPath);
                 result = true;
                 if(!image || !thumbImage) {
                     result = false;

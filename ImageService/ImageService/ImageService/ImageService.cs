@@ -7,6 +7,8 @@ using ImageService.Logging.Modal;
 using ImageService.Server;
 using ImageService.Modal;
 using ImageService.Controller;
+using ImageService.Logging.Modal.Event;
+using ImageService.Infrastructure.Enums;
 
 namespace ImageService
 {
@@ -94,7 +96,8 @@ namespace ImageService
             tcpServer.CommandRecieved += server.NewCommand;
             logger.MessageRecieved += ImageServiceMessage;
             logger.MessageRecieved += history.UpdateLog;
-            
+            logger.MessageRecieved += tcpServer.NewLog;
+
 
             // Update the service state to Start Pending.
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -127,6 +130,7 @@ namespace ImageService
             logger.NotifyClients -= tcpServer.NotifyClients;
             logger.MessageRecieved -= logHistory.UpdateLog;
             logger.MessageRecieved -= history.UpdateLog;
+            logger.MessageRecieved += tcpServer.NewLog;
             server.NotifyClients -= tcpServer.NotifyClients;
             logHistory.ResetLog();
             eventLog1.WriteEntry("In onStop.");

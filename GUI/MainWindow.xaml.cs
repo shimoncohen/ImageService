@@ -24,9 +24,13 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel MainWindowViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            MainWindowViewModel = new MainWindowViewModel();
+            this.DataContext = MainWindowViewModel;
         }
 
         protected override void OnClosing(CancelEventArgs e)

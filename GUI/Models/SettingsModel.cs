@@ -27,7 +27,9 @@ namespace GUI.Models
             get { return m_OutputDirectory; }
             set
             {
-                m_OutputDirectory = "Output Directory: " + value;
+                /*m_OutputDirectory = "Output Directory: " + value;
+                OnPropertyChanged("OutputDirectory");*/
+                m_OutputDirectory = "Output Directory:  " + value;
                 OnPropertyChanged("OutputDirectory");
             }
         }
@@ -39,7 +41,7 @@ namespace GUI.Models
             get { return m_SourceName; }
             set
             {
-                m_OutputDirectory = "Source Name: " + value;
+                m_SourceName = "Source Name:    " + value;
                 OnPropertyChanged("SourceName");
             }
         }
@@ -51,7 +53,7 @@ namespace GUI.Models
             get { return m_LogName; }
             set
             {
-                m_LogName = "Log Name: " + value;
+                m_LogName = "Log Name:  " + value;
                 OnPropertyChanged("LogName");
             }
         }
@@ -63,7 +65,7 @@ namespace GUI.Models
             get { return m_ThumbSize; }
             set
             {
-                m_OutputDirectory = "Thumbnail Size: " + value;
+                m_ThumbSize = "Thumbnail Size:  " + value;
                 OnPropertyChanged("ThumbSize");
             }
         }
@@ -90,18 +92,39 @@ namespace GUI.Models
             }
         }
         
-        public void addToHandlersList(string s)
+        public void AddToHandlersList(string s)
         {
             Application.Current.Dispatcher.Invoke(new Action(() => { m_Directories.Add(s); }));
         }
 
+        public void RemoveFromHandlersList(InfoEventArgs e)
+        {
+            string[] args = e.Args;
+            string DirToRemove = args[0];
+            Application.Current.Dispatcher.Invoke(new Action(() => { m_Directories.Remove(DirToRemove); }));
+            OnPropertyChanged("Directories");
+        }
+
         public SettingsModel() 
         {
-            m_OutputDirectory = "Output Directory: ";
-            m_SourceName = "Source Name: ";
-            m_LogName = "Log Name: ";
-            m_ThumbSize = "Thumbnail Size: ";
+            m_OutputDirectory = "Output Directory:  ";
+            m_SourceName = "Source Name:    ";
+            m_LogName = "Log Name:  ";
+            m_ThumbSize = "Thumbnail Size:  ";
             m_Directories = new ObservableCollection<string>();
+        }
+
+        public void InfoUpdate(InfoEventArgs e)
+        {
+            string[] answer = e.Args;
+            this.OutputDir = answer[0];
+            this.SourceName = answer[1];
+            this.LogName = answer[2];
+            this.ThumbSize = answer[3];
+            for (int i = 4; i < answer.Length; i++)
+            {
+                this.AddToHandlersList(answer[i]);
+            }
         }
     }
 }

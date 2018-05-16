@@ -1,8 +1,8 @@
 ﻿using ImageService.Logging;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using ImageService.Infrastructure.Enums;
 using ImageService.Logging.Modal.Event;
+using ImageService.Infrastructure.Enums;
 
 namespace ImageService.Commands
 {
@@ -26,7 +26,7 @@ namespace ImageService.Commands
                 i++;
             }
             // return the info converted to Json ready to be sent to client
-            InfoEventArgs info = new InfoEventArgs((int)CommandEnum.LogCommand, answer);
+            InfoEventArgs info = new InfoEventArgs((int)EnumTranslator.CommandToInfo((int)CommandEnum.LogCommand), answer);
             return JsonConvert.SerializeObject(info);
         }
     }

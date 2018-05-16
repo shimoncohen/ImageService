@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using GUI;
 using GUI.Modal.Event;
 using GUI.Enums;
+using System.Windows;
 
 namespace GUI.Models
 {
@@ -34,8 +35,11 @@ namespace GUI.Models
         
         public void AddToList(MessageRecievedEventArgs e)
         {
-            this.m_LogsInfoList.Add(e);
-            OnPropertyChanged("AddToList");
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                this.m_LogsInfoList.Add(e);
+            }));
+            OnPropertyChanged("LogsInfoList");
         }
         
         public LogsModel()
@@ -62,22 +66,23 @@ namespace GUI.Models
                 message = log[1];
                 MessageRecievedEventArgs m = new MessageRecievedEventArgs() { Status = type, Message = message };
                 // add to the logs list
-                m_LogsInfoList.Add(m);
+                Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
             }
+            OnPropertyChanged("LogsInfoList");
         }
 
         public void AddNewLog(InfoEventArgs e)
         {
             string[] answer = e.Args, log;
             // split the received log by ",".
-            log = answer[0].Split(',');
             // log[1] is the message 
-            string message = log[1];
+            string message = answer[1];
             // log[0] is the message type
-            MessageTypeEnum type = ParseTypeFromString(log[0]);
+            MessageTypeEnum type = ParseTypeFromString(answer[0]);
             MessageRecievedEventArgs m = new MessageRecievedEventArgs() { Status = type, Message = message };
             // add to the logs list
-            m_LogsInfoList.Add(m);
+            Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
+            OnPropertyChanged("LogsInfoList");
         }
 
         public MessageTypeEnum ParseTypeFromString(string s)

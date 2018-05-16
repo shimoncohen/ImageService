@@ -7,13 +7,14 @@
         xmlns:local="clr-namespace:GUI"
         xmlns:views="clr-namespace:GUI.Views"
         mc:Ignorable="d"
-        Title="ImageService" Height="550" Width="800" MinHeight="350" MinWidth="350" Background="#FFE5E5E5">
+        Title="ImageService" Height="550" Width="800" MinHeight="350" MinWidth="350" Background="Transparent">
+   
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid Background="#FFE5E5E5">
+    <Grid Background="{Binding ConnectionStatus}">
         <TabControl HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto">
             <TabItem Header="Settings" 
                      HorizontalAlignment="Stretch" 

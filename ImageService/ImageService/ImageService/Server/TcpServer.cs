@@ -10,6 +10,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
+using ImageService.Infrastructure.Enums;
+using ImageService.Logging.Modal;
 
 namespace ImageService.Server
 {
@@ -22,6 +24,8 @@ namespace ImageService.Server
         private TcpListener listener;
         private List<TcpClient> clients;
         private Mutex send;
+        private NetworkStream stream;
+        private BinaryWriter writer;
         #endregion
 
         #region Properties
@@ -74,21 +78,35 @@ namespace ImageService.Server
             CommandRecieved?.Invoke(this, e);
         }
 
+        public void NewLog(object sender, MessageRecievedEventArgs e)
+        {
+            string[] args = { e.Status.ToString(), e.Message };
+            InfoEventArgs info = new InfoEventArgs((int)InfoEnums.LogInfo, args);
+            NotifyClients(this, info);
+        }
+
         public void NotifyClients(object sender, InfoEventArgs e)
         {
             new Task(() =>
             {
                 string info = JsonConvert.SerializeObject(e);
-                send.WaitOne();
                 foreach (TcpClient client in clients)
                 {
-                    using (NetworkStream stream = client.GetStream())
-                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    if (client.Connected)
+                    {
+                        stream = client.GetStream();
+                        writer = new BinaryWriter(stream);
+                    }
+                    send.WaitOne();
+                    if (client.Connected)
                     {
                         writer.Write(info);
+                    } else
+                    {
+                        clients.Remove(client);
                     }
+                    send.ReleaseMutex();
                 }
-                send.ReleaseMutex();
             }).Start();
         }
 

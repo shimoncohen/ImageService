@@ -15,6 +15,7 @@ namespace ImageService.Infrastructure.Enums
         LogInfo = 1,
         LogHistoryInfo = 2,
         AppConfigInfo = 3,
-        CloseHandlerInfo = 4
+        CloseHandlerInfo = 4,
+        RemoveHandler = 5
     }
 }

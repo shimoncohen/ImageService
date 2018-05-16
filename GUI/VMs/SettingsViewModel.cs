@@ -10,15 +10,16 @@ using GUI.Models;
 using Prism.Commands;
 using GUI.Modal.Event;
 using GUI.Enums;
+using System.Windows;
 
 namespace GUI.VMs
 {
-    class SettingsViewModel : INotifyPropertyChanged//, ConnectionInterface
+    class SettingsViewModel : INotifyPropertyChanged, ConnectionInterface
     {
         private SettingsModel SettingsModel;
         private Model m_ConnectionModel;
 
-        public string OutputDirectory
+        public string VM_OutputDirectory
         {
             get { return this.SettingsModel.OutputDir; }
             set
@@ -27,7 +28,7 @@ namespace GUI.VMs
             }
         }
 
-        public string SourceName {
+        public string VM_SourceName {
             get { return this.SettingsModel.SourceName; }
             set
             {
@@ -35,7 +36,7 @@ namespace GUI.VMs
             }
         }
 
-        public string LogName {
+        public string VM_LogName {
             get { return this.SettingsModel.LogName; }
             set
             {
@@ -43,7 +44,7 @@ namespace GUI.VMs
             }
         }
 
-        public string ThumbSize {
+        public string VM_ThumbSize {
             get { return this.SettingsModel.ThumbSize; }
             set
             {
@@ -51,7 +52,7 @@ namespace GUI.VMs
             }
         }
         
-        public string SelectedHandler
+        public string VM_SelectedHandler
         {
             get { return this.SettingsModel.SelectedHandler; }
             set
@@ -62,7 +63,7 @@ namespace GUI.VMs
             }
         }
 
-        public ObservableCollection<string> Directories
+        public ObservableCollection<string> VM_Directories
         {
             get { return this.SettingsModel.Directories; }
             set
@@ -72,7 +73,7 @@ namespace GUI.VMs
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         public event EventHandler<CommandRecievedEventArgs> sendInfo;
 
         public SettingsViewModel()
@@ -89,15 +90,18 @@ namespace GUI.VMs
             m_ConnectionModel.InfoRecieved += getInfoFromServer;
             sendInfo += m_ConnectionModel.StartSenderChannel;
             m_ConnectionModel.start();
+            System.Threading.Thread.Sleep(50);
             // initialize the fields
-            this.ReuqestAppConfigFromServer();
+            this.m_ConnectionModel.StartRecieverChannel();
+            this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
+            //this.m_ConnectionModel.StartRecieverChannel();
         }
 
         public ICommand RemoveCommand { get; private set; }
 
         private void OnRemove(object obj)
         {
-            //this.sendToServer();
+            this.sendToServer();
         }
 
         private bool CanRemove(object obj)
@@ -116,36 +120,36 @@ namespace GUI.VMs
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
-        public void ReuqestAppConfigFromServer()
+        public void SendCommandToServer(CommandEnum commandEnum, string item)
         {
             string[] args = { };
-            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.GetConfigCommand, args, "Empty");
+            if (!item.Equals("")) {
+                args = new string[1];
+                args[0] = item;
+            }
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
             sendInfo?.Invoke(this, e);
         }
 
         public void getInfoFromServer(object sender, InfoEventArgs e)
         {
             int infoType = InfoReceivedParser.parseInfoType(e.InfoId);
-            if (infoType == 1)
+            if (infoType == 1) // 1 are commands for settings model
             {
                 if(e.InfoId == (int)InfoEnums.AppConfigInfo)
                 {
-                    infoUpdate(e);
+                    this.SettingsModel.InfoUpdate(e);
+                } else if(e.InfoId == (int)InfoEnums.CloseHandlerInfo)
+                {
+                    this.SettingsModel.RemoveFromHandlersList(e);
                 }
             }
         }
 
-        private void infoUpdate(InfoEventArgs e)
+        public void sendToServer()
         {
-            string[] answer = e.Args;
-            SettingsModel.OutputDir = answer[0];
-            SettingsModel.SourceName = answer[1];
-            SettingsModel.LogName = answer[2];
-            SettingsModel.ThumbSize = answer[3];
-            for (int i = 4; i < answer.Length; i++)
-            {
-                SettingsModel.addToHandlersList(answer[i]);
-            }
+            this.m_ConnectionModel.StartRecieverChannel();
+            SendCommandToServer(CommandEnum.RemoveHandler, this.VM_SelectedHandler);
         }
     }
 }

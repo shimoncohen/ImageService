@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
-    <StackPanel Background="#FFE5E5E5" Width="Auto" Height="Auto">
-        <Grid Background="#FFE5E5E5" HorizontalAlignment="Stretch" 
+    <StackPanel Background="White" Width="Auto" Height="Auto">
+        <Grid Background="White" HorizontalAlignment="Stretch" 
               VerticalAlignment="Stretch" Width="Auto" Height="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -26,53 +26,55 @@
                             FontSize="50"
                             Foreground="Blue"
                             FontFamily="Book Antiqua"/>
-            <TextBlock x:Name="OutputDirtxt"
+            <TextBlock x:Name="VM_OutputDirectory"
                             Grid.Row="1"
                             HorizontalAlignment="Stretch"
                             Width="Auto"
-                            Text="{Binding OutputDirectory}"
+                            Text="{Binding VM_OutputDirectory}"
                             FontWeight="ExtraBold"
                             FontSize="15"
                             Margin="15,5,10,5" />
-            <TextBlock x:Name="SourceNametxt"
+            <TextBlock x:Name="VM_SourceName"
                             Grid.Row="2"
                             HorizontalAlignment="Stretch"
                             Width="Auto"
-                            Text="{Binding SourceName}"
+                            Text="{Binding VM_SourceName}"
                             FontWeight="ExtraBold"
                             FontSize="15"
                             Margin="15,5,10,5" />
-            <TextBlock x:Name="LogNameTxt"
+            <TextBlock x:Name="VM_LogName"
                             Grid.Row="3"
                             HorizontalAlignment="Stretch"
                             Width="Auto"
-                            Text="{Binding LogName}"
+                            Text="{Binding VM_LogName}"
                             FontWeight="ExtraBold"
                             FontSize="15"
                             Margin="15,5,10,5" />
-            <TextBlock x:Name="ThumbSizeTxt"
+            <TextBlock x:Name="VM_ThumbSize"
                             Grid.Row="4"
                             HorizontalAlignment="Stretch"
                             Width="Auto"
-                            Text="{Binding ThumbSize}"
+                            Text="{Binding VM_ThumbSize}"
                             FontWeight="ExtraBold"
                             FontSize="15"
                             Margin="15,5,10,5" />
-            <StackPanel Grid.Row="5" HorizontalAlignment="Stretch">
+            <DockPanel Grid.Row="5" HorizontalAlignment="Stretch">
                 <Button x:Name="RemoveButton"
+                        DockPanel.Dock="Top"
                         Content="Remove"
                         HorizontalAlignment="Stretch"
                         Block.TextAlignment="Center"
                         Command="{Binding RemoveCommand}"
                          AutomationProperties.AutomationId="RemoveButton"/>
-                <Border>
-                    <ListBox x:Name="Handlers" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            ItemsSource="{Binding Directories}"
-                            Margin="5"
-                            SelectedItem="{Binding SelectedHandler}" >
-                    </ListBox>
-                </Border>
-            </StackPanel>
+                <ListBox x:Name="Handlers" 
+                         DockPanel.Dock="Bottom"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                         ScrollViewer.CanContentScroll="True"
+                         ItemsSource="{Binding VM_Directories}"
+                         Margin="5"
+                         SelectedItem="{Binding VM_SelectedHandler}" >
+                </ListBox>
+            </DockPanel>
         </Grid>
     </StackPanel>
    

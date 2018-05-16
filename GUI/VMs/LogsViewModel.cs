@@ -16,7 +16,7 @@ namespace GUI.VMs
         private LogsModel LogsModel;
         private Model m_ConnectionModel;
 
-        public ObservableCollection<MessageRecievedEventArgs> LogsInfoList
+        public ObservableCollection<MessageRecievedEventArgs> VM_LogsInfoList
         {
             get { return LogsModel.LogsInfoList; }
         }
@@ -38,13 +38,15 @@ namespace GUI.VMs
             LogsModel = new LogsModel();
             LogsModel.PropertyChanged +=
                delegate (Object sender, PropertyChangedEventArgs e) {
-                   NotifyPropertyChanged(e.PropertyName);
+                   NotifyPropertyChanged("VM_" + e.PropertyName);
                };
             m_ConnectionModel = Model.CreateConnectionChannel();
             sendInfo += m_ConnectionModel.StartSenderChannel;
             // getting the initialize info from the server
             m_ConnectionModel.InfoRecieved += getInfoFromServer;
             m_ConnectionModel.start();
+            System.Threading.Thread.Sleep(50);
+            this.m_ConnectionModel.StartRecieverChannel();
             sendToServer();
         }
 

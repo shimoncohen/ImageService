@@ -80,6 +80,7 @@
     <Compile Include="MessageTypeEnum.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\InfoEventArgs.cs" />
+    <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="VMs\ColorConverter.cs" />
     <Compile Include="Models\LogInfo.cs" />
@@ -94,6 +95,7 @@
     </Compile>
     <Compile Include="VMs\ConnectionInterface.cs" />
     <Compile Include="VMs\LogsViewModel.cs" />
+    <Compile Include="VMs\MainWindowViewModel.cs" />
     <Compile Include="VMs\SettingsViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
