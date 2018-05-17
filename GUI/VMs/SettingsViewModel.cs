@@ -94,7 +94,6 @@ namespace GUI.VMs
             // initialize the fields
             this.m_ConnectionModel.StartRecieverChannel();
             this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
-            //this.m_ConnectionModel.StartRecieverChannel();
         }
 
         public ICommand RemoveCommand { get; private set; }
@@ -126,9 +125,13 @@ namespace GUI.VMs
             if (!item.Equals("")) {
                 args = new string[1];
                 args[0] = item;
+                CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, item);
+                sendInfo?.Invoke(this, e);
+            } else
+            {
+                CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
+                sendInfo?.Invoke(this, e);
             }
-            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
-            sendInfo?.Invoke(this, e);
         }
 
         public void getInfoFromServer(object sender, InfoEventArgs e)
@@ -148,8 +151,8 @@ namespace GUI.VMs
 
         public void sendToServer()
         {
-            this.m_ConnectionModel.StartRecieverChannel();
-            SendCommandToServer(CommandEnum.RemoveHandler, this.VM_SelectedHandler);
+            //this.m_ConnectionModel.StartRecieverChannel();
+            SendCommandToServer(CommandEnum.CloseCommand, this.VM_SelectedHandler);
         }
     }
 }

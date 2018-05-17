@@ -88,8 +88,9 @@ namespace ImageService.Server
                     //TODO: check if handler is deleted
                     //handlerToClose.DirectoryClose -= CloseHandler;
                     // delete handler
-
-                    string[] args = { e.DirectoryPath };
+                    handler.StopHandleDirectory(e.DirectoryPath);
+                    string path = e.DirectoryPath;
+                    string[] args = { path };
                     // create info args
                     InfoEventArgs info = new InfoEventArgs((int)InfoEnums.CloseHandlerInfo, args);
                     // remove the handler from the app config handler list

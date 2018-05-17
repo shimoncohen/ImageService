@@ -71,6 +71,15 @@ namespace ImageService
         public void RemoveHandler(string path)
         {
             Handlers.Remove(path);
+            string handlerName = ConfigurationManager.AppSettings["Handler"];
+            List<string> temp = new List<string>();
+            // add all of the handler paths to the handler list
+            foreach (string handler in handlerName.Split(';'))
+            {
+                temp.Add(handler);
+            }
+            temp.Remove(path);
+            ConfigurationManager.AppSettings["Handler"] = string.Join(";", temp);
         }
     }
 }

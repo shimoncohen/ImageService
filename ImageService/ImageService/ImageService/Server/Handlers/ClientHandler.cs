@@ -84,8 +84,16 @@ namespace ImageService.Server.Handlers
                         this.CommandRecieved?.Invoke(this, args);
                     }
                     send.ReleaseMutex();
+                    CloseResources(stream, reader, writer);
                 }
             }).Start();
+        }
+
+        private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
+        {
+            stream.Dispose();
+            reader.Close();
+            writer.Close();
         }
     }
 }

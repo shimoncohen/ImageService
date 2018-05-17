@@ -73,7 +73,7 @@ namespace GUI.Models
 
         public void AddNewLog(InfoEventArgs e)
         {
-            string[] answer = e.Args, log;
+            string[] answer = e.Args;
             // split the received log by ",".
             // log[1] is the message 
             string message = answer[1];

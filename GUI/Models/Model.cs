@@ -62,12 +62,17 @@ namespace GUI.Models
                 if (client.Connected)
                 {
                     stream = client.GetStream();
-                    //mutex.WaitOne();
                     writer = new BinaryWriter(stream);
-                    //mutex.ReleaseMutex();
                     string args = JsonConvert.SerializeObject(e);
                     mutex.WaitOne();
-                    writer.Write(args);
+                    try
+                    {
+                        writer.Write(args);
+                    } catch (Exception e1)
+                    {
+                        mutex.ReleaseMutex();
+                        return;
+                    }
                     mutex.ReleaseMutex();
                 }
             }).Start();
@@ -101,8 +106,16 @@ namespace GUI.Models
                         InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
                         InfoRecieved?.Invoke(this, e);
                     }
+                    CloseResources(stream, reader, writer);
                 }).Start();
             }
+        }
+
+        private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
+        {
+            stream.Dispose();
+            reader.Close();
+            writer.Close();
         }
 
         public void stop()

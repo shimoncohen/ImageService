@@ -32,12 +32,5 @@ namespace GUI
             MainWindowViewModel = new MainWindowViewModel();
             this.DataContext = MainWindowViewModel;
         }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            Model Model = Model.CreateConnectionChannel();
-            Model.stop();
-            base.OnClosed(e);
-        }
     }
 }

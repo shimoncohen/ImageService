@@ -87,8 +87,11 @@ namespace ImageService
             IImageServiceModal model = new ImageServiceModal(info.OutputDir, info.ThumbnailSize);
             // create the services servers
             ImageController controller = new ImageController(model);
+            // create image server
             server = new ImageServer(controller, info.Handlers.ToArray(), logger);
+            // create tcp server
             tcpServer = new TcpServer(controller, logger);
+            // start the tcp server
             tcpServer.Start();
             controller.HandlerClosedEvent += server.CloseHandler;
             logger.NotifyClients += tcpServer.NotifyClients;
@@ -122,9 +125,12 @@ namespace ImageService
         /// </summary>
         protected override void OnStop()
         {
+            // write to the log
             eventLog1.WriteEntry("In onStop.");
             LogHistory logHistory = LogHistory.CreateLogHistory();
+            // close the image server
             server.CloseServer();
+            // close the tcp server
             tcpServer.Stop();
             logger.MessageRecieved -= ImageServiceMessage;
             logger.NotifyClients -= tcpServer.NotifyClients;

@@ -16,7 +16,7 @@ namespace ImageService.Commands
         /// <return> returns the app config info as a string </return>
         public string Execute(string[] args, out bool result)
         {
-            // getsa the instance of the app config info
+            // gets the instance of the app config info
             ServiceInfo info = ServiceInfo.CreateServiceInfo();
             result = true;
             string handlers = String.Join(",", info.Handlers);

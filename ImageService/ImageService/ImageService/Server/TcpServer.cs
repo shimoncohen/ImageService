@@ -90,6 +90,8 @@ namespace ImageService.Server
             new Task(() =>
             {
                 string info = JsonConvert.SerializeObject(e);
+                int removed = 0;
+                // TODO: MOVE GOING OVER CLIENTS TO NEW FUNCTION AND WHEN EXCEPTION THEN CALL AGAIN
                 foreach (TcpClient client in clients)
                 {
                     if (client.Connected)
@@ -107,7 +109,14 @@ namespace ImageService.Server
                     }
                     send.ReleaseMutex();
                 }
+                CloseResources(stream, writer);
             }).Start();
+        }
+
+        private void CloseResources(Stream stream, BinaryWriter writer = null)
+        {
+            stream.Dispose();
+            writer.Close();
         }
 
         public void Stop()

@@ -16,8 +16,6 @@ namespace ImageService.Infrastructure.Enums
                     return InfoEnums.AppConfigInfo;
                 case (int)CommandEnum.LogCommand:
                     return InfoEnums.LogHistoryInfo;
-                case (int)CommandEnum.RemoveHandler:
-                    return InfoEnums.RemoveHandler;
             }
             return InfoEnums.NotInfo;
         }
@@ -30,8 +28,6 @@ namespace ImageService.Infrastructure.Enums
                     return CommandEnum.GetConfigCommand;
                 case (int)InfoEnums.LogHistoryInfo:
                     return CommandEnum.LogCommand;
-                case (int)InfoEnums.RemoveHandler:
-                    return CommandEnum.RemoveHandler;
             }
             return CommandEnum.NotCommand;
         }
