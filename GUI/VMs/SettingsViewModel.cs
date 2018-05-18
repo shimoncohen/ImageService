@@ -127,7 +127,7 @@ namespace GUI.VMs
                 args[0] = item;
                 CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, item);
                 sendInfo?.Invoke(this, e);
-            } else
+            } else // we remove a specific handler
             {
                 CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
                 sendInfo?.Invoke(this, e);
