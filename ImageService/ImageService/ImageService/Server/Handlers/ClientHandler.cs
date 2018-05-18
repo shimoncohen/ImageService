@@ -84,7 +84,6 @@ namespace ImageService.Server.Handlers
                         this.CommandRecieved?.Invoke(this, args);
                     }
                     send.ReleaseMutex();
-                    CloseResources(stream, reader, writer);
                 }
             }).Start();
         }
