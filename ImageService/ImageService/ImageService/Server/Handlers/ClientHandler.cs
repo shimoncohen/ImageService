@@ -1,5 +1,4 @@
 ﻿using ImageService.Controller;
-using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
 using ImageService.Logging.Modal.Event;

@@ -6,7 +6,6 @@ using System.IO;
 using Newtonsoft.Json;
 using GUI.Modal.Event;
 using System.Threading;
-using GUI.Enums;
 
 namespace GUI.Models
 {
