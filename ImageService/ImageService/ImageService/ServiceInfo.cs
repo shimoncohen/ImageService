@@ -80,6 +80,7 @@ namespace ImageService
             }
             temp.Remove(path);
             ConfigurationManager.AppSettings["Handler"] = string.Join(";", temp);
+            //ConfigurationManager.RefreshSection("Handler");
         }
     }
 }
