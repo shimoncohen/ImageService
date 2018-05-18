@@ -151,7 +151,6 @@ namespace GUI.VMs
 
         public void sendToServer()
         {
-            //this.m_ConnectionModel.StartRecieverChannel();
             SendCommandToServer(CommandEnum.CloseCommand, this.VM_SelectedHandler);
         }
     }
