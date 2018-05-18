@@ -27,8 +27,6 @@ namespace GUI.Models
             get { return m_OutputDirectory; }
             set
             {
-                /*m_OutputDirectory = "Output Directory: " + value;
-                OnPropertyChanged("OutputDirectory");*/
                 m_OutputDirectory = "Output Directory:  " + value;
                 OnPropertyChanged("OutputDirectory");
             }
