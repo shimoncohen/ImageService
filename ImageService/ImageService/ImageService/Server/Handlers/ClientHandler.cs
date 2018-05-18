@@ -58,19 +58,11 @@ namespace ImageService.Server.Handlers
                         string sendString = controller.ExecuteCommand(args.CommandID, args.Args, out result);
                         if (result)
                         {
-                            logging.Log("Got command: " + EnumTranslator.CommandEnumToString(args.CommandID) +
-                                ", with arguments: " + args.Args, MessageTypeEnum.INFO);
+                            logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                args.Args, MessageTypeEnum.INFO);
                             if(client.Connected)
                             {
-                                try
-                                {
-                                    writer.Write(sendString);
-                                } catch(Exception e)
-                                {
-                                    CloseResources(stream, reader, writer);
-                                    send.ReleaseMutex();
-                                    return;
-                                }
+                                writer.Write(sendString);
                             } else
                             {
                                 logging.Log("Client dissconnected", MessageTypeEnum.INFO);
@@ -82,18 +74,17 @@ namespace ImageService.Server.Handlers
                         }
                         else
                         {
-                            logging.Log("Failed to execute command: " +
-                                EnumTranslator.CommandEnumToString(args.CommandID), MessageTypeEnum.FAIL);
+                            logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
                         }
                     }
                     else
                     {
-                        logging.Log("Got command: " + EnumTranslator.CommandEnumToString(args.CommandID) +
-                            ", with arguments: " + args.Args + ", to directory: " + args.RequestDirPath,
-                            MessageTypeEnum.INFO);
+                        logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                                args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
                         this.CommandRecieved?.Invoke(this, args);
                     }
                     send.ReleaseMutex();
+                    CloseResources(stream, reader, writer);
                 }
             }).Start();
         }

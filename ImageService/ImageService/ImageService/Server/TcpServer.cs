@@ -100,7 +100,7 @@ namespace ImageService.Server
             }
             else
             {
-                //clients.Remove(client);
+                clients.Remove(client);
             }
             send.ReleaseMutex();
         }

@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService", "ImageServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{22268E2E-8E3B-4B40-8CA2-25713598884A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C02C5D0B-7F1C-4817-817E-1438FCCEAAFD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{3909DAEF-942F-4716-89A2-F8CFCA8486E4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,14 +21,6 @@ Global
 		{22268E2E-8E3B-4B40-8CA2-25713598884A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22268E2E-8E3B-4B40-8CA2-25713598884A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22268E2E-8E3B-4B40-8CA2-25713598884A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C02C5D0B-7F1C-4817-817E-1438FCCEAAFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C02C5D0B-7F1C-4817-817E-1438FCCEAAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C02C5D0B-7F1C-4817-817E-1438FCCEAAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C02C5D0B-7F1C-4817-817E-1438FCCEAAFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3909DAEF-942F-4716-89A2-F8CFCA8486E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3909DAEF-942F-4716-89A2-F8CFCA8486E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3909DAEF-942F-4716-89A2-F8CFCA8486E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3909DAEF-942F-4716-89A2-F8CFCA8486E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
