@@ -85,6 +85,26 @@ namespace ImageService.Server
             NotifyClients(this, info);
         }
 
+        private void SendToClient(TcpClient client, string info)
+        {
+            if (client.Connected)
+            {
+                stream = client.GetStream();
+                writer = new BinaryWriter(stream);
+            }
+            send.WaitOne();
+            if (client.Connected)
+            {
+                writer.Write(info);
+                CloseResources(stream, writer);
+            }
+            else
+            {
+                //clients.Remove(client);
+            }
+            send.ReleaseMutex();
+        }
+
         public void NotifyClients(object sender, InfoEventArgs e)
         {
             new Task(() =>
@@ -92,24 +112,19 @@ namespace ImageService.Server
                 string info = JsonConvert.SerializeObject(e);
                 int removed = 0;
                 // TODO: MOVE GOING OVER CLIENTS TO NEW FUNCTION AND WHEN EXCEPTION THEN CALL AGAIN
-                foreach (TcpClient client in clients)
+                List<TcpClient> temp = new List<TcpClient>();
+                foreach (TcpClient client in clients) temp.Add(client);
+                foreach (TcpClient client in temp)
                 {
-                    if (client.Connected)
+                    try
                     {
-                        stream = client.GetStream();
-                        writer = new BinaryWriter(stream);
+                        SendToClient(client, info);
+                    } catch(Exception e1)
+                    {
+                        e1.ToString();
+                        continue;
                     }
-                    send.WaitOne();
-                    if (client.Connected)
-                    {
-                        writer.Write(info);
-                    } else
-                    {
-                        clients.Remove(client);
-                    }
-                    send.ReleaseMutex();
                 }
-                CloseResources(stream, writer);
             }).Start();
         }
 
