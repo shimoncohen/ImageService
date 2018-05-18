@@ -45,7 +45,7 @@ namespace GUI.Models
         public LogsModel()
         {
             this.m_LogsInfoList = new ObservableCollection<MessageRecievedEventArgs>();
-
+            // test messages
             this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.INFO, Message = "Test Message" });
             this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.WARNING, Message = "Test Message2" });
             this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.FAIL, Message = "Test Message3" });
