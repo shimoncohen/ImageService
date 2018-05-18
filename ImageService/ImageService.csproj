@@ -78,7 +78,6 @@
     <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\EnumTranslator.cs" />
     <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\InfoEnums.cs" />
     <Compile Include="ImageService\ImageService\LogHistory.cs" />
-    <Compile Include="ImageService\ImageService\mainClass.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Server\Handlers\ClientHandler.cs" />
