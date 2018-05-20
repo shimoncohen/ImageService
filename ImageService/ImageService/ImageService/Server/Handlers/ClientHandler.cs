@@ -40,15 +40,15 @@ namespace ImageService.Server.Handlers
                 writer = new BinaryWriter(stream);
                 while (client.Connected)
                 {
-                    send.WaitOne();
                     string commandLine;
                     try
                     {
+                        send.WaitOne();
                         commandLine = reader.ReadString();
+                        send.ReleaseMutex();
                     } catch(Exception e)
                     {
-                        send.ReleaseMutex();
-                        return;
+                        break;
                     }
                     bool result;
                     CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
@@ -59,14 +59,15 @@ namespace ImageService.Server.Handlers
                         {
                             logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                 args.Args, MessageTypeEnum.INFO);
-                            if(client.Connected)
+                            if (client.Connected)
                             {
+                                send.WaitOne();
                                 writer.Write(sendString);
+                                send.ReleaseMutex();
                             } else
                             {
                                 logging.Log("Client dissconnected", MessageTypeEnum.INFO);
-                                send.ReleaseMutex();
-                                return;
+                                break;
                             }
                             // TODO: write to log that command was sent
                             logging.Log("Sent " + args.CommandID.ToString(), MessageTypeEnum.INFO);
@@ -82,16 +83,22 @@ namespace ImageService.Server.Handlers
                                 args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
                         this.CommandRecieved?.Invoke(this, args);
                     }
-                    send.ReleaseMutex();
                 }
+                CloseResources(stream, reader, writer);
             }).Start();
         }
 
         private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
         {
             stream.Dispose();
-            reader.Close();
-            writer.Close();
+            if (reader != null)
+            {
+                reader.Close();
+            }
+            if (writer != null)
+            {
+                writer.Close();
+            }
         }
     }
 }

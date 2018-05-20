@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using ImageService.Infrastructure.Enums;
 using ImageService.Logging.Modal;
+using System.Diagnostics;
 
 namespace ImageService.Server
 {
@@ -94,7 +95,6 @@ namespace ImageService.Server
                 send.WaitOne();
                 writer.Write(info);
                 send.ReleaseMutex();
-                CloseResources(stream, writer);
             }
             else
             {
@@ -107,7 +107,6 @@ namespace ImageService.Server
             new Task(() =>
             {
                 string info = JsonConvert.SerializeObject(e);
-                // TODO: MOVE GOING OVER CLIENTS TO NEW FUNCTION AND WHEN EXCEPTION THEN CALL AGAIN
                 List<TcpClient> temp = new List<TcpClient>();
                 foreach (TcpClient client in clients) temp.Add(client);
                 foreach (TcpClient client in temp)
@@ -117,17 +116,11 @@ namespace ImageService.Server
                         SendToClient(client, info);
                     } catch(Exception e1)
                     {
-                        e1.ToString();
+                        Debug.WriteLine("In TcpServer, failed send to client, Error: " + e1.ToString());
                         continue;
                     }
                 }
             }).Start();
-        }
-
-        private void CloseResources(Stream stream, BinaryWriter writer = null)
-        {
-            stream.Dispose();
-            writer.Close();
         }
 
         public void Stop()

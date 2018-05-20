@@ -19,13 +19,13 @@ namespace GUI.Connection
         private NetworkStream stream;
         private BinaryWriter writer;
         private BinaryReader reader;
-        private Boolean active = false;
 
         public event EventHandler<InfoEventArgs> InfoRecieved;
 
         private Communication()
         {
             mutex = new Mutex();
+            StartRecieverChannel();
         }
 
         public static Communication CreateConnectionChannel()
@@ -64,63 +64,66 @@ namespace GUI.Connection
                     stream = client.GetStream();
                     writer = new BinaryWriter(stream);
                     string args = JsonConvert.SerializeObject(e);
-                    mutex.WaitOne();
                     try
                     {
+                        mutex.WaitOne();
                         writer.Write(args);
+                        mutex.ReleaseMutex();
                     } catch (Exception e1)
                     {
-                        mutex.ReleaseMutex();
+                        Debug.WriteLine("In GUI communication, failed send, Error: " + e1.ToString());
                         return;
                     }
-                    mutex.ReleaseMutex();
                 }
             }).Start();
         }
 
-        public void StartRecieverChannel ()
+        private void StartRecieverChannel()
         {
-            if(!active)
+            string args;
+            new Task(() =>
             {
-                string args;
-                active = true;
-                new Task(() =>
+                if (client.Connected)
                 {
-                    if (client.Connected)
+                    stream = client.GetStream();
+                    reader = new BinaryReader(stream);
+                }
+                while (client.Connected)
+                {
+                    try
                     {
-                        stream = client.GetStream();
                         mutex.WaitOne();
-                        reader = new BinaryReader(stream);
+                        args = reader.ReadString();
                         mutex.ReleaseMutex();
                     }
-                    while (client.Connected)
+                    catch (Exception error)
                     {
-                        try
-                        {
-                            args = reader.ReadString();
-                        }
-                        catch (Exception error)
-                        {
-                            Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
-                            return;
-                        }
-                        InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
-                        InfoRecieved?.Invoke(this, e);
+                        Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
+                        return;
                     }
-                    CloseResources(stream, reader, writer);
-                }).Start();
-            }
+                    InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
+                    InfoRecieved?.Invoke(this, e);
+                }
+                //CloseResources(stream, reader, writer);
+            }).Start();
         }
 
-        private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
+        /*private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
         {
             stream.Dispose();
-            reader.Close();
-            writer.Close();
-        }
+            if(reader != null)
+            {
+                reader.Close();
+            }
+            if (writer != null)
+            {
+                writer.Close();
+            }
+        }*/
 
         public void stop()
         {
+            //CloseResources(stream, reader, writer);
             client.Close();
         }
 

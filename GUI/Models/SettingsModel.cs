@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using GUI.Modal.Event;
 using GUI.Enums;
 using System.Windows;
+using System.Windows.Data;
 
 namespace GUI.Models
 {
@@ -110,6 +111,8 @@ namespace GUI.Models
             m_LogName = "Log Name:  ";
             m_ThumbSize = "Thumbnail Size:  ";
             m_Directories = new ObservableCollection<string>();
+            Object locker = new object();
+            BindingOperations.EnableCollectionSynchronization(m_Directories, locker);
         }
 
         public void InfoUpdate(InfoEventArgs e)

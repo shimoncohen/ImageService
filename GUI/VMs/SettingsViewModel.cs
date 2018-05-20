@@ -93,7 +93,6 @@ namespace GUI.VMs
             m_Connection.start();
             System.Threading.Thread.Sleep(50);
             // initialize the fields
-            this.m_Connection.StartRecieverChannel();
             this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
         }
 

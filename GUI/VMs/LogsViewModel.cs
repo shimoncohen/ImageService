@@ -47,7 +47,6 @@ namespace GUI.VMs
             m_Connection.InfoRecieved += getInfoFromServer;
             m_Connection.start();
             System.Threading.Thread.Sleep(50);
-            this.m_Connection.StartRecieverChannel();
             sendToServer();
         }
 
