@@ -84,7 +84,7 @@ namespace ImageService.Server.Handlers
                         this.CommandRecieved?.Invoke(this, args);
                     }
                 }
-                CloseResources(stream, reader, writer);
+                //CloseResources(stream, reader, writer);
             }).Start();
         }
 

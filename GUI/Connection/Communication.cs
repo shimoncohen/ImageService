@@ -67,7 +67,10 @@ namespace GUI.Connection
                     try
                     {
                         mutex.WaitOne();
-                        writer.Write(args);
+                        if(client.Connected)
+                        {
+                            writer.Write(args);
+                        }
                         mutex.ReleaseMutex();
                     } catch (Exception e1)
                     {
@@ -92,14 +95,21 @@ namespace GUI.Connection
                 {
                     try
                     {
-                        mutex.WaitOne();
-                        args = reader.ReadString();
-                        mutex.ReleaseMutex();
+                        //mutex.WaitOne();
+                        if (client.Connected)
+                        {
+                            args = reader.ReadString();
+                        } else
+                        {
+                            //mutex.ReleaseMutex();
+                            break;
+                        }
+                        //mutex.ReleaseMutex();
                     }
                     catch (Exception error)
                     {
                         Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
-                        return;
+                        break;
                     }
                     InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
                     InfoRecieved?.Invoke(this, e);
