@@ -91,18 +91,15 @@ namespace ImageService.Server
             {
                 stream = client.GetStream();
                 writer = new BinaryWriter(stream);
-            }
-            send.WaitOne();
-            if (client.Connected)
-            {
+                send.WaitOne();
                 writer.Write(info);
+                send.ReleaseMutex();
                 CloseResources(stream, writer);
             }
             else
             {
                 clients.Remove(client);
             }
-            send.ReleaseMutex();
         }
 
         public void NotifyClients(object sender, InfoEventArgs e)
@@ -110,7 +107,6 @@ namespace ImageService.Server
             new Task(() =>
             {
                 string info = JsonConvert.SerializeObject(e);
-                int removed = 0;
                 // TODO: MOVE GOING OVER CLIENTS TO NEW FUNCTION AND WHEN EXCEPTION THEN CALL AGAIN
                 List<TcpClient> temp = new List<TcpClient>();
                 foreach (TcpClient client in clients) temp.Add(client);

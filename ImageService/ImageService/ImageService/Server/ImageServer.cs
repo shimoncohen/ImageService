@@ -83,12 +83,11 @@ namespace ImageService.Server
                 if(e.DirectoryPath.Equals("*") || handler.GetPath().Equals(e.DirectoryPath))
                 {
                     this.CommandRecieved -= handler.OnCommandRecieved;
-                    this.logging.Log("Closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
-
-                    //TODO: check if handler is deleted
-                    //handlerToClose.DirectoryClose -= CloseHandler;
+                    this.logging.Log("Closing handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
+                    handler.DirectoryClose -= CloseHandler;
                     // delete handler
                     handler.StopHandleDirectory(e.DirectoryPath);
+                    this.logging.Log("Closed handler for " + e.DirectoryPath, MessageTypeEnum.INFO);
                     string path = e.DirectoryPath;
                     string[] args = { path };
                     // create info args

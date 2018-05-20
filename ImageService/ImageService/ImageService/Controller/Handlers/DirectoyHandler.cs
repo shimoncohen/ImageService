@@ -78,8 +78,7 @@ namespace ImageService.Controller.Handlers
         {
             if (path == this.directoryPath)
             {
-                //DirectoryCloseEventArgs eTemp = new DirectoryCloseEventArgs(this.directoryPath, "Closing " + this.directoryPath);
-                //this.DirectoryClose?.Invoke(this, eTemp);
+                watcher.EnableRaisingEvents = false;
                 watcher.Dispose();
             }
         }

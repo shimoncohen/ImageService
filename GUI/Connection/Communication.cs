@@ -6,6 +6,7 @@ using System.IO;
 using Newtonsoft.Json;
 using GUI.Modal.Event;
 using System.Threading;
+using System.Diagnostics;
 
 namespace GUI.Connection
 {
@@ -100,6 +101,7 @@ namespace GUI.Connection
                         }
                         catch (Exception error)
                         {
+                            Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
                             return;
                         }
                         InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
