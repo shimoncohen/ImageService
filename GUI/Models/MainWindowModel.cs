@@ -5,20 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using GUI.VMs;
 using GUI.Views;
+using GUI.Connection;
 using GUI;
 
 namespace GUI.Models
 {
     class MainWindowModel
     {
-        private Model model;
+        private Communication communication;
         private bool connection;
 
         public MainWindowModel()
         {
-            model = Model.CreateConnectionChannel();
+            communication = Communication.CreateConnectionChannel();
             // get connection status
-            connection = model.IsConnected();
+            connection = communication.IsConnected();
         }
 
         public string ConnectionStatus

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUI.Models
+namespace GUI.Connection
 {
-    interface IModel
+    interface ICommunication
     {
         // need to hold appConfig info
         // needs to hols logs

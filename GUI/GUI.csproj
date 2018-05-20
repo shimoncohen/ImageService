@@ -81,7 +81,7 @@
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\InfoEventArgs.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
-    <Compile Include="Models\Model.cs" />
+    <Compile Include="Connection\Communication.cs" />
     <Compile Include="VMs\ColorConverter.cs" />
     <Compile Include="Models\LogInfo.cs" />
     <Compile Include="Models\LogsModel.cs" />
@@ -119,7 +119,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\IModel.cs" />
+    <Compile Include="Connection\ICommunication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

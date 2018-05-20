@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using GUI.Models;
+using GUI.Connection;
 using System.Collections.ObjectModel;
 using GUI.Modal.Event;
 using GUI.Enums;
@@ -14,7 +15,7 @@ namespace GUI.VMs
     class LogsViewModel : INotifyPropertyChanged, ConnectionInterface
     {
         private LogsModel LogsModel;
-        private Model m_ConnectionModel;
+        private Communication m_Connection;
 
         public ObservableCollection<MessageRecievedEventArgs> VM_LogsInfoList
         {
@@ -40,13 +41,13 @@ namespace GUI.VMs
                delegate (Object sender, PropertyChangedEventArgs e) {
                    NotifyPropertyChanged("VM_" + e.PropertyName);
                };
-            m_ConnectionModel = Model.CreateConnectionChannel();
-            sendInfo += m_ConnectionModel.StartSenderChannel;
+            m_Connection = Communication.CreateConnectionChannel();
+            sendInfo += m_Connection.StartSenderChannel;
             // getting the initialize info from the server
-            m_ConnectionModel.InfoRecieved += getInfoFromServer;
-            m_ConnectionModel.start();
+            m_Connection.InfoRecieved += getInfoFromServer;
+            m_Connection.start();
             System.Threading.Thread.Sleep(50);
-            this.m_ConnectionModel.StartRecieverChannel();
+            this.m_Connection.StartRecieverChannel();
             sendToServer();
         }
 

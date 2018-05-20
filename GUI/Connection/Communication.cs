@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 using GUI.Modal.Event;
 using System.Threading;
 
-namespace GUI.Models
+namespace GUI.Connection
 {
-    public class Model : IModel
+    public class Communication : ICommunication
     {
-        private static Model model;
+        private static Communication model;
         private const int serverPort = 8000;
         private Mutex mutex;
         private TcpClient client;
@@ -22,17 +22,17 @@ namespace GUI.Models
 
         public event EventHandler<InfoEventArgs> InfoRecieved;
 
-        private Model()
+        private Communication()
         {
             mutex = new Mutex();
         }
 
-        public static Model CreateConnectionChannel()
+        public static Communication CreateConnectionChannel()
         {
             // if not already created
             if (model == null)
             {
-                model = new Model();
+                model = new Communication();
             }
             // otherwise create new instance
             return model;

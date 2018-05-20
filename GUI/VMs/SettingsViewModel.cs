@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GUI.Models;
+using GUI.Connection;
 using Prism.Commands;
 using GUI.Modal.Event;
 using GUI.Enums;
@@ -17,7 +18,7 @@ namespace GUI.VMs
     class SettingsViewModel : INotifyPropertyChanged, ConnectionInterface
     {
         private SettingsModel SettingsModel;
-        private Model m_ConnectionModel;
+        private Communication m_Connection;
 
         public string VM_OutputDirectory
         {
@@ -85,14 +86,14 @@ namespace GUI.VMs
                };
             this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove);
 
-            m_ConnectionModel = Model.CreateConnectionChannel();
+            m_Connection = Communication.CreateConnectionChannel();
             // getting the initialize info from the server
-            m_ConnectionModel.InfoRecieved += getInfoFromServer;
-            sendInfo += m_ConnectionModel.StartSenderChannel;
-            m_ConnectionModel.start();
+            m_Connection.InfoRecieved += getInfoFromServer;
+            sendInfo += m_Connection.StartSenderChannel;
+            m_Connection.start();
             System.Threading.Thread.Sleep(50);
             // initialize the fields
-            this.m_ConnectionModel.StartRecieverChannel();
+            this.m_Connection.StartRecieverChannel();
             this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
         }
 
