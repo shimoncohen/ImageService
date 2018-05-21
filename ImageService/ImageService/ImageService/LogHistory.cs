@@ -42,7 +42,8 @@ namespace ImageService
             string[] log = new string[2];
             log[0] = e.Status.ToString();
             log[1] = e.Message;
-            Logs.Insert(0, log);
+            //Logs.Insert(0, log);
+            Logs.Add(log);
         }
 
         /// <summary>
