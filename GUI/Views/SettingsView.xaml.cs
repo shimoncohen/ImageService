@@ -23,6 +23,9 @@ namespace GUI.Views
     {
         private SettingsViewModel SettingsViewModel;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SettingsView()
         {
             InitializeComponent();

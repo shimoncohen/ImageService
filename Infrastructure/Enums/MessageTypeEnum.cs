@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageService.Logging.Modal
+namespace Infrastructure.Enums
 {
     /// <summary>
     /// an enum set of possible states that the logger can recieve.

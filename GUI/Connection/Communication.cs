@@ -13,8 +13,11 @@ namespace GUI.Connection
     public class Communication : ICommunication
     {
         private static Communication model;
+        // the port number
         private const int serverPort = 8000;
+        // a mutex
         private Mutex mutex;
+        // a tcp client
         private TcpClient client;
         private NetworkStream stream;
         private BinaryWriter writer;
@@ -22,13 +25,19 @@ namespace GUI.Connection
 
         public event EventHandler<InfoEventArgs> InfoRecieved;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         private Communication()
         {
             mutex = new Mutex();
-            start();
+            Start();
             StartRecieverChannel();
         }
 
+        /// <summary>
+        /// Create the connection as a singelton
+        /// </summary>
         public static Communication CreateConnectionChannel()
         {
             // if not already created
@@ -39,8 +48,8 @@ namespace GUI.Connection
             // otherwise create new instance
             return model;
         }
-        
-        public void start()
+
+        public void Start()
         {
             if(client == null)
             {
@@ -62,11 +71,13 @@ namespace GUI.Connection
             {
                 if (client.Connected)
                 {
+                    // open stream and writer
                     stream = client.GetStream();
                     writer = new BinaryWriter(stream);
                     string args = JsonConvert.SerializeObject(e);
                     try
                     {
+                        // wrtie to the server
                         mutex.WaitOne();
                         writer.Write(args);
                         mutex.ReleaseMutex();
@@ -80,6 +91,9 @@ namespace GUI.Connection
             }).Start();
         }
 
+        /// <summary>
+        /// Read information to the server with a streamer.
+        /// </summary>
         private void StartRecieverChannel()
         {
             string args;
@@ -87,6 +101,7 @@ namespace GUI.Connection
             {
                 if (client.Connected)
                 {
+                    // open a stream and a reader.
                     stream = client.GetStream();
                     reader = new BinaryReader(stream);
                 }
@@ -94,42 +109,30 @@ namespace GUI.Connection
                 {
                     try
                     {
-                        //mutex.WaitOne();
+                        // read from the server.
                         args = reader.ReadString();
-                        //mutex.ReleaseMutex();
                     }
                     catch (Exception error)
                     {
-                        //mutex.ReleaseMutex();
                         Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
                         break;
                     }
+                    // deserialize the info from the server into an InfoEventArgs.
                     InfoEventArgs e = JsonConvert.DeserializeObject<InfoEventArgs>(args);
+                    // invoke the info received event
                     InfoRecieved?.Invoke(this, e);
                 }
-                //CloseResources(stream, reader, writer);
             }).Start();
         }
 
-        /*private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
+        public void Stop()
         {
-            stream.Dispose();
-            if(reader != null)
-            {
-                reader.Close();
-            }
-            if (writer != null)
-            {
-                writer.Close();
-            }
-        }*/
-
-        public void stop()
-        {
-            //CloseResources(stream, reader, writer);
             client.Close();
         }
 
+        /// <summary>
+        /// The function returns the true if the tcp client is connected and false if it isn't
+        /// </summary>
         public bool IsConnected()
         {
             return client.Connected;

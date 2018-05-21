@@ -3,12 +3,11 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Runtime.InteropServices;
 using ImageService.Logging;
-using ImageService.Logging.Modal;
 using ImageService.Server;
 using ImageService.Modal;
 using ImageService.Controller;
-using ImageService.Logging.Modal.Event;
 using Infrastructure.Enums;
+using Infrastructure.Modal.Event;
 
 namespace ImageService
 {

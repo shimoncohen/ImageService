@@ -3,8 +3,15 @@ using Infrastructure.Enums;
 
 namespace GUI
 {
+    /// <summary>
+    /// A parser from infoEnum to an int that represents the model we want to act.
+    /// 1 is the settings model; 2 is the logs model; -1 is not an info.
+    /// </summary>
     class InfoReceivedParser
     {
+        /// <summary>
+        /// The function returns an int that represents the corresponding model. 1 for settings model and 2 for logs model.
+        /// </summary>
         public static int parseInfoType(int info)
         {
             switch(info)

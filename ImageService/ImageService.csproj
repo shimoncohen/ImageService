@@ -79,8 +79,6 @@
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageService\ImageService\ImageService.Logging\ILoggingService.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\MessageRecievedEventArgs.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\MessageTypeEnum.cs" />
     <Compile Include="ImageService\ImageService\Commands\ICommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\NewFileCommand.cs" />
     <Compile Include="ImageService\ImageService\Controller\Handlers\DirectoyHandler.cs" />

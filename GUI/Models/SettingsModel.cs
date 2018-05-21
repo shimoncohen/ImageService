@@ -7,6 +7,11 @@ using Infrastructure.Modal.Event;
 
 namespace GUI.Models
 {
+
+    /// <summary>
+    /// A model for the settings window.
+    /// handles the window's logic.
+    /// </summary>
     class SettingsModel : INotifyPropertyChanged
     {
         // an event that raises when a property is being changed
@@ -75,6 +80,7 @@ namespace GUI.Models
             }
         }
 
+        // the list of the directories we listen to.
         private ObservableCollection<string> m_Directories;
         public ObservableCollection<string> Directories
         {
@@ -85,22 +91,38 @@ namespace GUI.Models
                 OnPropertyChanged("Directories");
             }
         }
-        
+
+
+        /// <summary>
+        /// The function adds a directory to the handlers list
+        /// </summary>
+        /// <param name="s">The path of the directory</param>
         public void AddToHandlersList(string s)
         {
             Application.Current.Dispatcher.Invoke(new Action(() => { m_Directories.Add(s); }));
         }
 
+
+        /// <summary>
+        /// The function removes a directory from the list of directories we listen to.
+        /// </summary>
+        /// <param name="e">The path of the directory we want to remove</param>
         public void RemoveFromHandlersList(InfoEventArgs e)
         {
             string[] args = e.Args;
+            // get the path of the directory
             string DirToRemove = args[0];
             Application.Current.Dispatcher.Invoke(new Action(() => { m_Directories.Remove(DirToRemove); }));
             OnPropertyChanged("Directories");
         }
 
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SettingsModel() 
         {
+            // initialize default values.
             m_OutputDirectory = "Output Directory:  ";
             m_SourceName = "Source Name:    ";
             m_LogName = "Log Name:  ";
@@ -110,9 +132,15 @@ namespace GUI.Models
             BindingOperations.EnableCollectionSynchronization(m_Directories, locker);
         }
 
+
+        /// <summary>
+        /// The function updates the values of the fields
+        /// </summary>
         public void InfoUpdate(InfoEventArgs e)
         {
+            // get the information into an array of strings.
             string[] answer = e.Args;
+            // set the fields as the received values.
             this.OutputDir = answer[0];
             this.SourceName = answer[1];
             this.LogName = answer[2];

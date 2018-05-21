@@ -4,9 +4,15 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
 using Infrastructure.Modal.Event;
+using Infrastructure.Enums;
+using Infrastructure.Modal;
 
 namespace GUI.Models
 {
+    /// <summary>
+    /// A model to the logs window.
+    /// in charge of the logic of the logs
+    /// </summary>
     class LogsModel : INotifyPropertyChanged
     {
         // an event that raises when a property is being changed
@@ -17,8 +23,9 @@ namespace GUI.Models
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private ObservableCollection<MessageRecievedEventArgs> m_LogsInfoList;
-        public ObservableCollection<MessageRecievedEventArgs> LogsInfoList
+        // the list of the logs
+        private ObservableCollection<LogInfo> m_LogsInfoList;
+        public ObservableCollection<LogInfo> LogsInfoList
         {
            get { return this.m_LogsInfoList; }
            set
@@ -27,26 +34,24 @@ namespace GUI.Models
                OnPropertyChanged("LogsInfoList");
            }
         }
-        
-        public void AddToList(MessageRecievedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
-                this.m_LogsInfoList.Add(e);
-            }));
-            OnPropertyChanged("LogsInfoList");
-        }
-        
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LogsModel()
         {
-            this.m_LogsInfoList = new ObservableCollection<MessageRecievedEventArgs>();
+            this.m_LogsInfoList = new ObservableCollection<LogInfo>();
             Object locker = new object();
             BindingOperations.EnableCollectionSynchronization(m_LogsInfoList, locker);
-            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.INFO, Message = "Test Message" });
-            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.WARNING, Message = "Test Message2" });
-            this.m_LogsInfoList.Add(new MessageRecievedEventArgs() { Status = MessageTypeEnum.FAIL, Message = "Test Message3" });
+            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.INFO, Message = "Test Message" });
+            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.WARNING, Message = "Test Message2" });
+            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.FAIL, Message = "Test Message3" });
         }
 
+        /// <summary>
+        /// The function adds all the history of the log to the logs list.
+        /// </summary>
+        /// <param name="e">The logs from the logger as an array of strings</param>
         public void SetLogHistory(InfoEventArgs e)
         {
             string[] answer = e.Args;
@@ -60,13 +65,17 @@ namespace GUI.Models
                 type = ParseTypeFromString(log[0]);
                 // log[1] is the message 
                 message = log[1];
-                MessageRecievedEventArgs m = new MessageRecievedEventArgs() { Status = type, Message = message };
+                LogInfo m = new LogInfo() { Status = type, Message = message };
                 // add to the logs list
                 Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
             }
             OnPropertyChanged("LogsInfoList");
         }
 
+        /// <summary>
+        /// The function adds a log to the list of logs.
+        /// </summary>
+        /// <param name="e">The log we add to the list</param>
         public void AddNewLog(InfoEventArgs e)
         {
             string[] answer = e.Args;
@@ -75,12 +84,17 @@ namespace GUI.Models
             string message = answer[1];
             // log[0] is the message type
             MessageTypeEnum type = ParseTypeFromString(answer[0]);
-            MessageRecievedEventArgs m = new MessageRecievedEventArgs() { Status = type, Message = message };
+            LogInfo m = new LogInfo() { Status = type, Message = message };
             // add to the logs list
             Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
             OnPropertyChanged("LogsInfoList");
         }
 
+        /// <summary>
+        /// The function parse from string to MessageTypeEnum.
+        /// </summary>
+        /// <param name="s">The message type as a string</param>
+        /// <returns>The message type as an Enum</returns>
         public MessageTypeEnum ParseTypeFromString(string s)
         {
             switch(s)

@@ -42,6 +42,9 @@
     <Compile Include="Enums\InfoEnums.cs" />
     <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="Modal\Event\InfoEventArgs.cs" />
+    <Compile Include="Modal\Event\MessageRecievedEventArgs.cs" />
+    <Compile Include="Enums\MessageTypeEnum.cs" />
+    <Compile Include="Modal\LogInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

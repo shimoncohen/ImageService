@@ -9,10 +9,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
-using Infrastructure.Enums;
-using ImageService.Logging.Modal;
 using System.Diagnostics;
 using Infrastructure.Modal.Event;
+using Infrastructure.Enums;
 
 namespace ImageService.Server
 {

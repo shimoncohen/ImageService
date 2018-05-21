@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Infrastructure.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GUI;
 
-namespace GUI.Models
+namespace Infrastructure.Modal.Event
 {
     /// <summary>
     /// the class gets args containing message and status, and parse them.

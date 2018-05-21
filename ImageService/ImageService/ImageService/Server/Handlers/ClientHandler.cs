@@ -1,6 +1,7 @@
 ﻿using ImageService.Controller;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
+using Infrastructure.Enums;
 using Infrastructure.Modal.Event;
 using Newtonsoft.Json;
 using System;
@@ -68,7 +69,7 @@ namespace ImageService.Server.Handlers
                             } catch(Exception e)
                             {
                                 send.ReleaseMutex();
-                                logging.Log("Client dissconnected", MessageTypeEnum.INFO);
+                                logging.Log("Client disconnected", MessageTypeEnum.INFO);
                                 break;
                             }
                             // TODO: write to log that command was sent
