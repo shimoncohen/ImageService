@@ -84,6 +84,9 @@ namespace ImageService.Controller.Handlers
             }
         }
 
+        /// <summary>
+        /// the function the path of the handler
+        /// </summary>
         public string GetPath()
         {
             return this.directoryPath;

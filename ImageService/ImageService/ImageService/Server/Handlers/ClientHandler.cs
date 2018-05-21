@@ -1,6 +1,5 @@
 ﻿using ImageService.Controller;
 using ImageService.Logging;
-using ImageService.Logging.Modal;
 using Infrastructure.Enums;
 using Infrastructure.Modal.Event;
 using Newtonsoft.Json;
@@ -36,33 +35,36 @@ namespace ImageService.Server.Handlers
         {
             new Task(() =>
             {
+                // initiate connection
                 stream = client.GetStream();
                 reader = new BinaryReader(stream);
                 writer = new BinaryWriter(stream);
+                // as long as the client is connected
                 while (client.Connected)
                 {
                     string commandLine;
                     try
                     {
-                        //send.WaitOne();
+                        // read a message from the client
                         commandLine = reader.ReadString();
-                        //send.ReleaseMutex();
                     } catch(Exception e)
                     {
-                        //send.ReleaseMutex();
                         break;
                     }
                     bool result;
                     CommandRecievedEventArgs args = JsonConvert.DeserializeObject<CommandRecievedEventArgs>(commandLine);
+                    // if the requested path is empty indicating it is ment to execute right away
                     if (args.RequestDirPath == "Empty")
                     {
                         string sendString = controller.ExecuteCommand(args.CommandID, args.Args, out result);
+                        // if the command executed correctly
                         if (result)
                         {
                             logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                 args.Args, MessageTypeEnum.INFO);
                             try
                             {
+                                // let the client know the operation's results
                                 send.WaitOne();
                                 writer.Write(sendString);
                                 send.ReleaseMutex();
@@ -72,7 +74,6 @@ namespace ImageService.Server.Handlers
                                 logging.Log("Client disconnected", MessageTypeEnum.INFO);
                                 break;
                             }
-                            // TODO: write to log that command was sent
                             logging.Log("Sent " + args.CommandID.ToString(), MessageTypeEnum.INFO);
                         }
                         else
@@ -84,24 +85,11 @@ namespace ImageService.Server.Handlers
                     {
                         logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                 args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
+                        // let the handlers know that a command was recieved
                         this.CommandRecieved?.Invoke(this, args);
                     }
                 }
-                //CloseResources(stream, reader, writer);
             }).Start();
-        }
-
-        private void CloseResources(Stream stream, BinaryReader reader = null, BinaryWriter writer = null)
-        {
-            stream.Dispose();
-            if (reader != null)
-            {
-                reader.Close();
-            }
-            if (writer != null)
-            {
-                writer.Close();
-            }
         }
     }
 }

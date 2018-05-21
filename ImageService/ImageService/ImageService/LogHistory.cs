@@ -34,6 +34,9 @@ namespace ImageService
             return logHistory;
         }
 
+        /// <summary>
+        /// adds a log to the log list
+        /// </summary>
         public void UpdateLog(object sender, MessageRecievedEventArgs e)
         {
             string[] log = new string[2];
@@ -42,6 +45,9 @@ namespace ImageService
             Logs.Insert(0, log);
         }
 
+        /// <summary>
+        /// resets the log
+        /// </summary>
         public void ResetLog()
         {
             Logs.Clear();

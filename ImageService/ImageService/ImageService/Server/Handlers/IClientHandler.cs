@@ -9,6 +9,11 @@ namespace ImageService.Server.Handlers
     {
         event EventHandler<CommandRecievedEventArgs> CommandRecieved;
 
+        /// <summary>
+        /// Handles a new client of the server
+        /// </summary>
+        /// <param name= client> the client to handle </param>
+        /// <param name= send> the shared mutex for all of the communication </param>
         void HandleClient(TcpClient client, Mutex send);
     }
 }

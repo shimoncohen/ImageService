@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:GUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel x:Name="StackPanel" Background="White" Width="Auto" Height="Auto" Focusable="True" IsEnabled="True" >
+    
+    <StackPanel x:Name="StackPanel" Background="White" Width="Auto" Height="Auto" Focusable="True">
         <Grid x:Name="Grid1" Background="White" HorizontalAlignment="Stretch" 
-              VerticalAlignment="Stretch" Width="Auto" Height="Auto" Focusable="True" IsEnabled="True" >
+              VerticalAlignment="Stretch" Width="Auto" Height="Auto" Focusable="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -24,7 +25,7 @@
                             FontWeight="Bold"
                             FontSize="50"
                             Foreground="Blue"
-                            FontFamily="Book Antiqua" />
+                            FontFamily="Book Antiqua"/>
             <TextBlock x:Name="VM_OutputDirectory"
                             Grid.Row="1"
                             HorizontalAlignment="Stretch"
@@ -57,7 +58,7 @@
                             FontWeight="ExtraBold"
                             FontSize="15"
                             Margin="15,5,10,5" />
-            <DockPanel Grid.Row="5" HorizontalAlignment="Stretch"  Width="Auto" Height="Auto">
+            <DockPanel Grid.Row="5" HorizontalAlignment="Stretch">
                 <Button x:Name="RemoveButton"
                         DockPanel.Dock="Top"
                         Content="Remove"
@@ -76,16 +77,19 @@
                     </Button.Style>
                 </Button>
                 <Grid>
-                    <ListBox x:Name="Handlers" 
+                <Border BorderThickness="5" BorderBrush="Blue">
+                        <ListBox x:Name="Handlers" 
                              DockPanel.Dock="Bottom"
                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
                              ScrollViewer.CanContentScroll="True"
                              ItemsSource="{Binding VM_Directories}"
                              Margin="5"
                              SelectedItem="{Binding VM_SelectedHandler, Mode=TwoWay}">
-                    </ListBox>
+                        </ListBox>
+                </Border>
                 </Grid>
             </DockPanel>
         </Grid>
     </StackPanel>
+   
 </UserControl>

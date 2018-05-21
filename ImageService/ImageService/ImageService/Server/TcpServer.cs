@@ -39,9 +39,14 @@ namespace ImageService.Server
             send = new Mutex();
         }
 
+        /// <summary>
+        /// starting the server
+        /// </summary>
         public void Start()
         {
+            // create the client list
             clients = new List<TcpClient>();
+            // connect to the port
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
             listener = new TcpListener(ep);
             listener.Start();
@@ -50,8 +55,10 @@ namespace ImageService.Server
                 {
                     try
                     {
+                        // accept new clients
                         TcpClient client = listener.AcceptTcpClient();
                         clients.Add(client);
+                        // handle client
                         communicate(client);
                     }
                     catch (Exception e)
@@ -63,6 +70,10 @@ namespace ImageService.Server
             }).Start();
         }
 
+        /// <summary>
+        /// creates a new handler for each clients and starts to handle them
+        /// </summary>
+        /// <param name= client> the client to handle </param>
         private void communicate(TcpClient client)
         {
             new Task(() =>
@@ -73,11 +84,19 @@ namespace ImageService.Server
             }).Start();
         }
 
+        /// <summary>
+        /// invokes the CommandRecieved event to indicate a command was recieved
+        /// </summary>
         public void NewCommand(object sender, CommandRecievedEventArgs e)
         {
             CommandRecieved?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// translates a new message to info and sends it to the function responsible to forward it to the clients
+        /// </summary>
+        /// <param name= sender> the sending class </param>
+        /// <param name= e> the message event arguments </param>
         public void NewLog(object sender, MessageRecievedEventArgs e)
         {
             string[] args = { e.Status.ToString(), e.Message };
@@ -85,6 +104,11 @@ namespace ImageService.Server
             NotifyClients(this, info);
         }
 
+        /// <summary>
+        /// sends givent information to the given client
+        /// </summary>
+        /// <param name= client> the client to send the info to </param>
+        /// <param name= info> the information to send to the client </param>
         private void SendToClient(TcpClient client, string info)
         {
             if (client.Connected)
@@ -97,17 +121,26 @@ namespace ImageService.Server
             }
             else
             {
+                // if the client is not connected then remove it from the list of clients
                 clients.Remove(client);
             }
         }
 
+        /// <summary>
+        /// the function sends given info to all of the clients
+        /// </summary>
+        /// <param name= sender> the class that invoked the event </param>
+        /// <param name= info> the information to send to the client </param>
         public void NotifyClients(object sender, InfoEventArgs e)
         {
             new Task(() =>
             {
+                // serealize the object
                 string info = JsonConvert.SerializeObject(e);
                 List<TcpClient> temp = new List<TcpClient>();
+                // copy client list to a new list
                 foreach (TcpClient client in clients) temp.Add(client);
+                // for each client, send him the information
                 foreach (TcpClient client in temp)
                 {
                     try
@@ -122,6 +155,9 @@ namespace ImageService.Server
             }).Start();
         }
 
+        /// <summary>
+        /// stop the server from running
+        /// </summary>
         public void Stop()
         {
             clients.Clear();

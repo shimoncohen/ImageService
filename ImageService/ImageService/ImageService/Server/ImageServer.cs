@@ -2,7 +2,6 @@
 using ImageService.Controller.Handlers;
 using ImageService.Logging;
 using System;
-using ImageService.Logging.Modal;
 using ImageService.Logging.Modal.Event;
 using Infrastructure.Enums;
 using System.Collections.Generic;
@@ -61,11 +60,19 @@ namespace ImageService.Server
             directoryHandler.StartHandleDirectory(directory);
         }
 
+        /// <summary>
+        /// returns the list of handlers
+        /// </summary>
         public List<IDirectoryHandler> getHandlers()
         {
             return handlerList;
         }
 
+        /// <summary>
+        /// invokes the CommandRecieved event indicating that a command was recieved
+        /// </summary>
+        /// <param name= sender> the class the invoked the event </param>
+        /// <param name= e> the command arguments </param>
         public void NewCommand(object sender, CommandRecievedEventArgs e)
         {
             CommandRecieved?.Invoke(this, e);

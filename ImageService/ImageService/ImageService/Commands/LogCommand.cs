@@ -8,8 +8,13 @@ namespace ImageService.Commands
 {
     class LogCommand : ICommand
     {
-        ILoggingService log;
 
+        /// <summary>
+        /// the function executes the get log command
+        /// </summary>
+        /// <param name= args> the commands arguments </param>
+        /// <param name= result> the result of the function, if succeeded or not </param>
+        /// <return> returns the log history as a string </return>
         public string Execute(string[] args, out bool result)
         {
             LogHistory logHistory = LogHistory.CreateLogHistory();

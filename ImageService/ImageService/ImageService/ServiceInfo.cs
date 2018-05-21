@@ -79,8 +79,6 @@ namespace ImageService
                 temp.Add(handler);
             }
             temp.Remove(path);
-            ConfigurationManager.AppSettings["Handler"] = string.Join(";", temp);
-            //ConfigurationManager.RefreshSection("Handler");
         }
     }
 }

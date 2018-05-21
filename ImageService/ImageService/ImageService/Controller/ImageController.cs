@@ -39,6 +39,9 @@ namespace ImageService.Controller
             ((CloseCommand)commands[(int)CommandEnum.CloseCommand]).Closed += HandlerClosed;
         }
 
+        /// <summary>
+        /// invokes the HandlerClosedEvent event to indicate that a handler needs to be closed
+        /// </summary>
         public void HandlerClosed(object sender, DirectoryCloseEventArgs e)
         {
             HandlerClosedEvent?.Invoke(sender, e);

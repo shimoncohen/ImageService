@@ -8,6 +8,9 @@ namespace Infrastructure.Enums
 {
     public static class EnumTranslator
     {
+        /// <summary>
+        /// translates a command enum type to a info enum type
+        /// </summary>
         public static InfoEnums CommandToInfo(int num)
         {
             switch(num)
@@ -20,6 +23,9 @@ namespace Infrastructure.Enums
             return InfoEnums.NotInfo;
         }
 
+        /// <summary>
+        /// translates a info enum type to a command enum type
+        /// </summary>
         public static CommandEnum InfoToCommand(int num)
         {
             switch(num)
