@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
-    <StackPanel Background="White" Width="Auto" Height="Auto">
-        <Grid Background="White" HorizontalAlignment="Stretch" 
-              VerticalAlignment="Stretch" Width="Auto" Height="Auto">
+    <StackPanel x:Name="StackPanel" Background="White" Width="Auto" Height="Auto" Focusable="True">
+        <Grid x:Name="Grid1" Background="White" HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch" Width="Auto" Height="Auto" Focusable="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -79,12 +79,12 @@
                 <Grid>
                 <Border BorderThickness="5" BorderBrush="Blue">
                         <ListBox x:Name="Handlers" 
-                         DockPanel.Dock="Bottom"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                         ScrollViewer.CanContentScroll="True"
-                         ItemsSource="{Binding VM_Directories}"
-                         Margin="5"
-                         SelectedItem="{Binding VM_SelectedHandler, Mode=TwoWay}">
+                             DockPanel.Dock="Bottom"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                             ScrollViewer.CanContentScroll="True"
+                             ItemsSource="{Binding VM_Directories}"
+                             Margin="5"
+                             SelectedItem="{Binding VM_SelectedHandler, Mode=TwoWay}">
                         </ListBox>
                 </Border>
                 </Grid>
