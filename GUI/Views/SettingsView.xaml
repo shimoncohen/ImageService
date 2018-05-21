@@ -65,21 +65,26 @@
                         HorizontalAlignment="Stretch"
                         Block.TextAlignment="Center"
                         Command="{Binding RemoveCommand}"
-                        AutomationProperties.AutomationId="RemoveButton" />
+                        AutomationProperties.AutomationId="RemoveButton" >
+                    <Button.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=Handlers ,Path=SelectedItem.IsFocused, Mode=OneWay}" Value="0">
+                                    <Setter Property="Button.IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Grid>
                 <Border BorderThickness="5" BorderBrush="Blue">
-                    <ListBox x:Name="Handlers" 
+                        <ListBox x:Name="Handlers" 
                          DockPanel.Dock="Bottom"
                          ScrollViewer.VerticalScrollBarVisibility="Auto" 
                          ScrollViewer.CanContentScroll="True"
                          ItemsSource="{Binding VM_Directories}"
                          Margin="5"
                          SelectedItem="{Binding VM_SelectedHandler, Mode=TwoWay}">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="IsTabStop" Value="False"/>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
                         </ListBox>
                 </Border>
                 </Grid>
