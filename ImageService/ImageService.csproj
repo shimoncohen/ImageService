@@ -11,6 +11,21 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,9 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\DirectoryCloseEventArgs.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Logging\Modal\Event\InfoEventArgs.cs" />
     <Compile Include="ImageService\ImageService\Commands\CloseCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\GetConfigCommand.cs" />
     <Compile Include="ImageService\ImageService\Commands\LogCommand.cs" />
@@ -74,9 +87,6 @@
     <Compile Include="ImageService\ImageService\Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageService\ImageService\Controller\IImageController.cs" />
     <Compile Include="ImageService\ImageService\Controller\ImageController.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\CommandEnum.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\EnumTranslator.cs" />
-    <Compile Include="ImageService\ImageService\ImageService.Infrastructure\Enums\InfoEnums.cs" />
     <Compile Include="ImageService\ImageService\LogHistory.cs" />
     <Compile Include="ImageService\ImageService\Modal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageService\Modal\ImageServiceModal.cs" />
@@ -106,6 +116,24 @@
     <EmbeddedResource Include="ImageService\ImageService\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{307ec0f2-fca1-4c4e-bc92-11b4a1f93705}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿using ImageService.Controller;
 using ImageService.Logging;
 using ImageService.Logging.Modal;
-using ImageService.Logging.Modal.Event;
+using Infrastructure.Modal.Event;
 using Newtonsoft.Json;
 using System;
 using System.IO;

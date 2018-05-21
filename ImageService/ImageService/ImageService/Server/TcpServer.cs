@@ -1,7 +1,6 @@
 ﻿using ImageService.Controller;
 using ImageService.Server.Handlers;
 using ImageService.Logging;
-using ImageService.Logging.Modal.Event;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,9 +9,10 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
-using ImageService.Infrastructure.Enums;
+using Infrastructure.Enums;
 using ImageService.Logging.Modal;
 using System.Diagnostics;
+using Infrastructure.Modal.Event;
 
 namespace ImageService.Server
 {

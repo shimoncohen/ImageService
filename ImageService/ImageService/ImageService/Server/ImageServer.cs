@@ -4,8 +4,9 @@ using ImageService.Logging;
 using System;
 using ImageService.Logging.Modal;
 using ImageService.Logging.Modal.Event;
-using ImageService.Infrastructure.Enums;
+using Infrastructure.Enums;
 using System.Collections.Generic;
+using Infrastructure.Modal.Event;
 
 namespace ImageService.Server
 {

@@ -1,7 +1,7 @@
-﻿using ImageService.Infrastructure.Enums;
+﻿using Infrastructure.Enums;
 using ImageService.Logging.Modal;
-using ImageService.Logging.Modal.Event;
 using System;
+using Infrastructure.Modal.Event;
 
 namespace ImageService.Logging
 {

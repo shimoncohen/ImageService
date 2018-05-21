@@ -8,7 +8,7 @@ using ImageService.Server;
 using ImageService.Modal;
 using ImageService.Controller;
 using ImageService.Logging.Modal.Event;
-using ImageService.Infrastructure.Enums;
+using Infrastructure.Enums;
 
 namespace ImageService
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GUI.Modal.Event
+namespace Infrastructure.Modal.Event
 {
     public class InfoEventArgs : EventArgs
     {

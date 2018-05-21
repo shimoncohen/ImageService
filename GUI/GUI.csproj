@@ -73,13 +73,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Enums\CommandEnum.cs" />
-    <Compile Include="Enums\EnumTranslator.cs" />
-    <Compile Include="Enums\InfoEnums.cs" />
     <Compile Include="InfoReceivedParser.cs" />
     <Compile Include="MessageTypeEnum.cs" />
-    <Compile Include="Modal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="Modal\Event\InfoEventArgs.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Connection\Communication.cs" />
     <Compile Include="VMs\ColorConverter.cs" />
@@ -153,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{c02c5d0b-7f1c-4817-817e-1438fcceaafd}</Project>
+      <Project>{307ec0f2-fca1-4c4e-bc92-11b4a1f93705}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>

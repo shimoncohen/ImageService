@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using Newtonsoft.Json;
-using GUI.Modal.Event;
+using Infrastructure.Modal.Event;
 using System.Threading;
 using System.Diagnostics;
 
