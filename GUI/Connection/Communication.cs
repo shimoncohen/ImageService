@@ -49,6 +49,9 @@ namespace GUI.Connection
             return model;
         }
 
+        /// <summary>
+        /// start the communication
+        /// </summary>
         public void Start()
         {
             if(client == null)
@@ -65,6 +68,11 @@ namespace GUI.Connection
             }
         }
 
+        /// <summary>
+        /// The function sends a request to the server
+        /// </summary>
+        /// <param name= sender> the class that invoked the event </param>
+        /// <param name= e> the command arguments to send to the server </param>
         public void StartSenderChannel(object sender, CommandRecievedEventArgs e)
         {
             new Task(() =>
@@ -77,7 +85,7 @@ namespace GUI.Connection
                     string args = JsonConvert.SerializeObject(e);
                     try
                     {
-                        // wrtie to the server
+                        // write to the server
                         mutex.WaitOne();
                         writer.Write(args);
                         mutex.ReleaseMutex();
@@ -125,6 +133,9 @@ namespace GUI.Connection
             }).Start();
         }
 
+        /// <summary>
+        /// stops the communication
+        /// </summary>
         public void Stop()
         {
             client.Close();
