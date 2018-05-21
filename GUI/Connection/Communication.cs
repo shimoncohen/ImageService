@@ -25,6 +25,7 @@ namespace GUI.Connection
         private Communication()
         {
             mutex = new Mutex();
+            start();
             StartRecieverChannel();
         }
 
@@ -67,13 +68,11 @@ namespace GUI.Connection
                     try
                     {
                         mutex.WaitOne();
-                        if(client.Connected)
-                        {
-                            writer.Write(args);
-                        }
+                        writer.Write(args);
                         mutex.ReleaseMutex();
                     } catch (Exception e1)
                     {
+                        mutex.ReleaseMutex();
                         Debug.WriteLine("In GUI communication, failed send, Error: " + e1.ToString());
                         return;
                     }
@@ -96,18 +95,12 @@ namespace GUI.Connection
                     try
                     {
                         //mutex.WaitOne();
-                        if (client.Connected)
-                        {
-                            args = reader.ReadString();
-                        } else
-                        {
-                            //mutex.ReleaseMutex();
-                            break;
-                        }
+                        args = reader.ReadString();
                         //mutex.ReleaseMutex();
                     }
                     catch (Exception error)
                     {
+                        //mutex.ReleaseMutex();
                         Debug.WriteLine("In GUI communication, failed read, Error: " + error.ToString());
                         break;
                     }

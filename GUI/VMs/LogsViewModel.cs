@@ -45,7 +45,6 @@ namespace GUI.VMs
             sendInfo += m_Connection.StartSenderChannel;
             // getting the initialize info from the server
             m_Connection.InfoRecieved += getInfoFromServer;
-            m_Connection.start();
             System.Threading.Thread.Sleep(50);
             sendToServer();
         }

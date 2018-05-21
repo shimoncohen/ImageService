@@ -43,11 +43,12 @@ namespace ImageService.Server.Handlers
                     string commandLine;
                     try
                     {
-                        send.WaitOne();
+                        //send.WaitOne();
                         commandLine = reader.ReadString();
-                        send.ReleaseMutex();
+                        //send.ReleaseMutex();
                     } catch(Exception e)
                     {
+                        //send.ReleaseMutex();
                         break;
                     }
                     bool result;
@@ -59,13 +60,14 @@ namespace ImageService.Server.Handlers
                         {
                             logging.Log("Got command: " + args.CommandID + ", with arguments: " +
                                 args.Args, MessageTypeEnum.INFO);
-                            if (client.Connected)
+                            try
                             {
                                 send.WaitOne();
                                 writer.Write(sendString);
                                 send.ReleaseMutex();
-                            } else
+                            } catch(Exception e)
                             {
+                                send.ReleaseMutex();
                                 logging.Log("Client dissconnected", MessageTypeEnum.INFO);
                                 break;
                             }

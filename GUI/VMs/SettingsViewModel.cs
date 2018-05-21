@@ -90,7 +90,6 @@ namespace GUI.VMs
             // getting the initialize info from the server
             m_Connection.InfoRecieved += getInfoFromServer;
             sendInfo += m_Connection.StartSenderChannel;
-            m_Connection.start();
             System.Threading.Thread.Sleep(50);
             // initialize the fields
             this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
