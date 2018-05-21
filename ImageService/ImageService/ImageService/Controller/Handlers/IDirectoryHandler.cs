@@ -1,4 +1,5 @@
 ﻿using ImageService.Logging.Modal.Event;
+using Infrastructure.Modal.Event;
 using System;
 
 namespace ImageService.Controller.Handlers

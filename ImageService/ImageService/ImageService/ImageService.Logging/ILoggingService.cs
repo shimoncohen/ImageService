@@ -1,5 +1,5 @@
 ﻿using ImageService.Logging.Modal;
-using ImageService.Logging.Modal.Event;
+using Infrastructure.Modal.Event;
 using System;
 
 namespace ImageService.Logging

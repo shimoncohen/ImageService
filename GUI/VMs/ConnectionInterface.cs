@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GUI.Modal.Event;
-using GUI.Models;
+using Infrastructure.Modal.Event;
 
 namespace GUI.VMs
 {

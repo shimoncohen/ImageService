@@ -1,7 +1,7 @@
-﻿using ImageService.Infrastructure.Enums;
-using ImageService.Logging.Modal.Event;
+﻿using Infrastructure.Enums;
 using Newtonsoft.Json;
 using System;
+using Infrastructure.Modal.Event;
 
 namespace ImageService.Commands
 {
