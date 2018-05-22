@@ -12,10 +12,9 @@ namespace GUI.VMs
     /// <summary>
     /// A View-Model for the logs window
     /// </summary>
-    class LogsViewModel : INotifyPropertyChanged, ConnectionInterface
+    class LogsViewModel : INotifyPropertyChanged
     {
         private LogsModel LogsModel;
-        private Communication m_Connection;
 
         // the list of the logs.
         public ObservableCollection<LogInfo> VM_LogsInfoList
@@ -24,7 +23,6 @@ namespace GUI.VMs
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler<CommandRecievedEventArgs> SendInfo;
 
         // the logs model
         public LogsModel LogModel
@@ -47,49 +45,12 @@ namespace GUI.VMs
                delegate (Object sender, PropertyChangedEventArgs e) {
                    NotifyPropertyChanged("VM_" + e.PropertyName);
                };
-            m_Connection = Communication.CreateConnectionChannel();
-            SendInfo += m_Connection.StartSenderChannel;
-            // sign to the event of getting the info from the server
-            m_Connection.InfoRecieved += GetInfoFromServer;
-            System.Threading.Thread.Sleep(50);
-            SendToServer();
         }
 
         protected void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
-        /// <summary>
-        /// The function sends a log command to the server.
-        /// </summary>
-        public void SendToServer()
-        {
-            string[] args = { };
-            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, args, "Empty");
-            SendInfo?.Invoke(this, e);
-        }
-
-        /// <summary>
-        /// The function gets the information from the server.
-        /// </summary>
-        public void GetInfoFromServer(object sender, InfoEventArgs e)
-        {
-            int infoType = InfoReceivedParser.parseInfoType(e.InfoId);
-            // if infoType is 2 it is an information for the logs model
-            if (infoType == 2)
-            {
-                // 1 is to get a new log from the server
-                if (e.InfoId == 1)
-                {
-                    LogModel.AddNewLog(e);
-                }
-                else if (e.InfoId == 2)  // 2 is to get log history
-                {
-                    LogsModel.SetLogHistory(e);
-                }
-            }
         }
     }
 }

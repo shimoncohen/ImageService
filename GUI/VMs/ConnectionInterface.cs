@@ -10,12 +10,7 @@ namespace GUI.VMs
     {
 
         event EventHandler<CommandRecievedEventArgs> SendInfo;
-
-        /// <summary>
-        /// Send a command to the server.
-        /// </summary>
-        void SendToServer();
-
+        
         /// <summary>
         /// Receive information from the server.
         /// </summary>

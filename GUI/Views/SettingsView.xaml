@@ -69,7 +69,7 @@
                     <Button.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=Handlers ,Path=SelectedItem.IsFocused, Mode=OneWay}" Value="0">
+                                <DataTrigger Binding="{Binding ElementName=Handlers, Mode=OneWay}" Value="0">
                                     <Setter Property="Button.IsEnabled" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>

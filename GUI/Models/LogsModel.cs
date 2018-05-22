@@ -6,6 +6,8 @@ using System.Windows.Data;
 using Infrastructure.Modal.Event;
 using Infrastructure.Enums;
 using Infrastructure.Modal;
+using GUI.VMs;
+using GUI.Connection;
 
 namespace GUI.Models
 {
@@ -13,11 +15,11 @@ namespace GUI.Models
     /// A model to the logs window.
     /// in charge of the logic of the logs
     /// </summary>
-    class LogsModel : INotifyPropertyChanged
+    class LogsModel : INotifyPropertyChanged, ConnectionInterface
     {
         // an event that raises when a property is being changed
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         protected void OnPropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -43,9 +45,12 @@ namespace GUI.Models
             this.m_LogsInfoList = new ObservableCollection<LogInfo>();
             Object locker = new object();
             BindingOperations.EnableCollectionSynchronization(m_LogsInfoList, locker);
-            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.INFO, Message = "Test Message" });
-            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.WARNING, Message = "Test Message2" });
-            this.m_LogsInfoList.Add(new LogInfo() { Status = MessageTypeEnum.FAIL, Message = "Test Message3" });
+            m_Connection = Communication.CreateConnectionChannel();
+            SendInfo += m_Connection.StartSenderChannel;
+            // sign to the event of getting the info from the server
+            m_Connection.InfoRecieved += GetInfoFromServer;
+            System.Threading.Thread.Sleep(50);
+            SendToServer();
         }
 
         /// <summary>
@@ -107,6 +112,41 @@ namespace GUI.Models
                     return MessageTypeEnum.FAIL;
                 default:
                     return MessageTypeEnum.FAIL;
+            }
+        }
+
+        private Communication m_Connection;
+
+        public event EventHandler<CommandRecievedEventArgs> SendInfo;
+
+        /// <summary>
+        /// The function sends a log command to the server.
+        /// </summary>
+        public void SendToServer()
+        {
+            string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, args, "Empty");
+            SendInfo?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// The function gets the information from the server.
+        /// </summary>
+        public void GetInfoFromServer(object sender, InfoEventArgs e)
+        {
+            int infoType = InfoReceivedParser.parseInfoType(e.InfoId);
+            // if infoType is 2 it is an information for the logs model
+            if (infoType == 2)
+            {
+                // 1 is to get a new log from the server
+                if (e.InfoId == 1)
+                {
+                    this.AddNewLog(e);
+                }
+                else if (e.InfoId == 2)  // 2 is to get log history
+                {
+                    this.SetLogHistory(e);
+                }
             }
         }
     }
