@@ -141,7 +141,7 @@ namespace GUI.VMs
         /// A generic send to server function. we send a command and an item.
         /// </summary>
         /// <param name="commandEnum">The type of command we send</param>
-        /// <param name="item">The path of the handler. If we don't pick any specific handler this will be empty string.</param>
+        /// <param name="item">The path of the handler. If we don't pick any specific handler this will be "Empty" string.</param>
         public void SendCommandToServer(CommandEnum commandEnum, string item)
         {
             string[] args = { };
@@ -157,6 +157,13 @@ namespace GUI.VMs
                 CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
                 SendInfo?.Invoke(this, e);
             }
+
+            // new code:
+            /*
+             string[] args = { };
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
+            SendInfo?.Invoke(this, e);
+            */
         }
 
         /// <summary>
@@ -186,12 +193,23 @@ namespace GUI.VMs
             this.VM_SelectedHandler = null;
         }*/
 
-        /// <summary>
-        /// Send a close handler command to the server
-        /// </summary>
-        public void SendToServer()
+            /// <summary>
+            /// Send a close handler command to the server
+            /// </summary>
+            public void SendToServer()
         {
             SendCommandToServer(CommandEnum.CloseCommand, this.VM_SelectedHandler);
+
+            // new code:
+            /*
+            string[] args = { };
+            SendCommandToServer(CommandEnum.CloseCommand, this.VM_SelectedHandler);
+            args = new string[1];
+            args[0] = this.VM_SelectedHandler;
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand,
+                args, this.VM_SelectedHandler);
+            SendInfo?.Invoke(this, e);
+            */
         }
     }
 }
