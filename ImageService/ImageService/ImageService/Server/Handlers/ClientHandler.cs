@@ -19,6 +19,7 @@ namespace ImageService.Server.Handlers
         NetworkStream stream;
         BinaryReader reader;
         BinaryWriter writer;
+        Mutex mutex;
         #endregion
 
         #region Properties
@@ -36,6 +37,7 @@ namespace ImageService.Server.Handlers
             new Task(() =>
             {
                 // initiate connection
+                mutex = send;
                 stream = client.GetStream();
                 reader = new BinaryReader(stream);
                 writer = new BinaryWriter(stream);
@@ -65,12 +67,12 @@ namespace ImageService.Server.Handlers
                             try
                             {
                                 // let the client know the operation's results
-                                send.WaitOne();
+                                mutex.WaitOne();
                                 writer.Write(sendString);
-                                send.ReleaseMutex();
+                                mutex.ReleaseMutex();
                             } catch(Exception e)
                             {
-                                send.ReleaseMutex();
+                                mutex.ReleaseMutex();
                                 logging.Log("Client disconnected", MessageTypeEnum.INFO);
                                 break;
                             }
