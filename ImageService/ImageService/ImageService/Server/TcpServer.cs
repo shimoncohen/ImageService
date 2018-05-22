@@ -24,6 +24,7 @@ namespace ImageService.Server
         private TcpListener listener;
         private List<TcpClient> clients;
         private Mutex send;
+        private object locker;
         private NetworkStream stream;
         private BinaryWriter writer;
         #endregion
@@ -37,6 +38,7 @@ namespace ImageService.Server
             controller = c;
             logging = logger;
             send = new Mutex();
+            locker = new object();
         }
 
         /// <summary>
@@ -80,7 +82,8 @@ namespace ImageService.Server
             {
                 IClientHandler handler = new ClientHandler(controller, logging);
                 handler.CommandRecieved += NewCommand;
-                handler.HandleClient(client, send);
+                //handler.HandleClient(client, send);
+                handler.HandleClient(client, locker);
             }).Start();
         }
 
@@ -115,9 +118,12 @@ namespace ImageService.Server
             {
                 stream = client.GetStream();
                 writer = new BinaryWriter(stream);
-                send.WaitOne();
-                writer.Write(info);
-                send.ReleaseMutex();
+                //send.WaitOne();
+                lock(locker)
+                {
+                    writer.Write(info);
+                }
+                //send.ReleaseMutex();
             }
             else
             {

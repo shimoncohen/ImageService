@@ -32,12 +32,12 @@ namespace ImageService.Server.Handlers
             logging = logger;
         }
 
-        public void HandleClient(TcpClient client, Mutex send)
+        public void HandleClient(TcpClient client, object locker)
         {
             new Task(() =>
             {
                 // initiate connection
-                mutex = send;
+                //mutex = send;
                 stream = client.GetStream();
                 reader = new BinaryReader(stream);
                 writer = new BinaryWriter(stream);
@@ -67,12 +67,16 @@ namespace ImageService.Server.Handlers
                             try
                             {
                                 // let the client know the operation's results
-                                mutex.WaitOne();
-                                writer.Write(sendString);
-                                mutex.ReleaseMutex();
+                               // mutex.WaitOne();
+                                lock(locker)
+                                {
+                                    writer.Write(sendString);
+                                }
+                                //writer.Write(sendString);
+                                //mutex.ReleaseMutex();
                             } catch(Exception e)
                             {
-                                mutex.ReleaseMutex();
+                                //mutex.ReleaseMutex();
                                 logging.Log("Client disconnected", MessageTypeEnum.INFO);
                                 break;
                             }

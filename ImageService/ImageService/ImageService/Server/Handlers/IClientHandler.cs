@@ -14,6 +14,6 @@ namespace ImageService.Server.Handlers
         /// </summary>
         /// <param name= client> the client to handle </param>
         /// <param name= send> the shared mutex for all of the communication </param>
-        void HandleClient(TcpClient client, Mutex send);
+        void HandleClient(TcpClient client, object locker);
     }
 }

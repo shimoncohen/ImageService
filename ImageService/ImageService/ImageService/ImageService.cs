@@ -107,7 +107,7 @@ namespace ImageService
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            eventLog1.WriteEntry("In OnStart");
+            logger.Log("In OnStart", MessageTypeEnum.INFO);
             // Set up a timer to trigger every minute.  
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 60000; // 60 seconds  
@@ -125,7 +125,7 @@ namespace ImageService
         protected override void OnStop()
         {
             // write to the log
-            eventLog1.WriteEntry("In onStop.");
+            logger.Log("In onStop", MessageTypeEnum.INFO);
             LogHistory logHistory = LogHistory.CreateLogHistory();
             // close the image server
             server.CloseServer();
@@ -138,7 +138,7 @@ namespace ImageService
             logger.MessageRecieved += tcpServer.NewLog;
             server.NotifyClients -= tcpServer.NotifyClients;
             logHistory.ResetLog();
-            eventLog1.WriteEntry("In onStop.");
+            logger.Log("In onStop", MessageTypeEnum.INFO);
         }
 
         /// <summary>
@@ -146,8 +146,9 @@ namespace ImageService
         /// </summary>
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            // TODO: Insert monitoring activities here.  
-            eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
+            // TODO: Insert monitoring activities here.
+            logger.Log("Monitoring the System", MessageTypeEnum.INFO);
+            //eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
         }
 
         /// <summary>
