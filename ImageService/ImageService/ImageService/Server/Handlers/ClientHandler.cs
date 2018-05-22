@@ -60,7 +60,7 @@ namespace ImageService.Server.Handlers
                         // if the command executed correctly
                         if (result)
                         {
-                            logging.Log("Got command: " + args.CommandID + ", with arguments: " +
+                            logging.Log("Got command: " + EnumTranslator.CommandToString(args.CommandID) + ", with arguments: " +
                                 args.Args, MessageTypeEnum.INFO);
                             try
                             {
@@ -74,17 +74,20 @@ namespace ImageService.Server.Handlers
                                 logging.Log("Client disconnected", MessageTypeEnum.INFO);
                                 break;
                             }
-                            logging.Log("Sent " + args.CommandID.ToString(), MessageTypeEnum.INFO);
+                            logging.Log("Executed " + EnumTranslator.CommandToString(args.CommandID) +
+                                " command and sent the info to the client", MessageTypeEnum.INFO);
                         }
                         else
                         {
-                            logging.Log("Failed to execute command: " + args.CommandID, MessageTypeEnum.FAIL);
+                            logging.Log("Failed to execute command: " + EnumTranslator.CommandToString(args.CommandID),
+                                MessageTypeEnum.FAIL);
                         }
                     }
                     else
                     {
-                        logging.Log("Got command: " + args.CommandID + ", with arguments: " +
-                                args.Args + ", to directory: " + args.RequestDirPath, MessageTypeEnum.INFO);
+                        logging.Log("Got command: " + EnumTranslator.CommandToString(args.CommandID) +
+                            ", with arguments: " + args.Args + ", to directory: " +
+                            args.RequestDirPath, MessageTypeEnum.INFO);
                         // let the handlers know that a command was recieved
                         this.CommandRecieved?.Invoke(this, args);
                     }

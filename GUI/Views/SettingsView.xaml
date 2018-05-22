@@ -77,16 +77,14 @@
                     </Button.Style>
                 </Button>
                 <Grid>
-                <Border BorderThickness="5" BorderBrush="Blue">
-                        <ListBox x:Name="Handlers" 
+                    <ListBox x:Name="Handlers" 
                              DockPanel.Dock="Bottom"
                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
                              ScrollViewer.CanContentScroll="True"
                              ItemsSource="{Binding VM_Directories}"
                              Margin="5"
                              SelectedItem="{Binding VM_SelectedHandler, Mode=TwoWay}">
-                        </ListBox>
-                </Border>
+                    </ListBox>
                 </Grid>
             </DockPanel>
         </Grid>
