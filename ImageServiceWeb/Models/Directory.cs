@@ -10,6 +10,11 @@ namespace ImageServiceWeb.Models
     {
         string dirPath;
 
+        public Directory(string path)
+        {
+            dirPath = path;
+        }
+
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "DirPath")]

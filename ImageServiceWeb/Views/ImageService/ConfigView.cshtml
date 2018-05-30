@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ImageServiceWeb.Models.Directory>
+﻿@model ImageServiceWeb.Models.ConfigInfo
 
 @{
     ViewBag.Title = "ConfigView";
@@ -32,7 +32,7 @@
             <td></td>
         </tr>
     </table>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Handlers)
     {
         <a>
             @Html.DisplayFor(modelItem => item.DirPath)
