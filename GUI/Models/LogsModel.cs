@@ -46,6 +46,7 @@ namespace GUI.Models
             Object locker = new object();
             BindingOperations.EnableCollectionSynchronization(m_LogsInfoList, locker);
             m_Connection = Communication.CreateConnectionChannel();
+
             SendInfo += m_Connection.StartSenderChannel;
             // sign to the event of getting the info from the server
             m_Connection.InfoRecieved += GetInfoFromServer;

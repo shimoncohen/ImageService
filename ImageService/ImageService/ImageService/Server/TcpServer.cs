@@ -44,7 +44,7 @@ namespace ImageService.Server
         /// <summary>
         /// starting the server
         /// </summary>
-        public void Start()
+        public void Start(string[] str)
         {
             // create the client list
             clients = new List<TcpClient>();

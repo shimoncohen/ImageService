@@ -12,7 +12,7 @@ namespace ImageService.Server
     /// <summary>
     /// the class of the server. holds a controller to execute commands and a logger to write operations that occured.
     /// </summary>
-    public class ImageServer
+    public class ImageServer : IServer
     {
         #region Members
         private IImageController controller;
@@ -33,19 +33,23 @@ namespace ImageService.Server
         /// <param name= model> the image modal we have, to create the proper controller. </param>
         /// <param name= handler> the paths to all the directories we want to monitor </param>
         /// <param name= logger> a logger to follow action and operations that occured </param>
-        public ImageServer(ImageController imageController, string[] handlers, ILoggingService logger)
+        public ImageServer(ImageController imageController, ILoggingService logger)
         {
             // create controller
             controller = imageController;
             logging = logger;
             handlerList = new List<IDirectoryHandler>();
+        }
+
+        public void Start(string[] handlers)
+        {
             // create handler for each given directory
             foreach (string directory in handlers)
             {
                 CreateHandler(directory);
             }
         }
-        
+
         /// <summary>
         /// creates a new handler for a given directory
         /// </summary>
@@ -112,7 +116,7 @@ namespace ImageService.Server
         /// <summary>
         /// the function closes the server. invoke closing operation and writes to log.
         /// </summary>
-        public void CloseServer()
+        public void Stop()
         {
             string[] args = { "*" };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, args, "*");
