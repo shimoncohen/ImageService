@@ -8,11 +8,9 @@ namespace ImageServiceWeb.Models
 {
     public class Directory
     {
-        string dirPath;
-
         public Directory(string path)
         {
-            dirPath = path;
+            DirPath = path;
         }
 
         [Required]

@@ -10,7 +10,13 @@ namespace ImageServiceWeb.Controllers
 {
     public class ImageServiceController : Controller
     {
-        static List<Directory> directories = new List<Directory>();
+        static List<string> handlers = new List<string>()
+        {
+            { "path1" },
+            { "path2" },
+            { "path3" }
+        };
+        static ConfigInfo configInfo = new ConfigInfo(handlers, "out", "source", "log", 120);
         private string status;
         private int numOfPics;
 
@@ -24,7 +30,7 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult ConfigView()
         {
-            return View();
+            return View(configInfo);
         }
 
         [HttpGet]
@@ -36,14 +42,25 @@ namespace ImageServiceWeb.Controllers
             return data;
         }
 
+        [HttpGet]
+        public JObject GetConfigInfo()
+        {
+            JObject data = new JObject();
+            data["SourceName"] = configInfo.SourceName;
+            data["LogName"] = configInfo.LogName;
+            data["OutputDirectory"] = configInfo.OutputDir;
+            data["ThumbnailSize"] = configInfo.ThumbnailSize;
+            return data;
+        }
+
         public ActionResult Delete(string path)
         {
             int i = 0;
-            foreach (Directory dir in directories)
+            foreach (Directory dir in configInfo.Handlers)
             {
                 if (dir.DirPath.Equals(path))
                 {
-                    directories.RemoveAt(i);
+                    configInfo.Handlers.RemoveAt(i);
                     return RedirectToAction("ConfigView");
                 }
                 i++;
