@@ -87,11 +87,14 @@ namespace ImageService
             // create the services servers
             ImageController controller = new ImageController(model);
             // create image server
-            server = new ImageServer(controller, info.Handlers.ToArray(), logger);
+            server = new ImageServer(controller, logger);
             // create tcp server
             tcpServer = new TcpServer(controller, logger);
             // start the tcp server
-            tcpServer.Start();
+            string[] str = { };
+            tcpServer.Start(str);
+            // start the image server
+            server.Start(info.Handlers.ToArray());
             controller.HandlerClosedEvent += server.CloseHandler;
             logger.NotifyClients += tcpServer.NotifyClients;
             server.NotifyClients += tcpServer.NotifyClients;
@@ -128,7 +131,7 @@ namespace ImageService
             logger.Log("In onStop", MessageTypeEnum.INFO);
             LogHistory logHistory = LogHistory.CreateLogHistory();
             // close the image server
-            server.CloseServer();
+            server.Stop();
             // close the tcp server
             tcpServer.Stop();
             logger.MessageRecieved -= ImageServiceMessage;

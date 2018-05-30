@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
 using Infrastructure.Modal.Event;
+using GUI.VMs;
+using GUI.Connection;
+using Infrastructure.Enums;
 
 namespace GUI.Models
 {
@@ -12,11 +15,15 @@ namespace GUI.Models
     /// A model for the settings window.
     /// handles the window's logic.
     /// </summary>
-    class SettingsModel : INotifyPropertyChanged
+    class SettingsModel : INotifyPropertyChanged, ConnectionInterface
     {
         // an event that raises when a property is being changed
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        private Communication m_Connection;
+
+        public event EventHandler<CommandRecievedEventArgs> SendInfo;
+
         protected void OnPropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -130,8 +137,60 @@ namespace GUI.Models
             m_Directories = new ObservableCollection<string>();
             Object locker = new object();
             BindingOperations.EnableCollectionSynchronization(m_Directories, locker);
+            m_Connection = Communication.CreateConnectionChannel();
+            // sign to the event of receive info from the server
+            m_Connection.InfoRecieved += GetInfoFromServer;
+            SendInfo += m_Connection.StartSenderChannel;
+            System.Threading.Thread.Sleep(50);
+            // initialize the fields
+            this.SendCommandToServer(CommandEnum.GetConfigCommand, "");
         }
 
+        /// <summary>
+        /// The function receives the info from the server and update the model's fields accordingly.
+        /// </summary>
+        public void GetInfoFromServer(object sender, InfoEventArgs e)
+        {
+            // parse the info from the infoEventArgs
+            int infoType = InfoReceivedParser.parseInfoType(e.InfoId);
+            if (infoType == 1) // 1 are commands for settings model
+            {
+                // in case the command is getConfig command
+                if (e.InfoId == (int)InfoEnums.AppConfigInfo)
+                {
+                    this.InfoUpdate(e);
+                    // in case the command is closeHandler command
+                }
+                else if (e.InfoId == (int)InfoEnums.CloseHandlerInfo)
+                {
+                    this.RemoveFromHandlersList(e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// A generic send to server function. we send a command and an item.
+        /// </summary>
+        /// <param name="commandEnum">The type of command we send</param>
+        /// <param name="item">The path of the handler. If we don't pick any specific handler this will be "Empty" string.</param>
+        public void SendCommandToServer(CommandEnum commandEnum, string item)
+        {
+            string[] args = { };
+            // we remove a specific handler
+            // if item is not an empty string we initialize args[0] as item, and send it as args.
+            if (!item.Equals(""))
+            {
+                args = new string[1];
+                args[0] = item;
+                CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, item);
+                SendInfo?.Invoke(this, e);
+            }
+            else // we receive info from the server
+            {
+                CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)commandEnum, args, "Empty");
+                SendInfo?.Invoke(this, e);
+            }
+        }
 
         /// <summary>
         /// The function updates the values of the fields
