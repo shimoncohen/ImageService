@@ -16,13 +16,13 @@ namespace ImageServiceWeb.Controllers
 
         // GET: First Page
         [HttpGet]
-        public  ActionResult ImageWeb()
+        public  ActionResult ImageWebView()
         {
             return View();
         }
 
         [HttpGet]
-        public ActionResult Config()
+        public ActionResult ConfigView()
         {
             return View();
         }
