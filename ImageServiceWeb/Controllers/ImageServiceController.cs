@@ -8,8 +8,13 @@ namespace ImageServiceWeb.Controllers
 {
     public class ImageServiceController : Controller
     {
-        // GET: ImageService
-        public ActionResult Index()
+        // GET: First Page
+        public  ActionResult ImageWeb()
+        {
+            return View();
+        }
+
+        public ActionResult Config()
         {
             return View();
         }
