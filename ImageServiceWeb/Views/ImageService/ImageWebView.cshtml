@@ -36,3 +36,12 @@
         </tr>
     </table>
 </div>
+
+<script>
+    function () {
+        $.getJSON("@Url.Action("GetServiceInfo")", function () {
+            $("#statusId").text(ServiceStauts);
+            $("#imageNumberId").text(NumOfImages);
+        });
+    };
+</script>
