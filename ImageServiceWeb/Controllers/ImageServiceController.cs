@@ -39,7 +39,9 @@ namespace ImageServiceWeb.Controllers
         static PhotoList photoList = new PhotoList();
         static List<Logs> logs = new List<Logs>()
         {
-            {new Logs("Info", "Message1") }
+            {new Logs("Info", "Message1") },
+            {new Logs("Warning", "Message2") },
+            {new Logs("Failed", "Message3") }
         };
         private string status;
         private int numOfPics;

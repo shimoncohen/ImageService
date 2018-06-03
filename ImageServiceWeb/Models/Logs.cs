@@ -23,11 +23,21 @@ namespace ImageServiceWeb.Models
             }
         }
 
-        public string LogsInfo {
+        public string GetMessage {
             get
             {
                 if (this.Status.Equals(filter) || this.filter == null)
-                    return this.Status+" | "+this.Message;
+                    return this.Message;
+                return "";
+            }
+        }
+
+        public string GetStatus
+        {
+            get
+            {
+                if (this.Status.Equals(filter) || this.filter == null)
+                    return this.Status;
                 return "";
             }
         }

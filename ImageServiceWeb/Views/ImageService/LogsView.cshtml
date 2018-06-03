@@ -11,29 +11,43 @@
     <p> Name: </p>
     <input type="text" id="FilterID" size="5" />
     <input type="button" id="btnFilter" value="Filter" />
-    <ul id="Log"></ul>
+    <ul id="Logs"></ul>
 </div>
 
 <div>
     <table class="table">
         <tr>
-            <td>
-                <p type="text" id="Log" size="5">
-                    @Html.DisplayNameFor(model => model.LogsInfo)
+            <th>
+                <p type="text" id="sourceName" size="5">
+                    Status
                 </p>
+            </th>
+            <th>
+                <p type="text" id="sourceName" size="5">
+                    Message
+                </p>
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GetStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GetMessage)
             </td>
         </tr>
+        }
     </table>
 </div>
 
 <script>
     $("#btnFilter").click(function () {
         var input = {
-            name:$("#FilterID").val()
+            filter:$("#FilterID").val()
         };
-        $.post("@Url.Action("LogsInfo")", input, function (data) {
-            $("#Log");
-        }, "json");
     });
 </script>
 
