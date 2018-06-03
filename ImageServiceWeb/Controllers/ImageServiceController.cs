@@ -14,6 +14,25 @@ namespace ImageServiceWeb.Controllers
         {
             { "path1" },
             { "path2" },
+            { "path3" },
+            { "shimon you are very much to be not a butterfly or a porcupine........................................................................................................................................................................................................................................" },
+            { "path1" },
+            { "path2" },
+            { "path3" },
+            { "path1" },
+            { "path2" },
+            { "path3" },
+            { "path1" },
+            { "path2" },
+            { "path3" },
+            { "path1" },
+            { "path2" },
+            { "path3" },
+            { "path1" },
+            { "path2" },
+            { "path3" },
+            { "path1" },
+            { "path2" },
             { "path3" }
         };
         static ConfigInfo configInfo = new ConfigInfo(handlers, "out", "source", "log", 120);

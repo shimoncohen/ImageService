@@ -3,15 +3,35 @@
     ViewBag.Title = "LogsView";
 }
 
-<table class="table">
-    <tr>
-        <td>
-            <p type="text" id="Log" size="5">
-                @Html.DisplayNameFor(model => model.LogsInfo)
-            </p>
-        </td>
-    </tr>
-</table>
-
 <h2>LogsView</h2>
+
+<div>
+    <p> Name: </p>
+    <input type="text" id="FilterID" size="5" />
+    <input type="button" id="btnFilter" value="Filter" />
+    <ul id="Log"></ul>
+</div>
+
+<div>
+    <table class="table">
+        <tr>
+            <td>
+                <p type="text" id="Log" size="5">
+                    @Html.DisplayNameFor(model => model.LogsInfo)
+                </p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    $("#btnFilter").click(function () {
+        var input = {
+            name:$("#FilterID").val()
+        };
+        $.post("@Url.Action("LogsInfo")", input, function (data) {
+            $("#Log");
+        }, "json");
+    });
+</script>
 
