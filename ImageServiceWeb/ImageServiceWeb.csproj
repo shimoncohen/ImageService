@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="Models\ConfigInfo.cs" />
     <Compile Include="Models\Directory.cs" />
+    <Compile Include="Models\Logs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\ImageService\Error.cshtml" />
     <Content Include="Views\ImageService\RemoveHandler.cshtml" />
+    <Content Include="Views\ImageService\LogsView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

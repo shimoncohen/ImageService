@@ -3,18 +3,15 @@
     ViewBag.Title = "LogsView";
 }
 
-<h2>LogsView</h2>
-
-<table>
+<table class="table">
     <tr>
-        @{ 
-            foreach (var log in Model.LogsInfo) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => log)
-                    </td>
-                </tr>
-            }
-        }
+        <td>
+            <p type="text" id="Log" size="5">
+                @Html.DisplayNameFor(model => model.LogsInfo)
+            </p>
+        </td>
     </tr>
 </table>
+
+<h2>LogsView</h2>
+
