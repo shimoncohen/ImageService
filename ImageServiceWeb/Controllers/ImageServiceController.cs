@@ -10,6 +10,7 @@ namespace ImageServiceWeb.Controllers
 {
     public class ImageServiceController : Controller
     {
+        static List<Logs> logs = new List<Logs>();
         static List<Directory> directories = new List<Directory>();
         private string status;
         private int numOfPics;
