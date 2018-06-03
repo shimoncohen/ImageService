@@ -35,7 +35,7 @@ namespace ImageServiceWeb.Controllers
             { "path2" },
             { "path3" }
         };
-        static ConfigInfo configInfo = new ConfigInfo(handlers, "out", "source", "log", 120);
+        static ConfigInfo configInfo = new ConfigInfo(handlers, "C:\\Users\\Larry\\Desktop\\test\\to", "source", "log", 120);
         static PhotoList photoList = new PhotoList(configInfo.OutputDir);
         static List<Logs> logs = new List<Logs>()
         {

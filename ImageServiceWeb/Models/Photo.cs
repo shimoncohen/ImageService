@@ -15,13 +15,13 @@ namespace ImageServiceWeb.Models
     {
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "DirPath")]
+        [Display(Name = "PhotoPath")]
         public string PhotoPath { get; }
 
         [Required]
-        [DataType(DataType.DateTime)]
-        [Display(Name = "Creation")]
-        public DateTime Creation { get; }
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "CurrentImage")]
+        public Image CurrentImage { get; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -35,58 +35,14 @@ namespace ImageServiceWeb.Models
 
         public Photo(string path)
         {
+            string root = Path.GetPathRoot(path);
+            Directory.SetCurrentDirectory(root);
             PhotoPath = path;
-            //Creation = GetDateFromImage(path);
+            CurrentImage = Image.FromFile(path);
             Month = Path.GetDirectoryName(path);
+            Month = new DirectoryInfo(Month).Name;
             Year = Path.GetDirectoryName(Path.GetDirectoryName(path));
+            Year = new DirectoryInfo(Year).Name;
         }
-
-        /*private DateTime GetDateFromImage(string path)
-        {
-            DateTime timeCreated = new DateTime();
-            try
-            {
-                // extract images creation date and time
-                //timeCreated = File.GetCreationTime(path);
-                timeCreated = this.GetDateTakenFromImage(path);
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    timeCreated = this.GetDateCreatedFromImage(path);
-                }
-                catch (Exception e1)
-                {
-                    return DateTime.Now;
-                }
-            }
-            return timeCreated;
-        }
-
-        //retrieves the datetime WITHOUT loading the whole image
-        private DateTime GetDateTakenFromImage(string path)
-        {
-            Regex r = new Regex(":");
-            using (Image myImage = Image.FromFile(path))
-            {
-                PropertyItem propItem = myImage.GetPropertyItem(36867);
-                string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                myImage.Dispose();
-                return DateTime.Parse(dateTaken);
-            }
-        }
-
-        // <summary>
-        // the function gets the creation date of an image.
-        // </summary>
-        // <param name= path> the path of the file </param>
-        // <return> the creation date of the image as an object of DateTime </return>
-        private DateTime GetDateCreatedFromImage(string path)
-        {
-            DateTime now = DateTime.Now;
-            TimeSpan localOffset = now - now.ToUniversalTime();
-            return File.GetLastWriteTimeUtc(path) + localOffset;
-        }*/
     }
 }
