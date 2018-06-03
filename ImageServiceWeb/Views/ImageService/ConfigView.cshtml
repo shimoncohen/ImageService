@@ -47,16 +47,14 @@
         </td>
     </tr>
 </table>
-<table>
-    <tr>
-        Handlers:
-    </tr>
+<tr>
+    Handlers:
+</tr>
+<ul class="link-tabel">
     @foreach (var item in Model.Handlers)
     {
-        <tr>
-            <td>
-                @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
-            </td>
-        </tr>
+        <li>
+            @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
+        </li>
     }
-</table>
+</ul>
