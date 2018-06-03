@@ -10,10 +10,10 @@ namespace ImageServiceWeb.Models
     {
         public ConfigInfo(List<string> handlers, string outputDir, string sourceName, string logName, int thumbnailSize)
         {
-            Handlers = new List<Directory>();
+            Handlers = new List<DirectoryModel>();
             foreach (string dir in handlers)
             {
-                Handlers.Add(new Directory(dir));
+                Handlers.Add(new DirectoryModel(dir));
             }
             OutputDir = outputDir;
             SourceName = sourceName;
@@ -24,7 +24,7 @@ namespace ImageServiceWeb.Models
         //private readonly List<string> handlers;
         [Required]
         [Display(Name = "Handlers")]
-        public List<Directory> Handlers { get; }
+        public List<DirectoryModel> Handlers { get; }
         //private readonly string outputDir;
         [Required]
         [DataType(DataType.Text)]

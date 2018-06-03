@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ImageServiceWeb.Models
 {
-    public class Directory
+    public class DirectoryModel
     {
-        public Directory(string path)
+        public DirectoryModel(string path)
         {
             DirPath = path;
         }

@@ -92,7 +92,7 @@ namespace ImageServiceWeb.Controllers
         public ActionResult Delete(string path)
         {
             int i = 0;
-            foreach (Directory dir in configInfo.Handlers)
+            foreach (DirectoryModel dir in configInfo.Handlers)
             {
                 if (dir.DirPath.Equals(path))
                 {
