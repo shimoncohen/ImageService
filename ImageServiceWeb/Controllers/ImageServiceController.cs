@@ -36,6 +36,7 @@ namespace ImageServiceWeb.Controllers
             { "path3" }
         };
         static ConfigInfo configInfo = new ConfigInfo(handlers, "out", "source", "log", 120);
+        static PhotoList photoList = new PhotoList();
         static List<Logs> logs = new List<Logs>()
         {
             {new Logs("Info", "Message1") }
@@ -60,6 +61,12 @@ namespace ImageServiceWeb.Controllers
         public ActionResult LogsView()
         {
             return View(logs);
+        }
+
+        [HttpGet]
+        public ActionResult PhotosView()
+        {
+            return View(photoList);
         }
 
         [HttpGet]
