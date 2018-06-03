@@ -54,7 +54,9 @@
     @foreach (var item in Model.Handlers)
     {
         <tr>
-            @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
+            <td>
+                @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
+            </td>
         </tr>
     }
 </table>
