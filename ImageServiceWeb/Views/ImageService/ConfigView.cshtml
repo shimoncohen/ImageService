@@ -5,37 +5,56 @@
 }
 
 <h2>ConfigView</h2>
-<div>
-    <table>
-        <tr>
-            <td>
-                Source name:
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                Log name:
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                Output directory:
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                Thumbnail size:
-            </td>
-            <td></td>
-        </tr>
-    </table>
+<table class="table">
+    <tr>
+        <td>
+            Source name:
+        </td>
+        <td>
+            <p type="text" id="sourceName" size="5">
+                @Html.DisplayNameFor(model => model.SourceName)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Log name:
+        </td>
+        <td>
+            <p type="text" id="logName" size="5">
+                @Html.DisplayNameFor(model => model.LogName)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Output directory:
+        </td>
+        <td>
+            <p type="text" id="outputDirectory" size="5">
+                @Html.DisplayNameFor(model => model.OutputDir)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Thumbnail size:
+        </td>
+        <td>
+            <p type="text" id="thumbnailSize" size="5">
+                @Html.DisplayNameFor(model => model.ThumbnailSize)
+            </p>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        Handlers:
+    </tr>
     @foreach (var item in Model.Handlers)
     {
-        <a>
-            @Html.DisplayFor(modelItem => item.DirPath)
-        </a>
+        <tr>
+            @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
+        </tr>
     }
-</div>
+</table>
