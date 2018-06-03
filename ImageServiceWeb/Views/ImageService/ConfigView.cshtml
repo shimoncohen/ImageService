@@ -50,11 +50,13 @@
 <tr>
     Handlers:
 </tr>
-<ul class="link-tabel">
+<ul class="link-table">
     @foreach (var item in Model.Handlers)
     {
-        <li>
+        <li class="path">
             @Html.ActionLink(item.DirPath, "RemoveHandler", new { })
         </li>
     }
 </ul>
+
+<link href="~/Css/config-view.css" rel="stylesheet" type="text/css" />

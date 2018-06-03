@@ -1,0 +1,14 @@
+﻿.link-table {
+    min-height: 100px;
+    max-height: 200px;
+    border-color: black;
+    border-width: 1px;
+    border-style: dotted;
+    /*border: 1px solid black;*/
+    overflow: scroll;
+    text-overflow: ellipsis;
+}
+
+.path {
+    -webkit-text-fill-color: blue;
+}
