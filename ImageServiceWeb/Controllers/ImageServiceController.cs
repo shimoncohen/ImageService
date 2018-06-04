@@ -37,12 +37,7 @@ namespace ImageServiceWeb.Controllers
         };
         static ConfigInfo configInfo = new ConfigInfo(handlers, "C:\\Users\\Larry\\Desktop\\test\\to", "source", "log", 120);
         static PhotoList photoList = new PhotoList(configInfo.OutputDir);
-        static List<Logs> logs = new List<Logs>()
-        {
-            {new Logs("Info", "Message1") },
-            {new Logs("Warning", "Message2") },
-            {new Logs("Failed", "Message3") }
-        };
+        static LogsModel logsModel = new LogsModel();
         private string status;
         private int numOfPics;
 
@@ -62,7 +57,7 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult LogsView()
         {
-            return View(logs);
+            return View(logsModel.LogsList);
         }
 
         [HttpGet]
@@ -89,6 +84,12 @@ namespace ImageServiceWeb.Controllers
             data["OutputDirectory"] = configInfo.OutputDir;
             data["ThumbnailSize"] = configInfo.ThumbnailSize;
             return data;
+        }
+
+        [HttpPost]
+        public void SetFilter(string filter)
+        {
+            logsModel.SetFilter = filter;
         }
 
         public ActionResult Delete(string path)

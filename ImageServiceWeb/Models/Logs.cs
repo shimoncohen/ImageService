@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,11 @@ namespace ImageServiceWeb.Models
     public class Logs
     {
         private string filter;
+        [Required]
+        [Display(Name = "Status")]
         private string Status;
+        [Required]
+        [Display(Name = "Message")]
         private string Message;
         public Logs(string Status, string Message)
         {
