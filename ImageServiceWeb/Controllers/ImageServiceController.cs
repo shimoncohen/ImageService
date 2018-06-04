@@ -86,10 +86,18 @@ namespace ImageServiceWeb.Controllers
             return data;
         }
 
-        [HttpPost]
-        public void SetFilter(string filter)
+        [HttpGet]
+        public ActionResult SetFilter(string filter)
         {
-            logsModel.SetFilter = filter;
+            try
+            {
+                logsModel.SetFilter = filter;
+                return View();
+            } catch
+            {
+                return View();
+            }
+            
         }
 
         public ActionResult Delete(string path)

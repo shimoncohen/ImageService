@@ -3,48 +3,52 @@
 @{
     ViewBag.Title = "LogsView";
 }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<h2>LogsView</h2>
 
-<link href="~/Css/logs-view.css" rel="stylesheet" type="text/css" />
+    <h2>LogsView</h2>
 
-<div>
-    <p> Name: </p>
-    <input type="text" id="FilterID" size="5" />
-    <input type="submit" id="btnFilter" value="Filter" class="btn btn-default" />
-    <ul id="Logs"></ul>
-</div>
+    <link href="~/Css/logs-view.css" rel="stylesheet" type="text/css" />
 
-<div>
-    <table class="table">
-        <tr>
-            <th>
-                <p type="text" id="sourceName" size="5">
-                    Status
-                </p>
-            </th>
-            <th>
-                <p type="text" id="sourceName" size="5">
-                    Message
-                </p>
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GetStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GetMessage)
-            </td>
-        </tr>
-        }
-    </table>
-</div>
+    <div>
+        <p> Name: </p>
+        <input type="text" id="FilterID" size="5" />
+        <input type="submit" id="btnFilter" value="Filter" class="btn btn-default" />
+        <ul id="Logs"></ul>
+    </div>
 
-<script>
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    <p type="text" id="sourceName" size="5">
+                        Status
+                    </p>
+                </th>
+                <th>
+                    <p type="text" id="sourceName" size="5">
+                        Message
+                    </p>
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetMessage)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <script>
     $("#btnFilter").click(function () {
         var input = {
             filter:$("#FilterID").val()
@@ -53,5 +57,5 @@
             $("#Logs").append("<li>" + data.Status + " | " + data.Message + "</li>");
         }, "json");
     });
-</script>
-
+    </script>
+}
