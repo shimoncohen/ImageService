@@ -14,6 +14,13 @@ namespace ImageServiceWeb.Models
         {
             this.Status = Status;
             this.Message = Message;
+            m_Connection = Communication.CreateConnectionChannel();
+
+            SendInfo += m_Connection.StartSenderChannel;
+            // sign to the event of getting the info from the server
+            m_Connection.InfoRecieved += GetInfoFromServer;
+            System.Threading.Thread.Sleep(50);
+            SendToServer();
         }
 
         public string Filter {
