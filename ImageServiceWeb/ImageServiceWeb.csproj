@@ -143,6 +143,7 @@
     <Compile Include="Models\ConfigInfo.cs" />
     <Compile Include="Models\DirectoryModel.cs" />
     <Compile Include="Models\Logs.cs" />
+    <Compile Include="Models\LogsModel.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\PhotoList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
