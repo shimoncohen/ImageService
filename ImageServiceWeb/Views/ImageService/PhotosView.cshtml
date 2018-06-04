@@ -2,50 +2,32 @@
 
 @{
     ViewBag.Title = "PhotosView";
-    var i = 0;
+    //var i = 0;
 }
 
 <h2>PhotosView</h2>
 
-<body onload="loadImages()"></body>
-<div>
-    <table class="table" id="photo_table">
-        <tr>
-            <th>
-                <p type="text" id="sourceName" size="5">
-                    Years
-                </p>
-            </th>
-            <th>
-                <p type="text" id="sourceName" size="5">
-                    Month
-                </p>
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.GetPhotos())
-        {
-            i++;
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Month)
-                </td>
-                <td><img id="@i" src="" style="background-size:cover; height:130px" width="130" height="130" alt="" /></td>
-            </tr>
-        }
-    </table>
-    <img src="~/Photos/download.jpg" />
-</div>
 
-<script>
-    function loadImages() {
-        for (var i = 1; i < Model.GetPhotos().length; i++) {
-            //document.getElementById(i).src = "C:\Users\Larry\Desktop\test\to\Thumbnails\2018\6\download.jpg";
-            document.getElementById(i).src = "~/Photos/download.jpg";
-            //http://localhost/C:/Users/Larry/Desktop/test/to/Thumbnails/2018/6/download.jpg
-        }
-    });
-</script>
+
+<body class="vsc-initialized">
+    <div class="container" id="tourpackages-carousel">
+
+        <div class="row">
+            @foreach (var item in Model.GetPhotos())
+            {
+                <div class="col-xs-18 col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="@Html.DisplayFor(modelItem => item.PhotoPath)" alt="">
+                        <div class="caption">
+                            <h4>Thumbnail label</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, soluta, eligendi doloribus sunt minus amet sit debitis repellat. Consectetur, culpa itaque odio similique suscipit</p>
+                            <p><a href="#" class="btn btn-info btn-xs" role="button">Button</a> <a href="#" class="btn btn-default btn-xs" role="button">Button</a></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div><!-- End row -->
+    </div><!-- End container -->
+    <script type="text/javascript">
+    </script>
+</body>
