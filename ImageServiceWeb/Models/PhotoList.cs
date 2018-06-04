@@ -4,30 +4,42 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace ImageServiceWeb.Models
 {
     public class PhotoList
     {
-        string photoPath;
-        static List<Photo> photosList = new List<Photo>();
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "PhotoPath")]
+        public string PhotoPath { get; }
+
+        [Required]
+        [Display(Name = "PhotosList")]
+        private List<Photo> PhotosList = new List<Photo>();
 
         public PhotoList(string path)
         {
-            photoPath = path;
+            PhotoPath = path;
             RefreshList();
         }
 
         public void RefreshList()
         {
-            if(Directory.Exists(photoPath))
+            if(Directory.Exists(PhotoPath))
             {
-                string[] photos = Directory.GetFiles(photoPath + "/Thumbnails", "*.jpg", SearchOption.AllDirectories);
+                string[] photos = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.jpg", SearchOption.AllDirectories);
                 foreach(string photo in photos)
                 {
-                    photosList.Add(new Photo(photo));
+                    PhotosList.Add(new Photo(photo));
                 }
             }
+        }
+
+        public List<Photo> GetPhotos()
+        {
+            return PhotosList;
         }
     }
 }
