@@ -15,7 +15,6 @@ namespace ImageServiceWeb.Controllers
             { "path1" },
             { "path2" },
             { "path3" },
-            { "shimon you are very much to be not a butterfly or a porcupine........................................................................................................................................................................................................................................" },
             { "path1" },
             { "path2" },
             { "path3" },
@@ -38,8 +37,6 @@ namespace ImageServiceWeb.Controllers
         static ConfigInfo configInfo = new ConfigInfo(handlers, "C:\\Users\\Larry\\Desktop\\test\\to", "source", "log", 120);
         static PhotoList photoList = new PhotoList(configInfo.OutputDir);
         static LogsModel logsModel = new LogsModel();
-        private string status;
-        private int numOfPics;
 
         // GET: First Page
         [HttpGet]
@@ -80,7 +77,7 @@ namespace ImageServiceWeb.Controllers
             return View(photoList);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public JObject GetServiceInfo()
         {
             JObject data = new JObject();
@@ -98,7 +95,7 @@ namespace ImageServiceWeb.Controllers
             data["OutputDirectory"] = configInfo.OutputDir;
             data["ThumbnailSize"] = configInfo.ThumbnailSize;
             return data;
-        }
+        }*/
 
         public ActionResult Delete(string path)
         {
