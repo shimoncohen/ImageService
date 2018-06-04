@@ -24,7 +24,7 @@
         </tr>
         @foreach (var item in Model.GetPhotos())
         {
-            @i++;
+            @{i++}
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Year)
@@ -32,7 +32,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Month)
                 </td>
-                <td><img id="@i" src="http://localhost/C:/Users/Larry/Desktop/test/to/Thumbnails/2018/6/download.jpg" style="background-size:cover; height:130px" width="130" height="130" alt="" /></td>
+                <td><img id="@{i} " src="http://localhost/C:/Users/Larry/Desktop/test/to/Thumbnails/2018/6/download.jpg" style="background-size:cover; height:130px" width="130" height="130" alt="" /></td>
             </tr>
         }
     </table>
