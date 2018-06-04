@@ -29,7 +29,7 @@ namespace ImageServiceWeb.Models
         {
             if(Directory.Exists(PhotoPath))
             {
-                string[] photos = Directory.GetFiles(PhotoPath + "/Thumbnails", "*.jpg", SearchOption.AllDirectories);
+                string[] photos = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.jpg", SearchOption.AllDirectories);
                 foreach(string photo in photos)
                 {
                     PhotosList.Add(new Photo(photo));
@@ -39,6 +39,7 @@ namespace ImageServiceWeb.Models
 
         public List<Photo> GetPhotos()
         {
+            RefreshList();
             return PhotosList;
         }
 
