@@ -7,12 +7,13 @@
 
 <h2>PhotosView</h2>
 
+<body onload="loadImages()"></body>
 <div>
-    <table class="table">
+    <table class="table" id="photo_table">
         <tr>
             <th>
                 <p type="text" id="sourceName" size="5">
-                    Yesar
+                    Years
                 </p>
             </th>
             <th>
@@ -24,7 +25,7 @@
         </tr>
         @foreach (var item in Model.GetPhotos())
         {
-            @{i++}
+            i++;
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Year)
@@ -32,15 +33,19 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Month)
                 </td>
-                <td><img id="@{i} " src="http://localhost/C:/Users/Larry/Desktop/test/to/Thumbnails/2018/6/download.jpg" style="background-size:cover; height:130px" width="130" height="130" alt="" /></td>
+                <td><img id="@i" src="" style="background-size:cover; height:130px" width="130" height="130" alt="" /></td>
             </tr>
         }
     </table>
-    <img src="C:\Users\Larry\Desktop\test\to\Thumbnails\2018\6\download.jpg" />
+    <img src="~/Photos/download.jpg" />
 </div>
 
 <script>
-    for (var i; i < Model.GetPhotos().length; i++) {
-        document.getElementById(i).src = "C:\Users\Larry\Desktop\test\to\Thumbnails\2018\6\download.jpg";
-    }
+    function loadImages() {
+        for (var i = 1; i < Model.GetPhotos().length; i++) {
+            //document.getElementById(i).src = "C:\Users\Larry\Desktop\test\to\Thumbnails\2018\6\download.jpg";
+            document.getElementById(i).src = "~/Photos/download.jpg";
+            //http://localhost/C:/Users/Larry/Desktop/test/to/Thumbnails/2018/6/download.jpg
+        }
+    });
 </script>
