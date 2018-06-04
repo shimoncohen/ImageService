@@ -4,7 +4,10 @@ namespace ImageServiceWeb.Models
 {
     public class Log
     {
-        private string filter;
+        public string GetMessage { get { return this.Message; } }
+
+        public string GetStatus { get { return this.Status; } }
+
         [Required]
         [Display(Name = "Status")]
         private string Status;
@@ -16,32 +19,5 @@ namespace ImageServiceWeb.Models
         {
             this.Status = Status;
             this.Message = Message;
-        }
-
-        public string Filter {
-            set
-            {
-                this.filter = value;
-            }
-        }
-
-        public string GetMessage {
-            get
-            {
-                if (this.Status.Equals(filter) || this.filter == null)
-                    return this.Message;
-                return "";
-            }
-        }
-
-        public string GetStatus
-        {
-            get
-            {
-                if (this.Status.Equals(filter) || this.filter == null)
-                    return this.Status;
-                return "";
-            }
-        }
-    }
+        }    }
 }

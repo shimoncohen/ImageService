@@ -57,7 +57,21 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult LogsView()
         {
-            return View(logsModel.LogsList);
+            return View(logsModel);
+        }
+
+        [HttpPost]
+        public ActionResult LogsView(string filter)
+        {
+            try
+            {
+                logsModel.Filter = filter;
+                return RedirectToAction("LogsView");
+            }
+            catch
+            {
+                return RedirectToAction("LogsView");
+            }
         }
 
         [HttpGet]
@@ -84,20 +98,6 @@ namespace ImageServiceWeb.Controllers
             data["OutputDirectory"] = configInfo.OutputDir;
             data["ThumbnailSize"] = configInfo.ThumbnailSize;
             return data;
-        }
-
-        [HttpGet]
-        public ActionResult SetFilter(string filter)
-        {
-            try
-            {
-                logsModel.SetFilter = filter;
-                return View();
-            } catch
-            {
-                return View();
-            }
-            
         }
 
         public ActionResult Delete(string path)

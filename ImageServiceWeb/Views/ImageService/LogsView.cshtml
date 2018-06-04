@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ImageServiceWeb.Models.Log>
+﻿@model ImageServiceWeb.Models.LogsModel
 
 @{
     ViewBag.Title = "LogsView";
@@ -13,50 +13,54 @@
         <link href="~/Css/logs-view.css" rel="stylesheet" type="text/css" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            <div>
-                <input type="text" id="FilterID" size="5" />
+            @Html.LabelFor(m => m.Filter, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Filter, new { @class = "form-control" })
             </div>
         </div>
-        <input type="submit" id="btnFilter" value="Filter" class="btn btn-default" />
-        <ul id="Logs"></ul>
-    </div>
-
-    <div>
-        <table class="table">
-            <tr>
-                <th>
-                    <p type="text" id="sourceName" size="5">
-                        Status
-                    </p>
-                </th>
-                <th>
-                    <p type="text" id="sourceName" size="5">
-                        Message
-                    </p>
-                </th>
-                <th></th>
-            </tr>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GetStatus)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GetMessage)
-                    </td>
-                </tr>
-            }
-        </table>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="btnFilter" value="Filter" class="btn btn-default" />
+            </div>
+        </div>
     </div>
 }
-<!--<script>
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                <p type="text" id="sourceName" size="5">
+                    Status
+                </p>
+            </th>
+            <th>
+                <p type="text" id="sourceName" size="5">
+                    Message
+                </p>
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.LogsList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GetStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GetMessage)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
     $("#btnFilter").click(function () {
         var input = {
             filter:$("#FilterID").val()
         };
          $.post("@Url.Action("SetFilter")", input, function (data) {
-            $("#Logs").append("<li>" + data.Status + " | " + data.Message + "</li>");
+            $("#Logs");
         }, "json");
     });
-</script>-->
+</script>

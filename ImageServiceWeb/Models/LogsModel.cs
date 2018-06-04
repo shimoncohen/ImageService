@@ -11,13 +11,14 @@ namespace ImageServiceWeb.Models
 {
     public class LogsModel
     {
-        private string filter = null;
         private List<Log> logs = new List<Log>()
         {
             {new Log("Info", "Message1") },
             {new Log("Warning", "Message2") },
             {new Log("Failed", "Message3") }
         };
+
+        public string Filter { get; set; }
 
         private Communication m_Connection;
 
@@ -106,18 +107,10 @@ namespace ImageServiceWeb.Models
                 List<Log> filteredList = new List<Log>();
                 foreach (Log log in logs)
                 {
-                    if (String.IsNullOrEmpty(this.filter) || this.filter.Equals(log.GetStatus))
+                    if (String.IsNullOrEmpty(this.Filter) || this.Filter.Equals(log.GetStatus))
                         filteredList.Add(log);
                 }
                 return filteredList;
-            }
-        }
-
-        public string SetFilter
-        {
-            set
-            {
-                this.filter = value;
             }
         }
     }
