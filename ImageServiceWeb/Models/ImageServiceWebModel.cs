@@ -22,9 +22,9 @@ namespace ImageServiceWeb.Models
             this.ParseInfo();
         }
 
-        public string GetStatus { get; }
-        public int GetNumofPics { get; }
-        public string[,] GetInfo { get; }
+        public string GetStatus { get { return this.status; } }
+        public int GetNumofPics { get { return this.numOfPics; } }
+        public List<Student> GetInfo { get { return this.info; } }
 
         private string ConnectionStatus(bool connected)
         {
@@ -63,8 +63,12 @@ namespace ImageServiceWeb.Models
             this.ID = id;
         }
 
-        public string GetFirstName { get; set; }
-        public string GetLastName { get; set; }
-        public string GetID { get; set; }
+        public string GetFirstName {
+            get { return this.firstName; }
+        }
+        public string GetLastName {
+            get { return this.lastName; }
+        }
+        public string GetID { get { return this.ID; } }
     }
 }

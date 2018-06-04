@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td>Total Images In Cloud: </td>
-            <td><p type="text" id="imageNumberId" size="5"></p></td>
+            <td><p type="text" id="imageNumberId" size="5" style="margin:10px"></p></td>
             <td>@Html.DisplayFor(model => model.GetNumofPics)</td>
         </tr>
         <tr>
@@ -40,9 +40,16 @@
             @foreach (var item in Model.GetInfo)
             {
                 <td>
-                    @Html.DisplayFor(modelItem => item)
+                    @Html.DisplayFor(modelItem => item.GetFirstName)
                 </td>
-             }
+                <td>
+                    @Html.DisplayFor(modelItem => item.GetLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GetID)
+                </td>
+                <tr></tr>
+            }
         </tr>
     </table>
 </div>
