@@ -13,15 +13,14 @@ namespace ImageServiceWeb.Models
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "PhotoPath")]
-        public string PhotoPath { get; }
+        public string PhotoPath { get; set; }
 
         [Required]
         [Display(Name = "PhotosList")]
         private List<Photo> PhotosList = new List<Photo>();
 
-        public PhotoList(string path)
+        public PhotoList()
         {
-            PhotoPath = path;
             RefreshList();
         }
 

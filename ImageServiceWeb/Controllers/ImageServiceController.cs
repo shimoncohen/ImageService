@@ -35,7 +35,7 @@ namespace ImageServiceWeb.Controllers
             { "path3" }
         };
         static ConfigInfo configInfo = new ConfigInfo();
-        static PhotoList photoList = new PhotoList(configInfo.OutputDir);
+        static PhotoList photoList = new PhotoList();
         static LogsModel logsModel = new LogsModel();
         static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
 
@@ -75,6 +75,7 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public ActionResult PhotosView()
         {
+            photoList.PhotoPath = configInfo.OutputDir;
             return View(photoList);
         }
 
