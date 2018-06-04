@@ -73,7 +73,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="InfoReceivedParser.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Connection\Communication.cs" />
     <Compile Include="VMs\ColorConverter.cs" />
