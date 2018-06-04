@@ -40,17 +40,17 @@ namespace ImageServiceWeb.Models
 
         public event EventHandler<CommandRecievedEventArgs> SendInfo;
 
-        public ConfigInfo(List<string> handlers, string outputDir, string sourceName, string logName, int thumbnailSize)
+        public ConfigInfo()
         {
             Handlers = new List<DirectoryModel>();
-            foreach (string dir in handlers)
+            /*foreach (string dir in handlers)
             {
                 Handlers.Add(new DirectoryModel(dir));
             }
             OutputDir = outputDir;
             SourceName = sourceName;
             LogName = logName;
-            ThumbnailSize = thumbnailSize.ToString();
+            ThumbnailSize = thumbnailSize.ToString();*/
 
             m_Connection = Communication.CreateConnectionChannel();
             // sign to the event of receive info from the server

@@ -34,15 +34,16 @@ namespace ImageServiceWeb.Controllers
             { "path2" },
             { "path3" }
         };
-        static ConfigInfo configInfo = new ConfigInfo(handlers, "C:\\Users\\Larry\\Desktop\\test\\to", "source", "log", 120);
+        static ConfigInfo configInfo = new ConfigInfo();
         static PhotoList photoList = new PhotoList(configInfo.OutputDir);
         static LogsModel logsModel = new LogsModel();
+        static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
 
         // GET: First Page
         [HttpGet]
         public  ActionResult ImageWebView()
         {
-            return View();
+            return View(ImageServiceWebModel);
         }
 
         [HttpGet]

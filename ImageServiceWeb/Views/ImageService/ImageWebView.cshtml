@@ -1,4 +1,4 @@
-﻿
+﻿@model ImageServiceWeb.Models.ImageServiceWebModel
 @{
     ViewBag.Title = "ImageWebView";
 }
@@ -12,10 +12,12 @@
         <tr>
             <td>Service Status: </td>
             <td><p type="text" id="statusId" size="5"></p></td>
+            <td>@Html.DisplayFor(model => model.GetStatus)</td>
         </tr>
         <tr>
             <td>Total Images In Cloud: </td>
             <td><p type="text" id="imageNumberId" size="5"></p></td>
+            <td>@Html.DisplayFor(model => model.GetNumofPics)</td>
         </tr>
         <tr>
             <td><p></p></td>
@@ -35,10 +37,12 @@
             <th></th>
         </tr>
         <tr>
-            <td> Shimon <td> Cohen <td> 315383133 <td></td>
-        </tr>
-        <tr>
-            <td> Nadav <td> Spitzer <td> 302228275 <td></td>
+            @foreach (var item in Model.GetInfo)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item)
+                </td>
+             }
         </tr>
     </table>
 </div>
