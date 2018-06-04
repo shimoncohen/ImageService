@@ -8,19 +8,19 @@ namespace ImageServiceWeb.Models
     public class LogsModel
     {
         private string filter = null;
-        private List<Logs> logs = new List<Logs>()
+        private List<Log> logs = new List<Log>()
         {
-            {new Logs("Info", "Message1") },
-            {new Logs("Warning", "Message2") },
-            {new Logs("Failed", "Message3") }
+            {new Log("Info", "Message1") },
+            {new Log("Warning", "Message2") },
+            {new Log("Failed", "Message3") }
         };
 
         public LogsModel() { }
 
-        public List<Logs> LogsList {
+        public List<Log> LogsList {
             get {
-                List<Logs> filteredList = new List<Logs>();
-                foreach (Logs log in logs)
+                List<Log> filteredList = new List<Log>();
+                foreach (Log log in logs)
                 {
                     if (String.IsNullOrEmpty(this.filter) || this.filter.Equals(log.GetStatus))
                         filteredList.Add(log);

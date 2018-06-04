@@ -2,7 +2,7 @@
 
 namespace ImageServiceWeb.Models
 {
-    public class Logs
+    public class Log
     {
         private string filter;
         [Required]
@@ -12,7 +12,7 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Message")]
         private string Message;
 
-        public Logs(string Status, string Message)
+        public Log(string Status, string Message)
         {
             this.Status = Status;
             this.Message = Message;
