@@ -4,7 +4,7 @@ using Infrastructure.Modal;
 using Infrastructure.Modal.Event;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Windows;
 using System.Web;
 
 namespace ImageServiceWeb.Models
@@ -63,6 +63,28 @@ namespace ImageServiceWeb.Models
         }
 
         /// <summary>
+        /// The function adds all the history of the log to the logs list.
+        /// </summary>
+        /// <param name="e">The logs from the logger as an array of strings</param>
+        public void SetLogHistory(InfoEventArgs e)
+        {
+            string[] answer = e.Args;
+            for (int i = 0; i < answer.Length; i++)
+            {
+                // split the received log by ",".
+                string[] log = answer[i].Split(',');
+                // log[1] is the message 
+                string message = log[1];
+                // log[0] is the message type
+                Log m = new Log(log[0], message);
+                //LogInfo m = new LogInfo() { Status = type, Message = message };
+                // add to the logs list
+                //Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
+                logs.Add(m);
+            }
+        }
+
+        /// <summary>
         /// The function adds a log to the list of logs.
         /// </summary>
         /// <param name="e">The log we add to the list</param>
@@ -70,14 +92,13 @@ namespace ImageServiceWeb.Models
         {
             string[] answer = e.Args;
             // split the received log by ",".
-            // log[1] is the message 
+            // answer[1] is the message 
             string message = answer[1];
-            // log[0] is the message type
-            MessageTypeEnum type = ParseTypeFromString(answer[0]);
-            LogInfo m = new LogInfo() { Status = type, Message = message };
+            // answer[0] is the message type
+            Log m = new Log(answer[0], message);
             // add to the logs list
-            Application.Current.Dispatcher.Invoke(new Action(() => { m_LogsInfoList.Add(m); }));
-            OnPropertyChanged("LogsInfoList");
+            //Application.Current.Dispatcher.Invoke(new Action(() => { logs.Add(m); }));
+            logs.Add(m);
         }
 
         public List<Log> LogsList {
