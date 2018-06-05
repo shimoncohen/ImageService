@@ -19,5 +19,6 @@ namespace ImageServiceWeb.Models
         {
             this.Status = Status;
             this.Message = Message;
-        }    }
+        }
+    }
 }

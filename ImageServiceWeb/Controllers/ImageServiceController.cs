@@ -78,6 +78,27 @@ namespace ImageServiceWeb.Controllers
             photoList.PhotoPath = configInfo.OutputDir;
             return View(photoList);
         }
+        
+        public ActionResult View(Photo photo)
+        {
+            return RedirectToAction("PhotoView");
+            //photoList.PhotoPath = configInfo.OutputDir;
+            //return View(photoList);
+        }
+
+        [HttpPost]
+        public ActionResult PhotoView(Photo photo)
+        {
+            try
+            {
+                //logsModel.Filter = filter;
+                return View(photo);
+            }
+            catch
+            {
+                return RedirectToAction("Error");
+            }
+        }
 
         /*[HttpGet]
         public JObject GetServiceInfo()
@@ -106,6 +127,7 @@ namespace ImageServiceWeb.Controllers
             {
                 if (dir.DirPath.Equals(path))
                 {
+                    configInfo.SendCommandToServer(Infrastructure.Enums.CommandEnum.CloseCommand, path);
                     configInfo.Handlers.RemoveAt(i);
                     return RedirectToAction("ConfigView");
                 }

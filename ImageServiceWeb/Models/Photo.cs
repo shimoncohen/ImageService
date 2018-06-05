@@ -33,12 +33,18 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Month")]
         public string Month { get; }
 
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "PhotoName")]
+        public string PhotoName { get; }
+
         public Photo(string path)
         {
             string root = Path.GetPathRoot(path);
             Directory.SetCurrentDirectory(root);
             PhotoPath = path;
             CurrentImage = Image.FromFile(path);
+            PhotoName = Path.GetFileName(path);
             Month = Path.GetDirectoryName(path);
             Month = new DirectoryInfo(Month).Name;
             Year = Path.GetDirectoryName(Path.GetDirectoryName(path));
