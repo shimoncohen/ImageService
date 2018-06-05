@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "LogsView";
 }
+
+<link href="~/Css/logs-view.css" rel="stylesheet" type="text/css" />
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -10,7 +13,6 @@
     <div class="form-horizontal">
         <h2>LogsView</h2>
 
-        <link href="~/Css/logs-view.css" rel="stylesheet" type="text/css" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(m => m.Filter, new { @class = "col-md-2 control-label" })
@@ -20,7 +22,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" id="btnFilter" value="Filter" class="btn btn-default" />
+                <input type="submit" id="btnFilter" value="Filter by type or textS" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -40,16 +42,21 @@
             </th>
             <th></th>
         </tr>
-        @foreach (var item in Model.LogsList)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GetStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GetMessage)
-                </td>
-            </tr>
+        @{
+            if (Model != null || Model.LogsList != null)
+            {
+                foreach (var item in Model.LogsList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GetStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GetMessage)
+                        </td>
+                    </tr>
+                }
+            }
         }
     </table>
 </div>
@@ -59,7 +66,7 @@
         var input = {
             filter:$("#FilterID").val()
         };
-         $.post("@Url.Action("SetFilter")", input, function (data) {
+         $.post("@Url.Action("SetFilter1")", input, function (data) {
             $("#Logs");
         }, "json");
     });

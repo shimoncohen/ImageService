@@ -38,6 +38,7 @@ namespace ImageServiceWeb.Controllers
         static PhotoList photoList = new PhotoList();
         static LogsModel logsModel = new LogsModel();
         static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
+        static Photo photoToView = null;
 
         // GET: First Page
         [HttpGet]
@@ -78,21 +79,33 @@ namespace ImageServiceWeb.Controllers
             photoList.PhotoPath = configInfo.OutputDir;
             return View(photoList);
         }
-        
-        public ActionResult View(Photo photo)
-        {
-            return RedirectToAction("PhotoView");
-            //photoList.PhotoPath = configInfo.OutputDir;
-            //return View(photoList);
-        }
 
-        [HttpPost]
-        public ActionResult PhotoView(Photo photo)
+        [HttpGet]
+        public ActionResult PhotoView()
         {
             try
             {
-                //logsModel.Filter = filter;
-                return View(photo);
+                return View(photoToView);
+            }
+            catch
+            {
+                return RedirectToAction("Error");
+            }
+        }
+        
+        public ActionResult PhotoToView(string path)
+        {
+            try
+            {
+                foreach (Photo photo in photoList.GetPhotos())
+                {
+                    if (photo.PhotoPath.Equals(path))
+                    {
+                        photoToView = photo;
+                        return RedirectToAction("PhotoView");
+                    }
+                }
+                return RedirectToAction("Error");
             }
             catch
             {

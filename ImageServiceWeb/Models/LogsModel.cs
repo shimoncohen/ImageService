@@ -108,8 +108,15 @@ namespace ImageServiceWeb.Models
                 foreach (Log log in logs)
                 {
                     if (String.IsNullOrEmpty(this.Filter) || this.Filter.Equals(log.GetStatus))
+                    {
                         filteredList.Add(log);
+                    }
+                    else if (String.IsNullOrEmpty(this.Filter) || log.GetMessage.Contains(Filter))
+                    {
+                        filteredList.Add(log);
+                    }
                 }
+                Filter = "";
                 return filteredList;
             }
         }

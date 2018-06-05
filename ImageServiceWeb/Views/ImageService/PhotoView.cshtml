@@ -4,16 +4,26 @@
     ViewBag.Title = "PhotoView";
 }
 
-<h2>PhotoView</h2>
+<head>
+    <link href="~/Css/photo-view.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h2>PhotoView</h2>
 
-<div class="col-xs-18 col-sm-6 col-md-3">
-    <div class="img-rounded">
-        <img src="~/Photos/to/Thumbnails/@Model.Year/@Model.Month/@Model.PhotoName">
-        <div class="caption">
-            <h4>Thumbnail label</h4>
-            <p>Creation date:</p>
-            <p>Year: @Model.Year, Month: @Model.Month</p>
-            <p><button type="button" data-toggle="modal" data-target="#myModal">Delete</button></p>
+    <div class="col-xs-18 col-sm-6 col-md-3" id="mainDIV">
+        <div class="img-rounded">
+            @{
+                if (Model != null)
+                {
+                    <img src="~/Photos/to/Thumbnails/@Model.Year/@Model.Month/@Model.PhotoName">
+                    <div class="caption">
+                        <h4>Thumbnail label</h4>
+                        <p>Creation date:</p>
+                        <p>Year: @Model.Year, Month: @Model.Month</p>
+                        <p><button type="button">Delete</button></p>
+                    </div>
+                }
+            }
         </div>
     </div>
-</div>
+</body>
