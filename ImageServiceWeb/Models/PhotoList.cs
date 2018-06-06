@@ -46,5 +46,18 @@ namespace ImageServiceWeb.Models
         {
             return PhotosList.Count;
         }
+
+        public void RemovePhoto(Photo photoToRemove)
+        {
+            foreach (Photo pic in PhotosList)
+            {
+                if (pic.PhotoPath.Equals(photoToRemove.PhotoPath))
+                {
+                    PhotosList.Remove(photoToRemove);
+
+                    //TODO: REMOVE PIC FROM FILE PATH
+                }
+            }
+        }
     }
 }
