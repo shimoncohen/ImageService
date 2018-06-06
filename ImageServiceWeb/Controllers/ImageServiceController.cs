@@ -34,11 +34,20 @@ namespace ImageServiceWeb.Controllers
             { "path2" },
             { "path3" }
         };
-        static ConfigInfo configInfo = new ConfigInfo();
-        static PhotoList photoList = new PhotoList();
-        static LogsModel logsModel = new LogsModel();
-        static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
+        static ConfigInfo configInfo;
+        static PhotoList photoList;
+        static LogsModel logsModel;
+        static ImageServiceWebModel ImageServiceWebModel;
         static Photo photoToView = null;
+
+        public ImageServiceController()
+        {
+            configInfo = new ConfigInfo();
+            photoList = new PhotoList();
+            logsModel = new LogsModel();
+            ImageServiceWebModel = new ImageServiceWebModel(photoList);
+
+        }
 
         // GET: First Page
         [HttpGet]
@@ -143,6 +152,22 @@ namespace ImageServiceWeb.Controllers
                     configInfo.SendCommandToServer(Infrastructure.Enums.CommandEnum.CloseCommand, path);
                     configInfo.Handlers.RemoveAt(i);
                     return RedirectToAction("ConfigView");
+                }
+                i++;
+            }
+            return RedirectToAction("Error");
+        }
+
+        public ActionResult DeletePhoto(Photo photo)
+        {
+            int i = 0;
+            List<Photo> tempPhotosList = photoList.GetPhotos();
+            foreach (Photo pic in tempPhotosList)
+            {
+                if (pic.PhotoPath.Equals(photo.PhotoPath))
+                {
+                    photoList.RemovePhoto(photo);
+                    return RedirectToAction("PhotoView");
                 }
                 i++;
             }
