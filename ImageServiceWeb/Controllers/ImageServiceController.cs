@@ -46,7 +46,7 @@ namespace ImageServiceWeb.Controllers
             photoList = new PhotoList();
             logsModel = new LogsModel();
             ImageServiceWebModel = new ImageServiceWebModel(photoList);
-
+            photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
         }
 
         // GET: First Page

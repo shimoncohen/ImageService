@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
-using ImageServiceWeb.EventArgs;
+using ImageServiceWeb.WebEventArgs;
 
 namespace ImageServiceWeb.Models
 {
@@ -42,6 +42,9 @@ namespace ImageServiceWeb.Models
         public List<Photo> GetPhotos()
         {
             RefreshList();
+            // update the num of pictures in the main page
+            PhotoCountEventArgs photoCountEventArgs = new PhotoCountEventArgs(this.Length());
+            this.GetPhotosNum?.Invoke(this, photoCountEventArgs);
             return PhotosList;
         }
 
@@ -61,6 +64,9 @@ namespace ImageServiceWeb.Models
                     //TODO: REMOVE PIC FROM FILE PATH
                 }
             }
+            // update the num of pictures in the main page
+            PhotoCountEventArgs photoCountEventArgs = new PhotoCountEventArgs(this.Length());
+            this.GetPhotosNum?.Invoke(this, photoCountEventArgs);
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ImageServiceWeb.EventArgs
+namespace ImageServiceWeb.WebEventArgs
 {
-    public class PhotoCountEventArgs
+    public class PhotoCountEventArgs : EventArgs
     {
         /// <summary>
         /// getter and setter to the number of photos

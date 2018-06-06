@@ -1,5 +1,5 @@
 ﻿using ImageServiceWeb.Connection;
-using ImageServiceWeb.EventArgs;
+using ImageServiceWeb.WebEventArgs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,9 +58,9 @@ namespace ImageServiceWeb.Models
             file.Close();
         }
         
-        public void UpdatePhotosNum(PhotoCountEventArgs photoCountEventArgs)
+        public void UpdatePhotosNum(object sender, PhotoCountEventArgs photoCountEventArgs)
         {
-            int temp = photoCountEventArgs.Count;
+            int temp = (int)photoCountEventArgs.Count;
             this.GetNumofPics = temp;
         }
     }
