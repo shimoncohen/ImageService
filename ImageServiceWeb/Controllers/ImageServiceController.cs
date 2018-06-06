@@ -48,12 +48,15 @@ namespace ImageServiceWeb.Controllers
             ImageServiceWebModel = new ImageServiceWebModel(photoList);
             photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
             configInfo.sendPath += photoList.updatePath;
+            photoList.PhotoPath = configInfo.OutputDir;
+            photoList.RefreshList();
         }
 
         // GET: First Page
         [HttpGet]
         public  ActionResult ImageWebView()
         {
+            //ImageServiceWebModel.GetNumofPics = photoList.Length();
             return View(ImageServiceWebModel);
         }
 
