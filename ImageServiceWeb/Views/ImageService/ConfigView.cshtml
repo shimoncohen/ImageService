@@ -60,10 +60,11 @@
             {
                 if (item.DirPath != "")
                 {
-                    <li class="path" id="handlerLink" data-item="@item">
-                        @Html.ActionLink(item.DirPath, "Delete", new { path = item.DirPath })
-                        <!--<a data-toggle="modal" href="#myModal">Open Modal</a>-->
-                    </li>
+    <li class="path" id="handlerLink" data-item="@item">
+        @Html.ActionLink(item.DirPath, "Delete", new { path = item.DirPath })
+        <!--<a data-toggle="modal" href="#deleteModal" data-handler="@item.DirPath">@item.DirPath</a>-->
+        <!--<button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-handler="@item.DirPath">@item.DirPath</button>-->
+    </li>
                 }
             }
         }
@@ -71,30 +72,42 @@
 </ul>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="position: initial">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete</h4>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete the handler?</p>
+                <p>Are you sure you want to delete the photo?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn bg-warning" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Yes</button>
+                <input type="button" class="btn btn-primary" item="" value="Yes" onclick="" />
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $("#handlerLink").click(function (event) {
-        var button = $(event.relatedTarget);
-        var handler = button.data('item');
+    $('#deleteModal').on('show.bs.modal',
+        function(event) {
+            var button = $(event.relatedTarget);
+            var handler = button.data('handler');
+            var modal = $(this);
 
-        var url = '@Url.Action("Delete", "ImageService", new { handlerToDelete = "temp"})'
-        var replace = url.replace('temp', handler);
-    });
+            // A workaround to pass JQuery parameter to Razor
+            var url = '@Url.Action("Delete", "ImageService", new { path = "temp" })';
+            var replace = url.replace('temp', handler);
+
+            // Sets "Yes" button onclick to delete corresponding handler
+            var yesButton = modal.find('.modal-footer input');
+            var noButton = modal.find('.modal-footer button');
+            yesButton.click(function() {
+                yesButton.attr("disabled", true);
+                noButton.attr("disabled", true);
+                location.href = replace;
+            });
+        });
 </script>

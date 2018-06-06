@@ -87,6 +87,7 @@ namespace ImageServiceWeb.Models
                 if(dir.DirPath.Equals(dirToRemove))
                 {
                     Handlers.Remove(dir);
+                    break;
                 }
             }
         }

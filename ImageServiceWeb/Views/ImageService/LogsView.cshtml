@@ -22,7 +22,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" id="btnFilter" value="Filter by type or textS" class="btn btn-default" />
+                <input type="submit" id="btnFilter" value="Filter by type or text" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -48,9 +48,26 @@
                 foreach (var item in Model.LogsList)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.GetStatus)
-                        </td>
+                        @{
+                            switch (item.GetStatus)
+                            {
+                                case Infrastructure.Enums.MessageTypeEnum.INFO:
+                                    <td style="background-color:lightblue">
+                                        @Html.DisplayFor(modelItem => item.GetStatus)
+                                    </td>
+                                    break;
+                                case Infrastructure.Enums.MessageTypeEnum.WARNING:
+                                    <td style="background-color:yellow">
+                                        @Html.DisplayFor(modelItem => item.GetStatus)
+                                    </td>
+                                    break;
+                                case Infrastructure.Enums.MessageTypeEnum.FAIL:
+                                    <td style="background-color:red">
+                                        @Html.DisplayFor(modelItem => item.GetStatus)
+                                    </td>
+                                    break;
+                            }
+                        }
                         <td>
                             @Html.DisplayFor(modelItem => item.GetMessage)
                         </td>
@@ -63,11 +80,11 @@
 
 <script>
     $("#btnFilter").click(function () {
-        var input = {
+                                var input = {
             filter:$("#FilterID").val()
         };
          $.post("@Url.Action("SetFilter1")", input, function (data) {
             $("#Logs");
-        }, "json");
+                            }, "json");
     });
 </script>

@@ -11,12 +11,7 @@ namespace ImageServiceWeb.Models
 {
     public class LogsModel
     {
-        private List<Log> logs = new List<Log>()
-        {
-            {new Log("Info", "Message1") },
-            {new Log("Warning", "Message2") },
-            {new Log("Failed", "Message3") }
-        };
+        private List<Log> logs = new List<Log>();
 
         public string Filter { get; set; }
 

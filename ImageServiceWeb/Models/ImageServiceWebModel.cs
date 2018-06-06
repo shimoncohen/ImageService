@@ -37,9 +37,9 @@ namespace ImageServiceWeb.Models
             switch(connected)
             {
                 case true:
-                    return "connected";
+                    return "Connected";
                 default:
-                    return "disconnected";
+                    return "Disconnected";
             }
         }
 

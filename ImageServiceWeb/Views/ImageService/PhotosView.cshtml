@@ -43,7 +43,7 @@
                 <h4 class="modal-title">Delete</h4>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete the handler?</p>
+                <p>Are you sure you want to delete the photo?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn bg-warning" data-dismiss="modal">No</button>
@@ -64,15 +64,6 @@
 </script>-->
 
 <script>
-    //$("#DeleteBtn").click(function () {
-    //    var input = {
-    //        photo:$("#img").val()
-    //    };
-    //     $.post("@Url.Action("DeleteImage")", input, function (data) {
-    //        $("#Photos");
-    //    }, "json");
-    //});
-
     $('#deleteModal').on('show.bs.modal',
         function(event) {
             var button = $(event.relatedTarget);

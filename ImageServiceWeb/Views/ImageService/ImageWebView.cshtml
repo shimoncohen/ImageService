@@ -12,7 +12,16 @@
         <tr>
             <td>Service Status: </td>
             <td><p type="text" id="statusId" size="5"></p></td>
-            <td>@Html.DisplayFor(model => model.GetStatus)</td>
+            @{
+                if (Model.GetStatus.Equals("Connected"))
+                {
+                    <td style="background-color:lightgreen">@Html.DisplayFor(model => model.GetStatus)</td>
+                }
+                else
+                {
+                    <td style="background-color:lightgray">@Html.DisplayFor(model => model.GetStatus)</td>
+                }
+            }
         </tr>
         <tr>
             <td>Total Images In Cloud: </td>

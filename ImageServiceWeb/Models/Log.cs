@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Infrastructure.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ImageServiceWeb.Models
 {
@@ -6,18 +7,29 @@ namespace ImageServiceWeb.Models
     {
         public string GetMessage { get { return this.Message; } }
 
-        public string GetStatus { get { return this.Status; } }
+        public MessageTypeEnum GetStatus { get { return this.Status; } }
 
         [Required]
         [Display(Name = "Status")]
-        private string Status;
+        private MessageTypeEnum Status;
         [Required]
         [Display(Name = "Message")]
         private string Message;
 
         public Log(string Status, string Message)
         {
-            this.Status = Status;
+            switch (Status)
+            {
+                case "info":
+                    this.Status = MessageTypeEnum.INFO;
+                    break;
+                case "warning":
+                    this.Status = MessageTypeEnum.WARNING;
+                    break;
+                case "fail":
+                    this.Status = MessageTypeEnum.FAIL;
+                    break;
+            }
             this.Message = Message;
         }
     }
