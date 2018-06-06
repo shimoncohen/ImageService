@@ -124,26 +124,6 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
-        /*[HttpGet]
-        public JObject GetServiceInfo()
-        {
-            JObject data = new JObject();
-            data["ServiceStatus"] = status;
-            data["NumOfImages"] = numOfPics;
-            return data;
-        }
-
-        [HttpGet]
-        public JObject GetConfigInfo()
-        {
-            JObject data = new JObject();
-            data["SourceName"] = configInfo.SourceName;
-            data["LogName"] = configInfo.LogName;
-            data["OutputDirectory"] = configInfo.OutputDir;
-            data["ThumbnailSize"] = configInfo.ThumbnailSize;
-            return data;
-        }*/
-
         public ActionResult Delete(string path)
         {
             int i = 0;
