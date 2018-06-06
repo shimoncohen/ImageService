@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using ImageServiceWeb.EventArgs;
 
 namespace ImageServiceWeb.Models
 {
@@ -18,6 +19,8 @@ namespace ImageServiceWeb.Models
         [Required]
         [Display(Name = "PhotosList")]
         private List<Photo> PhotosList = new List<Photo>();
+
+        public event EventHandler<PhotoCountEventArgs> GetPhotosNum;
 
         public PhotoList()
         {

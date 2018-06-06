@@ -143,6 +143,7 @@
     <Compile Include="Connection\Communication.cs" />
     <Compile Include="Connection\ICommunication.cs" />
     <Compile Include="Controllers\ImageServiceController.cs" />
+    <Compile Include="EventArgs\PhotoCountEventArgs.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

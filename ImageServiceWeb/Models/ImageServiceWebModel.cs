@@ -1,4 +1,5 @@
 ﻿using ImageServiceWeb.Connection;
+using ImageServiceWeb.EventArgs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,12 @@ namespace ImageServiceWeb.Models
         }
 
         public string GetStatus { get { return this.status; } }
-        public int GetNumofPics { get { return this.numOfPics; } }
+        public int GetNumofPics { get { return this.numOfPics; }
+            set
+            {
+                this.numOfPics = value;
+            }
+        }
         public List<Student> GetInfo { get { return this.info; } }
 
         private string ConnectionStatus(bool connected)
@@ -51,7 +57,14 @@ namespace ImageServiceWeb.Models
             }
             file.Close();
         }
+        
+        public void UpdatePhotosNum(PhotoCountEventArgs photoCountEventArgs)
+        {
+            int temp = photoCountEventArgs.Count;
+            this.GetNumofPics = temp;
+        }
     }
+
 
     public class Student
     {
