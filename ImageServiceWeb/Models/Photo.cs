@@ -20,6 +20,11 @@ namespace ImageServiceWeb.Models
 
         [Required]
         [DataType(DataType.Text)]
+        [Display(Name = "PhotoPath")]
+        public string ThumbPhotoPath { get; }
+
+        [Required]
+        [DataType(DataType.Text)]
         [Display(Name = "Year")]
         public string Year { get; }
 
@@ -33,11 +38,12 @@ namespace ImageServiceWeb.Models
         [Display(Name = "PhotoName")]
         public string PhotoName { get; }
 
-        public Photo(string path)
+        public Photo(string path, string thumbPath)
         {
             string root = Path.GetPathRoot(path);
             Directory.SetCurrentDirectory(root);
             PhotoPath = path;
+            ThumbPhotoPath = thumbPath;
             PhotoName = Path.GetFileName(path);
             Month = Path.GetDirectoryName(path);
             Month = new DirectoryInfo(Month).Name;

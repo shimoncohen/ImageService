@@ -31,11 +31,17 @@ namespace ImageServiceWeb.Models
         {
             if(Directory.Exists(PhotoPath))
             {
-                string[] photos = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.jpg", SearchOption.AllDirectories);
-                foreach(string photo in photos)
+                this.PhotosList.Clear();
+                string[] photos = getPhotosPaths();
+                string[] photosThumbnails = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.jpg", SearchOption.AllDirectories);
+                List<Tuple<string, string>> joinedPaths = sortPaths(photos, photosThumbnails);
+                foreach (Tuple<string, string> photo in joinedPaths)
                 {
-                    PhotosList.Add(new Photo(photo));
+                    PhotosList.Add(new Photo(photo.Item1, photo.Item2));
                 }
+                // update the num of pictures in the main page
+                PhotoCountEventArgs photoCountEventArgs = new PhotoCountEventArgs(this.Length());
+                this.GetPhotosNum?.Invoke(this, photoCountEventArgs);
             }
         }
 
@@ -61,6 +67,7 @@ namespace ImageServiceWeb.Models
                 {
                     PhotosList.Remove(photoToRemove);
                     File.Delete(photoToRemove.PhotoPath);
+                    File.Delete(photoToRemove.ThumbPhotoPath);
                     //TODO: REMOVE PIC FROM FILE PATH
                     break;
                 }
@@ -73,6 +80,37 @@ namespace ImageServiceWeb.Models
         public void updatePath(object sender, PhotosEventArgs args)
         {
             this.PhotoPath = args.Path;
+        }
+
+        private string[] getPhotosPaths()
+        {
+            List<string> paths = new List<string>();
+            string[] directories = Directory.GetDirectories(this.PhotoPath);
+            foreach(string path in directories)
+            {
+                if(!Path.GetFileName(path).Equals("Thumbnails"))
+                {
+                    paths.AddRange(Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories));
+                }
+            }
+            return paths.ToArray();
+        }
+
+        private List<Tuple<string, string>> sortPaths(string[] paths, string[] thumbnailPaths)
+        {
+            List<Tuple<string, string>> joinedPaths = new List<Tuple<string, string>>();
+            foreach (string path in paths)
+            {
+                foreach(string thumbPath in thumbnailPaths)
+                {
+                    if(Path.GetFileName(path).Equals(Path.GetFileName(thumbPath)))
+                    {
+                        joinedPaths.Add(new Tuple<string, string>(path, thumbPath));
+                        break;
+                    }
+                }
+            }
+            return joinedPaths;
         }
     }
 }
