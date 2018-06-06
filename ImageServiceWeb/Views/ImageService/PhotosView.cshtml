@@ -47,13 +47,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn bg-warning" data-dismiss="modal">No</button>
-                <input type="button" class="btn btn-primary" item="" value="Yes" onclick=""/>
+                <input type="button" class="btn btn-primary" item="" value="Yes" onclick="" />
             </div>
         </div>
     </div>
 </div>
 
-<script>
+<!--<script>
     $("#ViewBtn").click(function (event) {
         var button = $(event.relatedTarget);
         var photo = button.data('item');
@@ -61,7 +61,7 @@
         var url = '@Url.Action("PhotoView", "ImageService", new { handlerToDelete = "temp"})'
         var replace = url.replace('temp', photo);
     });
-</script>
+</script>-->
 
 <script>
     $("#DeleteBtn").click(function () {
@@ -80,8 +80,8 @@
             var modal = $(this);
 
             // A workaround to pass JQuery parameter to Razor
-            var url = '@Url.Action("DeletePhoto", "ImageService", new {dirHandlerToDelete = "temp"})';
-            var replacedUrl = url.replace('temp', photo);
+            var url = '@Url.Action("DeletePhoto", "ImageService", new { photoToDelete = "item"})';
+            var replace = url.replace('temp', photo);
 
             // Sets "Yes" button onclick to delete corresponding handler
             var yesButton = modal.find('.modal-footer input');
@@ -89,7 +89,7 @@
             yesButton.click(function() {
                 yesButton.attr("disabled", true);
                 noButton.attr("disabled", true);
-                location.href = replacedUrl;
+                location.href = replace;
             });
         });
 </script>
