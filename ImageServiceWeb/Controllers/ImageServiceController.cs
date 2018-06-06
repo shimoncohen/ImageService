@@ -47,6 +47,7 @@ namespace ImageServiceWeb.Controllers
             logsModel = new LogsModel();
             ImageServiceWebModel = new ImageServiceWebModel(photoList);
             photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
+            configInfo.sendPath += photoList.updatePath;
         }
 
         // GET: First Page
@@ -86,6 +87,7 @@ namespace ImageServiceWeb.Controllers
         public ActionResult PhotosView()
         {
             photoList.PhotoPath = configInfo.OutputDir;
+            photoList.RefreshList();
             return View(photoList);
         }
 
@@ -158,18 +160,17 @@ namespace ImageServiceWeb.Controllers
             return RedirectToAction("Error");
         }
 
-        public ActionResult DeletePhoto(Photo photo)
+        public ActionResult DeletePhoto(string photoPath)
         {
-            int i = 0;
+            photoList.PhotoPath = configInfo.OutputDir;
             List<Photo> tempPhotosList = photoList.GetPhotos();
             foreach (Photo pic in tempPhotosList)
             {
-                if (pic.PhotoPath.Equals(photo.PhotoPath))
+                if (pic.PhotoPath.Equals(photoPath))
                 {
-                    photoList.RemovePhoto(photo);
-                    return RedirectToAction("PhotoView");
+                    photoList.RemovePhoto(pic);
+                    return RedirectToAction("PhotosView");
                 }
-                i++;
             }
             return RedirectToAction("Error");
         }

@@ -21,10 +21,10 @@
                     <div class="img-rounded">
                         <img id="img" src="~/Photos/to/Thumbnails/@item.Year/@item.Month/@item.PhotoName">
                         <div class="caption">
-                            <h4>Thumbnail label</h4>
+                            <h4>@item.PhotoName</h4>
                             <p>Creation date:</p>
                             <p>Year: @Html.DisplayFor(modelItem => item.Year), Month: @Html.DisplayFor(modelItem => item.Month)</p>
-                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) <button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-photo="@item">Delete</button></p>
+                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) <button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-photo="@item.PhotoPath">Delete</button></p>
                         </div>
                     </div>
                 </div>
@@ -64,24 +64,24 @@
 </script>-->
 
 <script>
-    $("#DeleteBtn").click(function () {
-        var input = {
-            photo:$("#img").val()
-        };
-         $.post("@Url.Action("DeleteImage")", input, function (data) {
-            $("#Photos");
-        }, "json");
-    });
+    //$("#DeleteBtn").click(function () {
+    //    var input = {
+    //        photo:$("#img").val()
+    //    };
+    //     $.post("@Url.Action("DeleteImage")", input, function (data) {
+    //        $("#Photos");
+    //    }, "json");
+    //});
 
     $('#deleteModal').on('show.bs.modal',
         function(event) {
             var button = $(event.relatedTarget);
-            var photo = button.data('item');
+            var photo = button.data('photo');
             var modal = $(this);
 
             // A workaround to pass JQuery parameter to Razor
-            var url = '@Url.Action("DeletePhoto", "ImageService", new { photoToDelete = "item"})';
-            var replace = url.replace('temp', photo);
+            var url = '@Url.Action("DeletePhoto", "ImageService", new { photoPath = "item"})';
+            var replace = url.replace('item', photo);
 
             // Sets "Yes" button onclick to delete corresponding handler
             var yesButton = modal.find('.modal-footer input');

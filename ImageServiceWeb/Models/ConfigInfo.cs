@@ -1,4 +1,5 @@
 ﻿using ImageServiceWeb.Connection;
+using ImageServiceWeb.WebEventArgs;
 using Infrastructure.Enums;
 using Infrastructure.Modal.Event;
 using System;
@@ -39,6 +40,7 @@ namespace ImageServiceWeb.Models
         private Communication m_Connection;
 
         public event EventHandler<CommandRecievedEventArgs> SendInfo;
+        public event EventHandler<PhotosEventArgs> sendPath;
 
         public ConfigInfo()
         {
@@ -151,6 +153,8 @@ namespace ImageServiceWeb.Models
             {
                 this.AddToHandlersList(answer[i]);
             }
+            PhotosEventArgs args = new PhotosEventArgs(OutputDir);
+            sendPath?.Invoke(this, args);
         }
     }
 }

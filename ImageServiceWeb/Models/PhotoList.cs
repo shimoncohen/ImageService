@@ -60,13 +60,19 @@ namespace ImageServiceWeb.Models
                 if (pic.PhotoPath.Equals(photoToRemove.PhotoPath))
                 {
                     PhotosList.Remove(photoToRemove);
-
+                    File.Delete(photoToRemove.PhotoPath);
                     //TODO: REMOVE PIC FROM FILE PATH
+                    break;
                 }
             }
             // update the num of pictures in the main page
             PhotoCountEventArgs photoCountEventArgs = new PhotoCountEventArgs(this.Length());
             this.GetPhotosNum?.Invoke(this, photoCountEventArgs);
+        }
+
+        public void updatePath(object sender, PhotosEventArgs args)
+        {
+            this.PhotoPath = args.Path;
         }
     }
 }
