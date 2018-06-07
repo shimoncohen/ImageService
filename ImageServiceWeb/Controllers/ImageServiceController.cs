@@ -23,6 +23,11 @@ namespace ImageServiceWeb.Controllers
             configInfo.sendPath += photoList.updatePath;
             photoList.PhotoPath = configInfo.OutputDir;
             photoList.RefreshList();
+            while(configInfo.InfoReceived == false)
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+            photoList.RefreshList();
         }
 
         // GET: First Page
