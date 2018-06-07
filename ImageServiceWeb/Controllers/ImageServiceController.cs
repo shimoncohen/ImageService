@@ -93,11 +93,18 @@ namespace ImageServiceWeb.Controllers
             return View(photo);
         }
 
-        public ActionResult beforeDelete(string photoPath)
+        [HttpGet]
+        public ActionResult RemoveHandler(string path)
+        {
+            HandlerModel handler = new HandlerModel(path);
+            return View(handler);
+        }
+
+        /*public ActionResult beforeDelete(string photoPath)
         {
             pathPhotoToDelete = photoPath;
             return RedirectToAction("DeletePhotoView");
-        }
+        }*/
 
         public ActionResult PhotoToView(string path)
         {
@@ -157,7 +164,6 @@ namespace ImageServiceWeb.Controllers
             {
                 if (pic.PhotoPath.Equals(path))
                 {
-                    photoList.RemovePhoto(pic);
                     return pic;
                 }
             }

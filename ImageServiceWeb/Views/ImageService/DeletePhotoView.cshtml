@@ -7,6 +7,10 @@
 <div>
     <h2>DeletePhoto</h2>
     <div>
-        <p>@Url.Action("PhotosView", "ImageService") @Html.ActionLink("DeletePhoto", "ImageService", new { photoPath = Model.PhotoPath })</p>
+        @{ if (Model != null)
+            {
+                <p>@Url.Action("No", "PhotosView") @Html.ActionLink("Yes", "DeletePhoto", new { photoPath = Model.PhotoPath })</p>
+            }
+        }
     </div>
 </div>
