@@ -39,6 +39,7 @@ namespace ImageServiceWeb.Controllers
         private static LogsModel logsModel = new LogsModel();
         private static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
         private static Photo photoToView = null;
+        private static string pathPhotoToDelete;
 
         public ImageServiceController()
         {
@@ -108,16 +109,18 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult DeletePhotoView(string photoPath)
         {
-            return View(photoPath);
+            Photo photo = findPhoto(photoPath);
+            return View(photo);
         }
 
-        /*public ActionResult beforeDelete(string photoPath)
+        public ActionResult beforeDelete(string photoPath)
         {
-            return RedirectToAction()
-        }*/
+            pathPhotoToDelete = photoPath;
+            return RedirectToAction("DeletePhotoView");
+        }
 
         public ActionResult PhotoToView(string path)
         {
@@ -168,6 +171,20 @@ namespace ImageServiceWeb.Controllers
                 }
             }
             return RedirectToAction("Error");
+        }
+
+        private Photo findPhoto(string path)
+        {
+            List<Photo> tempPhotosList = photoList.GetPhotos();
+            foreach (Photo pic in tempPhotosList)
+            {
+                if (pic.PhotoPath.Equals(path))
+                {
+                    photoList.RemovePhoto(pic);
+                    return pic;
+                }
+            }
+            return null;
         }
     }
 }

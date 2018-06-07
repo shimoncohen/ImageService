@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model ImageServiceWeb.Models.Photo
 
 @{
     ViewBag.Title = "DeletePhotoView";
@@ -7,6 +7,6 @@
 <div>
     <h2>DeletePhoto</h2>
     <div>
-        <p><input type="button" value="No" onclick="location.href='@Url.Action("PhotosView", "ImageService")'" /> <input type="button" value="Delete" onclick="location.href='@Html.ActionLink("DeletePhoto", "ImageService", new { photoPath = Model })'" /></p>
+        <p>@Url.Action("PhotosView", "ImageService") @Html.ActionLink("DeletePhoto", "ImageService", new { photoPath = Model.PhotoPath })</p>
     </div>
 </div>
