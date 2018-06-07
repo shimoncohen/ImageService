@@ -13,9 +13,9 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
-        private string directoryPath;
+        public string directoryPath;
 
-        private string tempPath;
+        public string tempPath;
 
         [Required]
         [DataType(DataType.Text)]

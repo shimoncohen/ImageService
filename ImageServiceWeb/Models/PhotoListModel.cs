@@ -66,8 +66,12 @@ namespace ImageServiceWeb.Models
                 if (pic.PhotoPath.Equals(photoToRemove.PhotoPath))
                 {
                     PhotosList.Remove(photoToRemove);
-                    File.Delete(photoToRemove.PhotoPath);
-                    File.Delete(photoToRemove.ThumbPhotoPath);
+                    string begining = "~/";
+                    string photoToDelete = begining + photoToRemove.PhotoPath;
+                    File.Delete(photoToDelete);
+                    string thumbToDelete = begining + photoToRemove.ThumbPhotoPath + "/" +
+                        photoToRemove.Year + "/" + photoToRemove.Month + "/" + photoToRemove.PhotoName;
+                    File.Delete(thumbToDelete);
                     break;
                 }
             }
