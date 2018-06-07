@@ -1,1 +1,6 @@
-﻿
+﻿img {
+    border-top-right-radius: initial 25%;
+    border-top-left-radius: initial 25%;
+    border-bottom-right-radius: initial 25%;
+    border-bottom-left-radius: initial 25%;
+}
