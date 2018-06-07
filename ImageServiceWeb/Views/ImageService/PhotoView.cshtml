@@ -10,7 +10,7 @@
 <body>
     <h2>PhotoView</h2>
 
-    <div class="col-xs-18 col-sm-6 col-md-3" id="mainDIV">
+    <div class="col-xs-18 col-sm-6 col-md-3" id="mainDIV" style="width:100%; text-align:center">
         <div class="img-rounded">
             @{
                 if (Model != null)
@@ -18,9 +18,9 @@
                     <img src="~/Photos/to/Thumbnails/@Model.Year/@Model.Month/@Model.PhotoName">
                     <div class="caption">
                         <h4>Thumbnail label</h4>
-                        <p>Creation date:</p>
+                        <p style="text-align:match-parent">Creation date:</p>
                         <p>Year: @Model.Year, Month: @Model.Month</p>
-                        <p><button type="button">Delete</button></p>
+                        <p>@Html.ActionLink("Delete", "DeletePhotoView", new { photoPath = Model.PhotoPath })</p>
                     </div>
                 }
             }

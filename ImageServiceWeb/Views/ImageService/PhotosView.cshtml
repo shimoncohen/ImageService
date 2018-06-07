@@ -24,7 +24,7 @@
                             <h4>@item.PhotoName</h4>
                             <p>Creation date:</p>
                             <p>Year: @Html.DisplayFor(modelItem => item.Year), Month: @Html.DisplayFor(modelItem => item.Month)</p>
-                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.ThumbPhotoPath }) <button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-photo="@item.PhotoPath">Delete</button></p>
+                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) <button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-photo="@item.PhotoPath">Delete</button></p>
                         </div>
                     </div>
                 </div>

@@ -60,11 +60,11 @@
             {
                 if (item.DirPath != "")
                 {
-    <li class="path" id="handlerLink" data-item="@item">
-        @Html.ActionLink(item.DirPath, "Delete", new { path = item.DirPath })
-        <!--<a data-toggle="modal" href="#deleteModal" data-handler="@item.DirPath">@item.DirPath</a>-->
-        <!--<button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-handler="@item.DirPath">@item.DirPath</button>-->
-    </li>
+                    <li class="path" id="handlerLink" data-item="@item">
+                        @Html.ActionLink(item.DirPath, "DeleteView", new { path = item.DirPath })
+                        <!--<a data-toggle="modal" href="#deleteModal" data-handler="@item.DirPath">@item.DirPath</a>-->
+                        <!--<button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-handler="@item.DirPath">@item.DirPath</button>-->
+                    </li>
                 }
             }
         }

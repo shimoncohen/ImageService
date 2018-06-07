@@ -72,6 +72,12 @@ namespace ImageServiceWeb.Controllers
             return View(logsModel);
         }
 
+        [HttpGet]
+        public ActionResult Error()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult LogsView(string filter)
         {
@@ -106,7 +112,13 @@ namespace ImageServiceWeb.Controllers
                 return RedirectToAction("Error");
             }
         }
-        
+
+        [HttpGet]
+        public ActionResult DeletePhotoView(string photoPath)
+        {
+            return View(photoPath);
+        }
+
         public ActionResult PhotoToView(string path)
         {
             try

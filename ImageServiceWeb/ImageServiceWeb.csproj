@@ -99,6 +99,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Css\config-view.css" />
+    <Content Include="Css\error-view.css" />
     <Content Include="Css\logs-view.css" />
     <Content Include="Css\photo-view.css" />
     <Content Include="Css\photos-view.css" />
@@ -180,6 +181,7 @@
     <Content Include="Views\ImageService\LogsView.cshtml" />
     <Content Include="Views\ImageService\PhotosView.cshtml" />
     <Content Include="Views\ImageService\PhotoView.cshtml" />
+    <Content Include="Views\ImageService\DeletePhotoView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
