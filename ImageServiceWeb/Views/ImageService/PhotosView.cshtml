@@ -20,22 +20,25 @@
 <body class="vsc-initialized">
     <div class="container" id="tourpackages-carousel">
         <div class="row">
-            @foreach (var item in Model.GetPhotos())
+        @{
+            foreach (var item in Model.GetPhotos())
             {
+                string path = item.ThumbPhotoPath;
                 <div class="col-xs-18 col-sm-6 col-md-3">
                     <div class="img-rounded">
-                        <img id="img" src="~/Photos/to/Thumbnails/@item.Year/@item.Month/@item.PhotoName">
-                        <div class="caption">
-                            <h4>@item.PhotoName</h4>
-                            <p>Creation date:</p>
-                            <p>Year: @Html.DisplayFor(modelItem => item.Year), Month: @Html.DisplayFor(modelItem => item.Month)</p>
-                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) @Html.ActionLink("Delete", "DeletePhotoView", new { photoPath = item.PhotoPath })</p>
-                        </div>
+                        <img id="img" src="~/@path/@item.Year/@item.Month/@item.PhotoName" />
+                    <div class="caption">
+                        <h4>@item.PhotoName</h4>
+                        <p>Creation date:</p>
+                        <p>Year: @Html.DisplayFor(modelItem => item.Year), Month: @Html.DisplayFor(modelItem => item.Month)</p>
+                        <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }, new { @class = "btn btn-primary" }) @Html.ActionLink("Delete", "DeletePhotoView", new { photoPath = item.PhotoPath }, new { @class = "btn btn-primary" })</p>
                     </div>
                 </div>
+            </div>
             }
-        </div><!-- End row -->
-    </div><!-- End container -->
+        }
+    </div><!-- End row -->
+                    </div><!-- End container -->
 
 </body>
 

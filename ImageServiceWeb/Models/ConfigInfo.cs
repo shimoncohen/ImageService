@@ -17,11 +17,13 @@ namespace ImageServiceWeb.Models
         [Required]
         [Display(Name = "Handlers")]
         public List<DirectoryModel> Handlers { get; set; }
+        
         //private readonly string outputDir;
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "OutputDir")]
         public string OutputDir { get; set; }
+
         //private readonly string sourceName;
         [Required]
         [DataType(DataType.Text)]
@@ -46,15 +48,6 @@ namespace ImageServiceWeb.Models
         public ConfigInfo()
         {
             Handlers = new List<DirectoryModel>();
-            /*foreach (string dir in handlers)
-            {
-                Handlers.Add(new DirectoryModel(dir));
-            }
-            OutputDir = outputDir;
-            SourceName = sourceName;
-            LogName = logName;
-            ThumbnailSize = thumbnailSize.ToString();*/
-
             m_Connection = Communication.CreateConnectionChannel();
             // sign to the event of receive info from the server
             m_Connection.InfoRecieved += GetInfoFromServer;
@@ -155,7 +148,8 @@ namespace ImageServiceWeb.Models
             {
                 this.AddToHandlersList(answer[i]);
             }
-            PhotosEventArgs args = new PhotosEventArgs(OutputDir);
+            string path = this.OutputDir;
+            PhotosEventArgs args = new PhotosEventArgs(path);
             sendPath?.Invoke(this, args);
             // set flag of info received
             this.InfoReceived = true;

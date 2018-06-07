@@ -37,7 +37,7 @@ namespace ImageServiceWeb.Models
                 List<Tuple<string, string>> joinedPaths = sortPaths(photos, photosThumbnails);
                 foreach (Tuple<string, string> photo in joinedPaths)
                 {
-                    PhotosList.Add(new Photo(photo.Item1, photo.Item2));
+                    PhotosList.Add(new Photo(PhotoPath, photo.Item1, photo.Item2));
                 }
                 // update the num of pictures in the main page
                 PhotoCountEventArgs photoCountEventArgs = new PhotoCountEventArgs(this.Length());

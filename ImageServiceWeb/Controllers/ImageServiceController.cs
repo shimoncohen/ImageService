@@ -16,7 +16,6 @@ namespace ImageServiceWeb.Controllers
         private static LogsModel logsModel = new LogsModel();
         private static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
         private static Photo photoToView = null;
-        private static string pathPhotoToDelete;
 
         public ImageServiceController()
         {

@@ -4,12 +4,13 @@
     ViewBag.Title = "RemoveHandler";
 }
 
-<div>
-    <h2>RemoveHandler</h2>
-    <div>
+<div style="height:400px">
+    <div style="text-align:center">
         @{ if (Model != null)
             {
-                <p>@Url.Action("No", "ConfigView") @Html.ActionLink("Yes", "Delete", new { path = Model.Path })</p>
+                <h4 style="color:red; margin-top:40px">Are you sure you want to delete this handler?</h4>
+                <p style="color:blue">Path: @Model.Path</p>
+                <p>@Html.ActionLink("No", "ConfigView", new { }, new { @class = "btn btn-primary" }) @Html.ActionLink("Yes", "Delete", new { path = Model.Path }, new { @class = "btn btn-primary" })</p>
             }
         }
     </div>

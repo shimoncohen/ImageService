@@ -4,12 +4,15 @@
     ViewBag.Title = "DeletePhotoView";
 }
 
-<div>
+<div style="height:300px">
     <h2>DeletePhoto</h2>
-    <div>
+    <div style="text-align:center">
         @{ if (Model != null)
             {
-                <p>@Url.Action("No", "PhotosView") @Html.ActionLink("Yes", "DeletePhoto", new { photoPath = Model.PhotoPath })</p>
+                <h4 style="color:red; margin-top:70px">Are you sure you want to delete this photo?</h4>
+                <p>Name: @Model.PhotoName</p>
+                <p>Date created: @Model.Month/@Model.Year</p>
+                <p>@Html.ActionLink("No", "PhotosView", new { }, new { @class = "btn btn-primary" }) @Html.ActionLink("Yes", "DeletePhoto", new { photoPath = Model.PhotoPath }, new { @class = "btn btn-primary" })</p>
             }
         }
     </div>
