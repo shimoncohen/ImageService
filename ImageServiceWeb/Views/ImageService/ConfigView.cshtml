@@ -5,6 +5,11 @@
 }
 
 <link href="~/Css/config-view.css" rel="stylesheet" type="text/css" />
+<style>
+    ul {
+        min-height:100px;
+    }
+</style>
 
 <h2>ConfigView</h2>
 <table class="table">
@@ -52,7 +57,7 @@
 <tr>
     Handlers:
 </tr>
-<ul class="link-table">
+<ul class="link-table" style="border:solid 1px #000;">
     @{
         if (Model.Handlers != null && Model.Handlers.Count != 0)
         {
