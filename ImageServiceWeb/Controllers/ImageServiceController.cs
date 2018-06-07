@@ -10,30 +10,7 @@ namespace ImageServiceWeb.Controllers
 {
     public class ImageServiceController : Controller
     {
-        static List<string> handlers = new List<string>()
-        {
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" },
-            { "path1" },
-            { "path2" },
-            { "path3" }
-        };
+        static List<string> handlers = new List<string>();
         private static ConfigInfo configInfo = new ConfigInfo();
         private static PhotoListModel photoList = new PhotoListModel();
         private static LogsModel logsModel = new LogsModel();
