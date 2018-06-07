@@ -1,7 +1,16 @@
-﻿
+﻿@model ImageServiceWeb.Models.HandlerModel
+
 @{
     ViewBag.Title = "RemoveHandler";
 }
 
-<h2>RemoveHandler</h2>
-
+<div>
+    <h2>RemoveHandler</h2>
+    <div>
+        @{ if (Model != null)
+            {
+                <p>@Url.Action("No", "ConfigView") @Html.ActionLink("Yes", "Delete", new { path = Model.Path })</p>
+            }
+        }
+    </div>
+</div>
