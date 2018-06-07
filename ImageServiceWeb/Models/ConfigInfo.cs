@@ -12,6 +12,7 @@ namespace ImageServiceWeb.Models
 {
     public class ConfigInfo
     {
+        public bool InfoReceived { private set; get; }
         //private readonly List<string> handlers;
         [Required]
         [Display(Name = "Handlers")]
@@ -156,6 +157,8 @@ namespace ImageServiceWeb.Models
             }
             PhotosEventArgs args = new PhotosEventArgs(OutputDir);
             sendPath?.Invoke(this, args);
+            // set flag of info received
+            this.InfoReceived = true;
         }
     }
 }
