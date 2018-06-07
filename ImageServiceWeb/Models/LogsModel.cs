@@ -100,6 +100,7 @@ namespace ImageServiceWeb.Models
         public List<Log> LogsList {
             get {
                 List<Log> filteredList = new List<Log>();
+                //List<Log> tempLogs = new List<Log>(logs);
                 foreach (Log log in logs)
                 {
                     if (String.IsNullOrEmpty(this.Filter) || this.Filter.Equals(log.GetStatus))
