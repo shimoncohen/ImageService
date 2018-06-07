@@ -154,7 +154,7 @@
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogsModel.cs" />
     <Compile Include="Models\Photo.cs" />
-    <Compile Include="Models\PhotoList.cs" />
+    <Compile Include="Models\PhotoListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebEventArgs\PhotosEventArgs.cs" />
   </ItemGroup>

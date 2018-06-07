@@ -11,7 +11,9 @@ namespace ImageServiceWeb.Models
 {
     public class LogsModel
     {
-        private List<Log> logs = new List<Log>();
+        private static List<Log> logs = new List<Log>();
+        private bool gotHistory;
+        private object locker;
 
         public string Filter { get; set; }
 
@@ -22,6 +24,8 @@ namespace ImageServiceWeb.Models
         public LogsModel()
         {
             m_Connection = Communication.CreateConnectionChannel();
+            gotHistory = false;
+            locker = new object();
 
             SendInfo += m_Connection.StartSenderChannel;
             // sign to the event of getting the info from the server
@@ -49,11 +53,19 @@ namespace ImageServiceWeb.Models
                 // 1 is to get a new log from the server
                 if (e.InfoId == 1)
                 {
-                    this.AddNewLog(e);
+                    lock(locker)
+                    {
+                        this.AddNewLog(e);
+                    }
                 }
-                else if (e.InfoId == 2)  // 2 is to get log history
+                else if (!gotHistory && e.InfoId == 2)  // 2 is to get log history
                 {
-                    this.SetLogHistory(e);
+                    lock(locker)
+                    {
+                        logs.Clear();
+                        this.SetLogHistory(e);
+                    }
+                    gotHistory = true;
                 }
             }
         }
@@ -100,7 +112,12 @@ namespace ImageServiceWeb.Models
         public List<Log> LogsList {
             get {
                 List<Log> filteredList = new List<Log>();
-                foreach (Log log in logs)
+                List<Log> temp;
+                lock (locker)
+                {
+                    temp = new List<Log>(logs);
+                }
+                foreach (Log log in temp)
                 {
                     if (String.IsNullOrEmpty(this.Filter) || this.Filter.Equals(log.GetStatus))
                     {

@@ -14,7 +14,7 @@ namespace ImageServiceWeb.Models
         private int numOfPics;
         private List <Student> info = new List<Student>();
 
-        public ImageServiceWebModel(PhotoList photoList)
+        public ImageServiceWebModel(PhotoListModel photoList)
         {
             Communication communication = Communication.CreateConnectionChannel();
             bool connected = communication.IsConnected();

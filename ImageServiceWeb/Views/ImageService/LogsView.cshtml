@@ -43,10 +43,13 @@
             <th></th>
         </tr>
         @{
-            if (Model != null || Model.LogsList != null)
+            if (Model != null)
             {
-                foreach (var item in Model.LogsList)
+                var list = Model.LogsList;
+                if (list != null)
                 {
+                    foreach (var item in list)
+                    {
                     <tr>
                         @{
                             switch (item.GetStatus)
@@ -67,11 +70,12 @@
                                     </td>
                                     break;
                             }
-                        }
+                    }
                         <td>
                             @Html.DisplayFor(modelItem => item.GetMessage)
                         </td>
                     </tr>
+                    }
                 }
             }
         }

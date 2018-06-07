@@ -9,7 +9,7 @@ using ImageServiceWeb.WebEventArgs;
 
 namespace ImageServiceWeb.Models
 {
-    public class PhotoList
+    public class PhotoListModel
     {
         [Required]
         [DataType(DataType.Text)]
@@ -22,7 +22,7 @@ namespace ImageServiceWeb.Models
 
         public event EventHandler<PhotoCountEventArgs> GetPhotosNum;
 
-        public PhotoList()
+        public PhotoListModel()
         {
             RefreshList();
         }

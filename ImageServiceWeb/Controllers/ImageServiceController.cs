@@ -34,18 +34,14 @@ namespace ImageServiceWeb.Controllers
             { "path2" },
             { "path3" }
         };
-        static ConfigInfo configInfo;
-        static PhotoList photoList;
-        static LogsModel logsModel;
-        static ImageServiceWebModel ImageServiceWebModel;
-        static Photo photoToView = null;
+        private static ConfigInfo configInfo = new ConfigInfo();
+        private static PhotoListModel photoList = new PhotoListModel();
+        private static LogsModel logsModel = new LogsModel();
+        private static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
+        private static Photo photoToView = null;
 
         public ImageServiceController()
         {
-            configInfo = new ConfigInfo();
-            photoList = new PhotoList();
-            logsModel = new LogsModel();
-            ImageServiceWebModel = new ImageServiceWebModel(photoList);
             photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
             configInfo.sendPath += photoList.updatePath;
             photoList.PhotoPath = configInfo.OutputDir;
@@ -54,9 +50,8 @@ namespace ImageServiceWeb.Controllers
 
         // GET: First Page
         [HttpGet]
-        public  ActionResult ImageWebView()
+        public ActionResult ImageWebView()
         {
-            //ImageServiceWebModel.GetNumofPics = photoList.Length();
             return View(ImageServiceWebModel);
         }
 
