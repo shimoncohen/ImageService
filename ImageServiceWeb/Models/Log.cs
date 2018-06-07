@@ -18,7 +18,7 @@ namespace ImageServiceWeb.Models
 
         public Log(string Status, string Message)
         {
-            switch (Status)
+            switch (Status.ToLower())
             {
                 case "info":
                     this.Status = MessageTypeEnum.INFO;

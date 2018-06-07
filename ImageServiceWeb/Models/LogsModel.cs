@@ -11,16 +11,20 @@ namespace ImageServiceWeb.Models
 {
     public class LogsModel
     {
-        private List<Log> logs = new List<Log>();
+        private List<Log> logs;
+        private Boolean gotHistory;
 
         public string Filter { get; set; }
 
         private Communication m_Connection;
+        private object locker = new object();
 
         public event EventHandler<CommandRecievedEventArgs> SendInfo;
 
         public LogsModel()
         {
+            logs = new List<Log>();
+            gotHistory = false;
             m_Connection = Communication.CreateConnectionChannel();
 
             SendInfo += m_Connection.StartSenderChannel;
@@ -33,7 +37,7 @@ namespace ImageServiceWeb.Models
         /// <summary>
         /// The function sends a log command to the server.
         /// </summary>
-        public void SendToServer()
+        private void SendToServer()
         {
             string[] args = { };
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, args, "Empty");
@@ -49,11 +53,12 @@ namespace ImageServiceWeb.Models
                 // 1 is to get a new log from the server
                 if (e.InfoId == 1)
                 {
-                    this.AddNewLog(e);
+                    AddNewLog(e);
                 }
-                else if (e.InfoId == 2)  // 2 is to get log history
+                else if (!gotHistory && e.InfoId == 2)  // 2 is to get log history
                 {
                     this.SetLogHistory(e);
+                    gotHistory = true;
                 }
             }
         }
@@ -100,8 +105,9 @@ namespace ImageServiceWeb.Models
         public List<Log> LogsList {
             get {
                 List<Log> filteredList = new List<Log>();
-                //List<Log> tempLogs = new List<Log>(logs);
-                foreach (Log log in logs)
+                List<Log> tempLogs;
+                tempLogs = new List<Log>(logs);
+                foreach (Log log in tempLogs)
                 {
                     if (String.IsNullOrEmpty(this.Filter) || this.Filter.Equals(log.GetStatus))
                     {

@@ -68,7 +68,6 @@ namespace ImageServiceWeb.Models
                     PhotosList.Remove(photoToRemove);
                     File.Delete(photoToRemove.PhotoPath);
                     File.Delete(photoToRemove.ThumbPhotoPath);
-                    //TODO: REMOVE PIC FROM FILE PATH
                     break;
                 }
             }
