@@ -48,6 +48,11 @@ namespace ImageServiceWeb.Controllers
             ImageServiceWebModel = new ImageServiceWebModel(photoList);
             photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
             configInfo.sendPath += photoList.updatePath;
+            // wait until the info is recieved from server
+            while(configInfo.InfoReceived == false)
+            {
+                System.Threading.Thread.Sleep(50);
+            }
             photoList.PhotoPath = configInfo.OutputDir;
             photoList.RefreshList();
         }
@@ -56,7 +61,6 @@ namespace ImageServiceWeb.Controllers
         [HttpGet]
         public  ActionResult ImageWebView()
         {
-            //ImageServiceWebModel.GetNumofPics = photoList.Length();
             return View(ImageServiceWebModel);
         }
 
