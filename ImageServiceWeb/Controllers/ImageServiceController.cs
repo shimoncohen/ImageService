@@ -85,11 +85,16 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult DeletePhotoView(string photoPath)
         {
             return View(photoPath);
         }
+
+        /*public ActionResult beforeDelete(string photoPath)
+        {
+            return RedirectToAction()
+        }*/
 
         public ActionResult PhotoToView(string path)
         {

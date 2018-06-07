@@ -29,7 +29,7 @@
                             <h4>@item.PhotoName</h4>
                             <p>Creation date:</p>
                             <p>Year: @Html.DisplayFor(modelItem => item.Year), Month: @Html.DisplayFor(modelItem => item.Month)</p>
-                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) <button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-photo="@item.PhotoPath">Delete</button></p>
+                            <p>@Html.ActionLink("View", "PhotoToView", new { path = item.PhotoPath }) @Html.ActionLink("Delete", "DeletePhotoView", new { photoPath = item.PhotoPath })</p>
                         </div>
                     </div>
                 </div>
@@ -58,15 +58,15 @@
     </div>
 </div>
 
-<!--<script>
-    $("#ViewBtn").click(function (event) {
+<script>
+    $("#DeleteBtn").click(function(event) {
         var button = $(event.relatedTarget);
-        var photo = button.data('item');
+        var photo = button.data('photo');
 
-        var url = '@Url.Action("PhotoView", "ImageService", new { handlerToDelete = "temp"})'
+        var url = '@Url.Action("DeletePhoto", "ImageService", new { photoPath = "temp"})'
         var replace = url.replace('temp', photo);
     });
-</script>-->
+</script>
 
 <script>
     $('#deleteModal').on('show.bs.modal',
