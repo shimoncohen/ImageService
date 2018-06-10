@@ -13,9 +13,9 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
-        public string directoryPath;
-
-        public string tempPath;
+        private string directoryPath;
+        private string fullPath;
+        private string fullThumbPath;
 
         [Required]
         [DataType(DataType.Text)]
@@ -24,11 +24,12 @@ namespace ImageServiceWeb.Models
         {
             get
             {
-                if (tempPath != null)
+                if (fullPath != null)
                 {
                     bool current = false, once = false; ;
-                    string[] pathParts = tempPath.Contains('/') ? tempPath.Split('/') : tempPath.Split('\\');
+                    string[] pathParts = fullPath.Contains('/') ? fullPath.Split('/') : fullPath.Split('\\');
                     List<string> gather = new List<string>();
+                    List<string> gatherAll = new List<string>();
                     foreach (string part in pathParts)
                     {
                         if (!current && !part.Equals("ImageServiceWeb"))
@@ -46,15 +47,21 @@ namespace ImageServiceWeb.Models
                             gather.Add(part);
                         }
                     }
-                    string[] newPath = gather.ToArray();
-                    string endPath = String.Join("/", newPath);
+                    string[] newPath;
+                    if (once)
+                    {
+                        newPath = gather.ToArray();
+                    }
+                    else
+                    {
+                        newPath = gatherAll.ToArray();
+                    }
+                    string endPath = String.Join("\\", newPath);
                     return endPath;
                 }
-                return tempPath;
+                return fullPath;
             }
         }
-
-        private string tempThumbPath;
 
         [Required]
         [DataType(DataType.Text)]
@@ -63,15 +70,17 @@ namespace ImageServiceWeb.Models
         {
             get
             {
-                if (tempThumbPath != null)
+                if (fullThumbPath != null)
                 {
                     bool current = false, once = false; ;
-                    string[] pathParts = tempThumbPath.Contains('/') ? tempThumbPath.Split('/') : tempThumbPath.Split('\\');
+                    string[] pathParts = fullThumbPath.Contains('/') ? fullThumbPath.Split('/') : fullThumbPath.Split('\\');
                     List<string> gather = new List<string>();
+                    List<string> gatherAll = new List<string>();
                     foreach (string part in pathParts)
                     {
                         if (!current && !part.Equals("ImageServiceWeb"))
                         {
+                            gatherAll.Add(part);
                             continue;
                         }
                         else if (!once && part.Equals("ImageServiceWeb"))
@@ -90,11 +99,19 @@ namespace ImageServiceWeb.Models
                             gather.Add(part);
                         }
                     }
-                    string[] newPath = gather.ToArray();
-                    string endPath = String.Join("/", newPath);
+                    string[] newPath;
+                    if (once)
+                    {
+                        newPath = gather.ToArray();
+                    }
+                    else
+                    {
+                        newPath = gatherAll.ToArray();
+                    }
+                    string endPath = String.Join("\\", newPath);
                     return endPath;
                 }
-                return tempPath;
+                return fullThumbPath;
 
             }
         }
@@ -119,13 +136,28 @@ namespace ImageServiceWeb.Models
             string root = Path.GetPathRoot(path);
             Directory.SetCurrentDirectory(root);
             directoryPath = dirPath;
-            tempPath = path;
-            tempThumbPath = thumbPath;
+            fullPath = path;
+            fullThumbPath = thumbPath;
             PhotoName = Path.GetFileName(path);
             Month = Path.GetDirectoryName(path);
             Month = new DirectoryInfo(Month).Name;
             Year = Path.GetDirectoryName(Path.GetDirectoryName(path));
             Year = new DirectoryInfo(Year).Name;
+        }
+
+        public string GetFullPath()
+        {
+            return this.fullPath;
+        }
+
+        public string GetFullThumbPath()
+        {
+            return this.fullThumbPath;
+        }
+
+        public string DirPath()
+        {
+            return this.directoryPath;
         }
     }
 }
