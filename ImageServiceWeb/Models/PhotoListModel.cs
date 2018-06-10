@@ -9,8 +9,18 @@ using ImageServiceWeb.WebEventArgs;
 
 namespace ImageServiceWeb.Models
 {
+
+    /// <summary>
+    /// The class of the Photo list model
+    /// </summary>
     public class PhotoListModel
     {
+        /// <summary>
+        /// Gets or sets the photo path.
+        /// </summary>
+        /// <value>
+        /// The photo path.
+        /// </value>
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "PhotoPath")]
@@ -22,13 +32,20 @@ namespace ImageServiceWeb.Models
 
         public event EventHandler<PhotoCountEventArgs> GetPhotosNum;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PhotoListModel()
         {
             RefreshList();
         }
 
+        /// <summary>
+        /// Refreshes the list. clears the current list and add all the photos in the directory (adds and removes photos)
+        /// </summary>
         public void RefreshList()
         {
+            // check if photo exists
             if(Directory.Exists(PhotoPath))
             {
                 this.PhotosList.Clear();
@@ -45,6 +62,10 @@ namespace ImageServiceWeb.Models
             }
         }
 
+        /// <summary>
+        /// Gets the list of photos and invokes the event of number of photos changed.
+        /// </summary>
+        /// <returns>The list of photos</returns>
         public List<Photo> GetPhotos()
         {
             RefreshList();
@@ -54,11 +75,19 @@ namespace ImageServiceWeb.Models
             return PhotosList;
         }
 
+        /// <summary>
+        /// returns the size of the list
+        /// </summary>
+        /// <returns>The size of the list</returns>
         public int Length()
         {
             return PhotosList.Count;
         }
 
+        /// <summary>
+        /// Removes the photo from the list.
+        /// </summary>
+        /// <param name="photoToRemove">The photo to remove.</param>
         public void RemovePhoto(Photo photoToRemove)
         {
             foreach (Photo pic in PhotosList)
@@ -67,8 +96,10 @@ namespace ImageServiceWeb.Models
                 {
                     PhotosList.Remove(photoToRemove);
                     string photoToDelete = photoToRemove.GetFullPath();
+                    // delete the photo
                     File.Delete(photoToDelete);
                     string thumbToDelete = photoToRemove.GetFullThumbPath();
+                    // delete the thumbnail
                     File.Delete(thumbToDelete);
                     break;
                 }
@@ -78,11 +109,20 @@ namespace ImageServiceWeb.Models
             this.GetPhotosNum?.Invoke(this, photoCountEventArgs);
         }
 
+        /// <summary>
+        /// Updates the path.
+        /// </summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="args">The <see cref="PhotosEventArgs"/> instance containing the event data.</param>
         public void updatePath(object sender, PhotosEventArgs args)
         {
             this.PhotoPath = args.Path;
         }
 
+        /// <summary>
+        /// Gets the photos paths.
+        /// </summary>
+        /// <returns>the pathsw of the pthoto and thumbnail</returns>
         private string[] getPhotosPaths()
         {
             List<string> paths = new List<string>();
@@ -97,6 +137,12 @@ namespace ImageServiceWeb.Models
             return paths.ToArray();
         }
 
+        /// <summary>
+        /// Sorts the paths.
+        /// </summary>
+        /// <param name="paths">The paths.</param>
+        /// <param name="thumbnailPaths">The thumbnail paths.</param>
+        /// <returns></returns>
         private List<Tuple<string, string>> sortPaths(string[] paths, string[] thumbnailPaths)
         {
             List<Tuple<string, string>> joinedPaths = new List<Tuple<string, string>>();

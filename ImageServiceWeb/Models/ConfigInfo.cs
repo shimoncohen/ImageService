@@ -45,6 +45,9 @@ namespace ImageServiceWeb.Models
         public event EventHandler<CommandRecievedEventArgs> SendInfo;
         public event EventHandler<PhotosEventArgs> sendPath;
 
+        /// <summary>
+        /// Costructor
+        /// </summary>
         public ConfigInfo()
         {
             Handlers = new List<DirectoryModel>();

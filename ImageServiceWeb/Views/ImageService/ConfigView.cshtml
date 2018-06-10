@@ -6,9 +6,6 @@
 
 <link href="~/Css/config-view.css" rel="stylesheet" type="text/css" />
 <style>
-    ul {
-        min-height:100px;
-    }
 </style>
 
 <h2>ConfigView</h2>
@@ -57,7 +54,7 @@
 <tr>
     Handlers:
 </tr>
-<ul class="link-table" style="border:solid 1px #000;">
+<ul class="link-table" style="border:solid 1px #000; min-height:150px">
     @{
         if (Model.Handlers != null && Model.Handlers.Count != 0)
         {
@@ -67,8 +64,6 @@
                 {
                     <li class="path" id="handlerLink" data-item="@item">
                         @Html.ActionLink(item.DirPath, "RemoveHandler", new { path = item.DirPath })
-                        <!--<a data-toggle="modal" href="#deleteModal" data-handler="@item.DirPath">@item.DirPath</a>-->
-                        <!--<button id="DeleteBtn" type="button" data-toggle="modal" data-target="#deleteModal" data-handler="@item.DirPath">@item.DirPath</button>-->
                     </li>
                 }
             }

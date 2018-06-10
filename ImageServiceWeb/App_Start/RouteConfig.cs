@@ -7,6 +7,9 @@ using System.Web.Routing;
 
 namespace ImageServiceWeb
 {
+    /// <summary>
+    /// The starting class
+    /// </summary>
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)

@@ -8,20 +8,29 @@ using Newtonsoft.Json.Linq;
 
 namespace ImageServiceWeb.Controllers
 {
+    /// <summary>
+    /// The class that is the controller
+    /// </summary>
     public class ImageServiceController : Controller
     {
-        static List<string> handlers = new List<string>();
+        // members
+        private static List<string> handlers = new List<string>();
         private static ConfigInfo configInfo = new ConfigInfo();
         private static PhotoListModel photoList = new PhotoListModel();
         private static LogsModel logsModel = new LogsModel();
         private static ImageServiceWebModel ImageServiceWebModel = new ImageServiceWebModel(photoList);
         private static Photo photoToView = null;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ImageServiceController()
         {
+            // sign to the event that gets the num of photos when the number of photos is updated
             photoList.GetPhotosNum += ImageServiceWebModel.UpdatePhotosNum;
             configInfo.sendPath += photoList.updatePath;
             photoList.PhotoPath = configInfo.OutputDir;
+            // get the list of photos
             photoList.RefreshList();
             while(configInfo.InfoReceived == false)
             {
@@ -37,24 +46,28 @@ namespace ImageServiceWeb.Controllers
             return View(ImageServiceWebModel);
         }
 
+        // the config view
         [HttpGet]
         public ActionResult ConfigView()
         {
             return View(configInfo);
         }
 
+        // the logs view without filter
         [HttpGet]
         public ActionResult LogsView()
         {
             return View(logsModel);
         }
 
+        // error view
         [HttpGet]
         public ActionResult Error()
         {
             return View();
         }
 
+        // the logs view wih filter
         [HttpPost]
         public ActionResult LogsView(string filter)
         {
@@ -69,6 +82,7 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
+        // the phoos view
         [HttpGet]
         public ActionResult PhotosView()
         {
@@ -90,6 +104,7 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
+        // delete photo view
         [HttpGet]
         public ActionResult DeletePhotoView(string photoPath)
         {
@@ -97,6 +112,7 @@ namespace ImageServiceWeb.Controllers
             return View(photo);
         }
 
+        // remove handler view
         [HttpGet]
         public ActionResult RemoveHandler(string path)
         {
@@ -104,12 +120,7 @@ namespace ImageServiceWeb.Controllers
             return View(handler);
         }
 
-        /*public ActionResult beforeDelete(string photoPath)
-        {
-            pathPhotoToDelete = photoPath;
-            return RedirectToAction("DeletePhotoView");
-        }*/
-
+        // view of a specific photo
         public ActionResult PhotoToView(string path)
         {
             try
@@ -130,6 +141,7 @@ namespace ImageServiceWeb.Controllers
             }
         }
 
+        // delete a directory view
         public ActionResult Delete(string path)
         {
             int i = 0;
@@ -138,6 +150,7 @@ namespace ImageServiceWeb.Controllers
                 if (dir.DirPath.Equals(path))
                 {
                     configInfo.SendCommandToServer(Infrastructure.Enums.CommandEnum.CloseCommand, path);
+                    // remove the directory
                     configInfo.Handlers.RemoveAt(i);
                     return RedirectToAction("ConfigView");
                 }
@@ -161,6 +174,11 @@ namespace ImageServiceWeb.Controllers
             return RedirectToAction("Error");
         }
 
+        /// <summary>
+        /// The function returns a specific photo
+        /// <paramref name="path">The path to the photo</paramref>
+        /// </summary>
+        /// <returns>A specific photo of the iven path</returns>
         private Photo findPhoto(string path)
         {
             List<Photo> tempPhotosList = photoList.GetPhotos();

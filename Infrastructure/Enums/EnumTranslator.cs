@@ -91,5 +91,26 @@ namespace Infrastructure.Enums
             }
             return name;
         }
+
+        /// <summary>
+        /// returns a MessageType enum's string representation
+        /// </summary>
+        public static string MessageTypeToString(MessageTypeEnum type)
+        {
+            string name = "";
+            switch (type)
+            {
+                case MessageTypeEnum.INFO:
+                    name = "INFO";
+                    break;
+                case MessageTypeEnum.WARNING:
+                    name = "WARNING";
+                    break;
+                case MessageTypeEnum.FAIL:
+                    name = "FAIL";
+                    break;
+            }
+            return name;
+        }
     }
 }
