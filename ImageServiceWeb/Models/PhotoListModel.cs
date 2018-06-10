@@ -50,7 +50,7 @@ namespace ImageServiceWeb.Models
             {
                 this.PhotosList.Clear();
                 string[] photos = getPhotosPaths();
-                string[] photosThumbnails = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.jpg", SearchOption.AllDirectories);
+                string[] photosThumbnails = Directory.GetFiles(PhotoPath + "\\Thumbnails", "*.*", SearchOption.AllDirectories);
                 List<Tuple<string, string>> joinedPaths = sortPaths(photos, photosThumbnails);
                 foreach (Tuple<string, string> photo in joinedPaths)
                 {
@@ -131,7 +131,7 @@ namespace ImageServiceWeb.Models
             {
                 if(!Path.GetFileName(path).Equals("Thumbnails"))
                 {
-                    paths.AddRange(Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories));
+                    paths.AddRange(Directory.GetFiles(path, "*.*", SearchOption.AllDirectories));
                 }
             }
             return paths.ToArray();
@@ -150,7 +150,7 @@ namespace ImageServiceWeb.Models
             {
                 foreach(string thumbPath in thumbnailPaths)
                 {
-                    if(Path.GetFileName(path).Equals(Path.GetFileName(thumbPath)))
+                    if(Path.GetFileNameWithoutExtension(Path.GetFileName(path)).Equals(Path.GetFileNameWithoutExtension(Path.GetFileName(thumbPath))))
                     {
                         joinedPaths.Add(new Tuple<string, string>(path, thumbPath));
                         break;

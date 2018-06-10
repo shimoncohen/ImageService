@@ -174,7 +174,7 @@ namespace ImageService.Modal
                     + extension : extension);
                 message = "Couldnt save thumbnail";
                 // save the thumbnail image
-                thumb.Save(Path.ChangeExtension(thumbNewPath, "jpg"));
+                thumb.Save(thumbNewPath);
                 // close connection to thumb image
                 thumb.Dispose();
                 // close connection to image
