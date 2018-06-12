@@ -7,7 +7,9 @@ namespace ImageService.Server.Handlers
 {
     public interface IClientHandler
     {
+        #region Properties
         event EventHandler<CommandRecievedEventArgs> CommandRecieved;
+        #endregion
 
         /// <summary>
         /// Handles a new client of the server

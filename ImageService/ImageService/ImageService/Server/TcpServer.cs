@@ -15,7 +15,7 @@ using Infrastructure.Enums;
 
 namespace ImageService.Server
 {
-    public class TcpServer
+    public class TcpServer : IServer
     {
         #region Members
         private IImageController controller;
@@ -82,7 +82,6 @@ namespace ImageService.Server
             {
                 IClientHandler handler = new ClientHandler(controller, logging);
                 handler.CommandRecieved += NewCommand;
-                //handler.HandleClient(client, send);
                 handler.HandleClient(client, locker);
             }).Start();
         }
