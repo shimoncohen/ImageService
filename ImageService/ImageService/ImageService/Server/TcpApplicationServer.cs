@@ -15,13 +15,12 @@ namespace ImageService.Server
     class TcpApplicationServer : Server
     {
         #region Members
-        private IImageServiceModal myModel;
         private object locker;
         #endregion
 
-        public TcpApplicationServer(IImageServiceModal model, ILoggingService logger)
+        public TcpApplicationServer(ILoggingService logger)
         {
-            this.myModel = model;
+            this.serverPort = 8001;
             this.logging = logger;
         }
 
@@ -29,7 +28,7 @@ namespace ImageService.Server
         {
             new Task(() =>
             {
-                IClientHandler handler = new ApplicationClientHandler(myModel, logging);
+                IClientHandler handler = new ApplicationClientHandler(logging);
                 handler.HandleClient(client, locker);
             }).Start();
         }

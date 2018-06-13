@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace ImageService.Server
 {
-    abstract class Server : IServer
+    public abstract class Server : IServer
     {
         #region Members
         protected ILoggingService logging;
-        protected const int serverPort = 8000;
+        protected int serverPort;
         protected TcpListener listener;
         protected List<TcpClient> clients;
         #endregion

@@ -15,14 +15,10 @@ using Infrastructure.Enums;
 
 namespace ImageService.Server
 {
-    public class TcpServer : IServer
+    public class TcpServer : Server
     {
         #region Members
         private IImageController controller;
-        private ILoggingService logging;
-        private const int serverPort = 8000;
-        private TcpListener listener;
-        private List<TcpClient> clients;
         private Mutex send;
         private object locker;
         private NetworkStream stream;
@@ -35,6 +31,7 @@ namespace ImageService.Server
 
         public TcpServer(IImageController c, ILoggingService logger)
         {
+            this.serverPort = 8000;
             controller = c;
             logging = logger;
             send = new Mutex();
@@ -42,41 +39,10 @@ namespace ImageService.Server
         }
 
         /// <summary>
-        /// starting the server
-        /// </summary>
-        public void Start(string[] str)
-        {
-            // create the client list
-            clients = new List<TcpClient>();
-            // connect to the port
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
-            listener = new TcpListener(ep);
-            listener.Start();
-            new Task(() => {
-                while (true)
-                {
-                    try
-                    {
-                        // accept new clients
-                        TcpClient client = listener.AcceptTcpClient();
-                        clients.Add(client);
-                        // handle client
-                        communicate(client);
-                    }
-                    catch (Exception e)
-                    {
-                        logging.Log(e.Message, MessageTypeEnum.FAIL);
-                        continue;
-                    }
-                }
-            }).Start();
-        }
-
-        /// <summary>
         /// creates a new handler for each clients and starts to handle them
         /// </summary>
         /// <param name= client> the client to handle </param>
-        private void communicate(TcpClient client)
+        protected override void communicate(TcpClient client)
         {
             new Task(() =>
             {
@@ -158,15 +124,6 @@ namespace ImageService.Server
                     }
                 }
             }).Start();
-        }
-
-        /// <summary>
-        /// stop the server from running
-        /// </summary>
-        public void Stop()
-        {
-            clients.Clear();
-            listener.Stop();
         }
     }
 }

@@ -13,12 +13,12 @@ using Infrastructure.Modal.Event;
 
 namespace ImageService.Server.Handlers
 {
-    class ApplicationClientHandler : IClientHandler
+    public class ApplicationClientHandler : IClientHandler
     {
         #region Members
-        private IImageServiceModal myModel;
         protected ILoggingService logging;
         private NetworkStream stream;
+        private const int serverPort = 8001;
         private const int MAXREAD = 50000000;
         #endregion
 
@@ -26,9 +26,8 @@ namespace ImageService.Server.Handlers
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
         #endregion
 
-        public ApplicationClientHandler(IImageServiceModal model, ILoggingService logger)
+        public ApplicationClientHandler(ILoggingService logger)
         {
-            this.myModel = model;
             this.logging = logger;
         }
 

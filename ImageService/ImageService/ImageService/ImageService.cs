@@ -21,6 +21,7 @@ namespace ImageService
         private ILoggingService logger;
         private ImageServer server;
         private TcpServer tcpServer;
+        private TcpApplicationServer tcpApplicationServer;
         private LogHistory history;
 
         [DllImport("advapi32.dll", SetLastError = true)]
@@ -90,11 +91,15 @@ namespace ImageService
             server = new ImageServer(controller, logger);
             // create tcp server
             tcpServer = new TcpServer(controller, logger);
+            // create TcpApplicationServer
+            tcpApplicationServer = new TcpApplicationServer(logger);
             // start the tcp server
             string[] str = { };
             tcpServer.Start(str);
             // start the image server
             server.Start(info.Handlers.ToArray());
+            // start the application server
+            tcpApplicationServer.Start(str);
             controller.HandlerClosedEvent += server.CloseHandler;
             logger.NotifyClients += tcpServer.NotifyClients;
             server.NotifyClients += tcpServer.NotifyClients;
@@ -134,6 +139,8 @@ namespace ImageService
             server.Stop();
             // close the tcp server
             tcpServer.Stop();
+            // close the application server
+            tcpApplicationServer.Stop();
             logger.MessageRecieved -= ImageServiceMessage;
             logger.NotifyClients -= tcpServer.NotifyClients;
             logger.MessageRecieved -= logHistory.UpdateLog;
