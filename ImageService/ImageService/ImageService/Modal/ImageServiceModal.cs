@@ -166,7 +166,7 @@ namespace ImageService.Modal
                 File.Move(path, newPath);
                 message = "Couldnt extract thumbnail from image";
                 // extract a thumbnail from the image
-                Image image = Image.FromFile(newPath), 
+                Image image = Image.FromFile(newPath),
                 thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
                 // change thumb path acoording to the original image
                 thumbNewPath = thumbNewPath.Substring(0, thumbNewPath.Length - extension.Length);
