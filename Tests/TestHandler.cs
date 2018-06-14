@@ -14,7 +14,7 @@ namespace ImageService.ImageService.ImageService.Server.Handlers
             ApplicationClientHandler handler = new ApplicationClientHandler(logger);
             ImageConverter _imageConverter = new ImageConverter();
             byte[] xByte = (byte[])_imageConverter.ConvertTo(image, typeof(byte[]));
-            //handler.HandleClientTest(xByte);
+            handler.HandleClientTest(xByte);
         }
     }
 }
