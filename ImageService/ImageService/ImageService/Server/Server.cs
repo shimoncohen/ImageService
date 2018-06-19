@@ -26,6 +26,7 @@ namespace ImageService.Server
             clients = new List<TcpClient>();
             // connect to the port
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), serverPort);
+            //IPEndPoint ep = new IPEndPoint(IPAddress.Any, serverPort);
             listener = new TcpListener(ep);
             listener.Start();
             new Task(() => {

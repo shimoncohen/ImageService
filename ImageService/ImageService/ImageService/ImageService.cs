@@ -20,7 +20,7 @@ namespace ImageService
         private int eventId = 1;
         private ILoggingService logger;
         private ImageServer server;
-        private TcpServer tcpServer;
+        //private TcpServer tcpServer;
         private TcpApplicationServer tcpApplicationServer;
         private LogHistory history;
 
@@ -90,23 +90,23 @@ namespace ImageService
             // create image server
             server = new ImageServer(controller, logger);
             // create tcp server
-            tcpServer = new TcpServer(controller, logger);
+            //tcpServer = new TcpServer(controller, logger);
             // create TcpApplicationServer
             tcpApplicationServer = new TcpApplicationServer(logger);
             // start the tcp server
             string[] str = { };
-            tcpServer.Start(str);
+            //tcpServer.Start(str);
             // start the image server
             server.Start(info.Handlers.ToArray());
             // start the application server
             tcpApplicationServer.Start(str);
             controller.HandlerClosedEvent += server.CloseHandler;
-            logger.NotifyClients += tcpServer.NotifyClients;
-            server.NotifyClients += tcpServer.NotifyClients;
-            tcpServer.CommandRecieved += server.NewCommand;
+            //logger.NotifyClients += tcpServer.NotifyClients;
+            //server.NotifyClients += tcpServer.NotifyClients;
+            //tcpServer.CommandRecieved += server.NewCommand;
             logger.MessageRecieved += ImageServiceMessage;
             logger.MessageRecieved += history.UpdateLog;
-            logger.MessageRecieved += tcpServer.NewLog;
+            //logger.MessageRecieved += tcpServer.NewLog;
 
 
             // Update the service state to Start Pending.
@@ -138,15 +138,15 @@ namespace ImageService
             // close the image server
             server.Stop();
             // close the tcp server
-            tcpServer.Stop();
+            //tcpServer.Stop();
             // close the application server
             tcpApplicationServer.Stop();
             logger.MessageRecieved -= ImageServiceMessage;
-            logger.NotifyClients -= tcpServer.NotifyClients;
+            //logger.NotifyClients -= tcpServer.NotifyClients;
             logger.MessageRecieved -= logHistory.UpdateLog;
             logger.MessageRecieved -= history.UpdateLog;
-            logger.MessageRecieved += tcpServer.NewLog;
-            server.NotifyClients -= tcpServer.NotifyClients;
+            //logger.MessageRecieved += tcpServer.NewLog;
+            //server.NotifyClients -= tcpServer.NotifyClients;
             logHistory.ResetLog();
             logger.Log("In onStop", MessageTypeEnum.INFO);
         }

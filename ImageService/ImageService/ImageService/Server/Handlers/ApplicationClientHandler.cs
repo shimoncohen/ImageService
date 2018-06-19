@@ -18,7 +18,6 @@ namespace ImageService.Server.Handlers
         #region Members
         protected ILoggingService logging;
         private NetworkStream stream;
-        private const int serverPort = 8001;
         private const int MAXREAD = 50000000;
         #endregion
 
@@ -33,31 +32,69 @@ namespace ImageService.Server.Handlers
 
         public void HandleClient(TcpClient client, object locker)
         {
-            new Task(() =>
+            stream = client.GetStream();
+            // as long as the client is connected
+            while (client.Connected)
             {
-                stream = client.GetStream();
+                while (true) { 
 
-                // as long as the client is connected
-                while (client.Connected)
-                {
-                    byte[] picture = new byte[MAXREAD];
-                    int numBytes;
+                    byte[] thisByte = new byte[1] { 0 };
+                    List<byte> currBytes = new List<byte>();
+                
                     try
                     {
-                        // read a message from the client
-                        numBytes = stream.Read(picture, 0, MAXREAD);
-                        if (numBytes > 0)
+                        while (thisByte[0] != (byte) '\n')
                         {
-                            // convert the stream of bytes to an image
-                            Image img = (Bitmap)((new ImageConverter()).ConvertFrom(picture));
-                            logging.Log("Recieved image from Application client", MessageTypeEnum.INFO);
-                            ServiceInfo info = ServiceInfo.CreateServiceInfo();
-                            // save the image
-                            img.Save(info.Handlers[0]);
-                            logging.Log("Saved image from Application client", MessageTypeEnum.INFO);
+                            this.stream.Read(thisByte, 0, 1);
+                            if (thisByte[0] != (byte) '\n')
+                            {
+                                currBytes.Add(thisByte[0]);
+                            }
                         }
-                        // initialize byte array
-                        picture.Initialize();
+
+                        // convert to the size of the picture to int
+                        string picStr = Encoding.ASCII.GetString(currBytes.ToArray(), 0, currBytes.ToArray().Length);
+                        int picSize;
+                        bool successful = int.TryParse(picStr, out picSize);
+                        if(!successful)
+                        {
+                            continue;
+                        }
+
+                        // if the string is End\n we reached the end of the current picture
+                        if(picStr.Equals("End\n")) { break; }
+
+                        // get the name of the picture
+                        thisByte[0] = 0;
+                        currBytes = new List<byte>();
+                        while (!this.stream.DataAvailable) { }
+                        while (thisByte[0] != (byte)'\n')
+                        {
+                            this.stream.Read(thisByte, 0, 1);
+                            if (thisByte[0] != (byte)'\n' &&
+                                thisByte[0] != 0)
+                            {
+                                currBytes.Add(thisByte[0]);
+                            }
+                        }
+                        // convert to string
+                        string picName = Encoding.ASCII.GetString(currBytes.ToArray(), 0, currBytes.ToArray().Length);
+
+                        // get the picture
+                        byte[] bytes = new byte[picSize];
+                        int bytesReadFirst = stream.Read(bytes, 0, bytes.Length);
+                        int tempBytes = bytesReadFirst;
+                        while(tempBytes < bytes.Length)
+                        {
+                            tempBytes += stream.Read(bytes, tempBytes, bytes.Length - tempBytes);
+                        }
+                        
+
+                        ServiceInfo info = ServiceInfo.CreateServiceInfo();
+                        // save the image
+                        string directory = info.Handlers[0];
+                        File.WriteAllBytes(Path.Combine(directory, picName), bytes);
+                        logging.Log("Saved image from Application client", MessageTypeEnum.INFO);
                     }
                     catch (Exception e)
                     {
@@ -66,7 +103,9 @@ namespace ImageService.Server.Handlers
                         break;
                     }
                 }
-            }).Start();
+            }
+            stream.Close();
+            client.Close();
         }
 
         /*public void HandleClientTest(byte[] image)

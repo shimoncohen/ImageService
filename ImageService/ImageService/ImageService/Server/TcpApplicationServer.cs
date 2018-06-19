@@ -20,8 +20,9 @@ namespace ImageService.Server
 
         public TcpApplicationServer(ILoggingService logger)
         {
-            this.serverPort = 8001;
+            this.serverPort = 8002;
             this.logging = logger;
+            this.locker = new object();
         }
 
         protected override void communicate(TcpClient client)
