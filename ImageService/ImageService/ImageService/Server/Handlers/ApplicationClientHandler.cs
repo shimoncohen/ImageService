@@ -107,22 +107,5 @@ namespace ImageService.Server.Handlers
             stream.Close();
             client.Close();
         }
-
-        /*public void HandleClientTest(byte[] image)
-        {
-            try
-            {
-                Image img = (Bitmap)((new ImageConverter()).ConvertFrom(image));
-                logging.Log("Recieved image from Application client", MessageTypeEnum.INFO);
-                // save the image
-                img.Save("C:\\Users\\Larry\\Desktop\\test\\from\\download.jpg");
-                logging.Log("Saved image from Application client", MessageTypeEnum.INFO);
-            }
-            catch (Exception e)
-            {
-                logging.Log("Error reading from Application client. Exiting client handler",
-                    MessageTypeEnum.FAIL);
-            }
-        }*/
     }
 }
